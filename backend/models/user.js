@@ -8,6 +8,7 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   image: { type: String },
+  lists: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
   password: { type: String, required: true, minLength: 6 },
   subscribers: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
   bio: { type: String, required: true },

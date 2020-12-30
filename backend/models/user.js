@@ -11,7 +11,7 @@ const userSchema = new Schema(
     image: { type: String },
     bio: { type: String },
     lists: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
-    password: { type: String, required: true, minLength: 6 },
+    password: { type: String, required: true },
     subscribers: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
   },
   { timestamps: true } // creates 'createdAt' and 'updatedAt' field for us);

@@ -5,6 +5,7 @@ const userRoutes = require("./routes/userRoutes");
 const mongoose = require("mongoose");
 const db = require("./config/db");
 const dotenv = require("dotenv");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 dotenv.config();
 db();
@@ -27,5 +28,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/users", userRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(5000, console.log("Listening on port 5000"));

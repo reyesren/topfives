@@ -3,7 +3,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 const mongoose = require("mongoose");
+const db = require("./config/db");
+const dotenv = require("dotenv");
 
+dotenv.config();
+db();
 const app = express();
 
 app.use(bodyParser.json());

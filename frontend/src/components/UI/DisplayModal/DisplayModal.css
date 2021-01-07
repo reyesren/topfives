@@ -1,0 +1,17 @@
+.my-modal .modal-content {
+  background-color: #28292c;
+}
+
+.my-modal {
+  color: white;
+}
+
+button.close {
+  color: #fff;
+  opacity: 1;
+}
+
+button.close:hover {
+  color: gold;
+  opacity: 1;
+}

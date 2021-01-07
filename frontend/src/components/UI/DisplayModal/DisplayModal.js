@@ -22,7 +22,10 @@ const DisplayModal = (props) => {
         {formEl.config.label ? (
           <Form.Label>{formEl.config.label}</Form.Label>
         ) : null}
-        <Form.Control placeholder={formEl.config.placeholder}></Form.Control>
+        <Form.Control
+          type={formEl.config.type}
+          placeholder={formEl.config.placeholder}
+        ></Form.Control>
       </Form.Group>
     );
     return returnEl;

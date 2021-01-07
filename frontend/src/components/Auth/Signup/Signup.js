@@ -6,21 +6,21 @@ const Signup = (props) => {
     title: "Create a New Account",
     formInputs: {
       fNameConfig: {
-        label: "First Name",
+        label: "Full Name",
         placeholder: "First Name",
-        type: "text",
+        type: "",
         value: "",
       },
       lNameConfig: {
-        label: "Last Name",
+        label: "",
         placeholder: "Last Name",
-        type: "text",
+        type: "",
         value: "",
       },
       username: {
-        label: "Login Credentials",
+        label: "Username and Email",
         placeholder: "Username",
-        type: "text",
+        type: "",
         value: "",
       },
       email: {

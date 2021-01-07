@@ -1,26 +1,29 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useState } from "react";
+// import Signup from "./components/UI/DisplayModal/DisplayModalCopy";
+import Signup from "./components/Auth/Signup/Signup";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "react-bootstrap/Button";
 
 // adding this comment to be able to commit Develop branch
-function App() {
+const App = (props) => {
+  const [openSignup, setOpenSignup] = useState(false);
+
+  const openSignupHandler = () => {
+    setOpenSignup(true);
+  };
+
+  const modal = openSignup ? <Signup></Signup> : null;
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Button variant="success" onClick={openSignupHandler}>
+          Create a New Account
+        </Button>
+        {modal}
       </header>
     </div>
   );
-}
+};
 
 export default App;

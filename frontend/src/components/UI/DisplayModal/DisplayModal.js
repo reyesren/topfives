@@ -37,13 +37,7 @@ const DisplayModal = (props) => {
   });
 
   return (
-    <Modal
-      className="my-modal"
-      show={show}
-      onHide={handleClose}
-      centered
-      animation={false}
-    >
+    <Modal className="my-modal" show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{props.config.title}</Modal.Title>
       </Modal.Header>

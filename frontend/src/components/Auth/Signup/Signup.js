@@ -44,7 +44,13 @@ const Signup = (props) => {
     },
   });
 
-  return <DisplayModal config={signupForm}></DisplayModal>;
+  return (
+    <DisplayModal
+      closeSignupHandler={props.closeSignupHandler}
+      type="signup"
+      config={signupForm}
+    ></DisplayModal>
+  );
 };
 
 export default Signup;

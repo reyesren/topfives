@@ -6,7 +6,12 @@ import "./DisplayModal.css";
 
 const DisplayModal = (props) => {
   const [show, setShow] = useState(true);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    props.type === "login"
+      ? props.closeLoginHandler()
+      : props.closeSignupHandler();
+  };
 
   const formElementsArray = [];
   for (let key in props.config.formInputs) {
@@ -32,7 +37,13 @@ const DisplayModal = (props) => {
   });
 
   return (
-    <Modal className="my-modal" show={show} onHide={handleClose} centered>
+    <Modal
+      className="my-modal"
+      show={show}
+      onHide={handleClose}
+      centered
+      animation={false}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{props.config.title}</Modal.Title>
       </Modal.Header>
@@ -44,7 +55,8 @@ const DisplayModal = (props) => {
             variant="success"
             onClick={handleClose}
           >
-            Sign Up
+            {props.type === "login" && "Log In"}
+            {props.type === "signup" && "Sign Up"}
           </Button>
         </Form>
       </Modal.Body>

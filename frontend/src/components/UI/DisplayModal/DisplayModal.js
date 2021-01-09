@@ -33,23 +33,25 @@ const DisplayModal = (props) => {
           placeholder={formEl.config.placeholder}
           required
           value={formEl.config.value}
-          onChange={(event) => props.changed(event, formEl.config)}
+          onChange={(event) => props.changed(event, formEl.id)}
         ></Form.Control>
-        <Form.Control.Feedback type="invalid">
-          {formEl.config.emptyFieldMsg}
-        </Form.Control.Feedback>
+        {console.log(formEl.config.isValid)}
+        {formEl.config.isValid ? (
+          <Form.Control.Feedback type="invalid">
+            {props.errors[formEl.id]}
+          </Form.Control.Feedback>
+        ) : null}
       </Form.Group>
     );
     return returnEl;
   });
 
   const submitHandler = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+    event.preventDefault();
+    if (props.validate()) {
+      return;
     }
-    setValidated(true);
+    // setValidated(true);
   };
 
   return (
@@ -58,7 +60,7 @@ const DisplayModal = (props) => {
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form noValidate validated={validated} onSubmit={submitHandler}>
+        <Form noValidate onSubmit={submitHandler}>
           {formFields}
           <Button
             className="float-right"

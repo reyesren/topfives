@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import DashboardPage from "./pages/DashboardPage";
+import "./styles/styles.scss";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <DashboardPage />
   </React.StrictMode>,
   document.getElementById("root")
 );

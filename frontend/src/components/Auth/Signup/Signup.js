@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DisplayModal from "../../UI/DisplayModal/DisplayModal";
+import AuthForm from "../../AuthForm/AuthForm";
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
@@ -10,9 +10,7 @@ const Signup = (props) => {
       placeholder: "First Name",
       type: "",
       value: "",
-      emptyFieldMsg: "",
       errorMsg: "Your first name cannot be empty!",
-      isEmpty: true,
       isValid: true,
     },
     lName: {
@@ -20,9 +18,7 @@ const Signup = (props) => {
       placeholder: "Last Name",
       type: "",
       value: "",
-      emptyFieldMsg: "",
       errorMsg: "Your last name cannot be empty!",
-      isEmpty: true,
       isValid: true,
     },
     username: {
@@ -30,9 +26,7 @@ const Signup = (props) => {
       placeholder: "Username",
       type: "",
       value: "",
-      emptyFieldMsg: "",
       errorMsg: "Please choose a username.",
-      isEmpty: true,
       isValid: true,
     },
     email: {
@@ -40,9 +34,7 @@ const Signup = (props) => {
       placeholder: "Email",
       type: "email",
       value: "",
-      emptyFieldMsg: "",
       errorMsg: "Please provide a valid email.",
-      isEmpty: true,
       isValid: true,
     },
     password: {
@@ -50,9 +42,7 @@ const Signup = (props) => {
       placeholder: "Password",
       type: "password",
       value: "",
-      emptyFieldMsg: "",
       errorMsg: "Please provide a password.",
-      isEmpty: true,
       isValid: true,
     },
     confirmPassword: {
@@ -60,9 +50,7 @@ const Signup = (props) => {
       placeholder: "Confirm Password",
       type: "password",
       value: "",
-      emptyFieldMsg: "",
       errorMsg: "Please confirm your password.",
-      isEmpty: true,
       isValid: true,
     },
   });
@@ -179,6 +167,20 @@ const Signup = (props) => {
         },
       };
     }
+    if (inputConfigs.password.value.length < 6) {
+      valid = false;
+      inputErrors = {
+        ...inputErrors,
+        password: "Your password must be at least 6 characters long.",
+      };
+      newConfig = {
+        ...newConfig,
+        password: {
+          ...newConfig.password,
+          isValid: false,
+        },
+      };
+    }
     if (!inputConfigs.password.value) {
       valid = false;
       inputErrors = {
@@ -221,7 +223,7 @@ const Signup = (props) => {
   };
 
   return (
-    <DisplayModal
+    <AuthForm
       closeSignupHandler={props.closeSignupHandler}
       type="signup"
       config={inputConfigs}
@@ -230,7 +232,7 @@ const Signup = (props) => {
       validate={validateInputs}
       errors={errors}
       submit={submitHandler}
-    ></DisplayModal>
+    ></AuthForm>
   );
 };
 

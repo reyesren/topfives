@@ -35,11 +35,8 @@ const DisplayModal = (props) => {
           value={formEl.config.value}
           onChange={(event) => props.changed(event, formEl.id)}
         ></Form.Control>
-        {console.log(formEl.config.isValid)}
-        {formEl.config.isValid ? (
-          <Form.Control.Feedback type="invalid">
-            {props.errors[formEl.id]}
-          </Form.Control.Feedback>
+        {!formEl.config.isValid ? (
+          <div className="text-danger">{props.errors[formEl.id]}</div>
         ) : null}
       </Form.Group>
     );
@@ -51,7 +48,7 @@ const DisplayModal = (props) => {
     if (props.validate()) {
       return;
     }
-    // setValidated(true);
+    setValidated(true);
   };
 
   return (

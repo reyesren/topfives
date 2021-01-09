@@ -11,7 +11,7 @@ const Signup = (props) => {
       type: "",
       value: "",
       emptyFieldMsg: "",
-      errorMsg: "This cannot be empty!",
+      errorMsg: "Your first name cannot be empty!",
       isEmpty: true,
       isValid: true,
     },
@@ -21,7 +21,7 @@ const Signup = (props) => {
       type: "",
       value: "",
       emptyFieldMsg: "",
-      errorMsg: "This cannot be empty!",
+      errorMsg: "Your last name cannot be empty!",
       isEmpty: true,
       isValid: true,
     },
@@ -46,7 +46,7 @@ const Signup = (props) => {
       isValid: true,
     },
     password: {
-      label: "Password",
+      label: "Password / Confirm Password",
       placeholder: "Password",
       type: "password",
       value: "",
@@ -67,8 +67,9 @@ const Signup = (props) => {
     },
   });
 
-  const checkIfPasswordsSame = () => {
-    return inputConfigs.password.value === inputConfigs.confirmPassword.value;
+  const validateEmail = (email) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   };
 
   const inputChangedHandler = (event, inputEl) => {
@@ -86,20 +87,41 @@ const Signup = (props) => {
     let inputErrors = {};
     let valid = true;
 
+    let newConfig = {
+      ...inputConfigs,
+      fName: {
+        ...inputConfigs.fName,
+      },
+      lName: {
+        ...inputConfigs.lName,
+      },
+      username: {
+        ...inputConfigs.username,
+      },
+      email: {
+        ...inputConfigs.email,
+      },
+      password: {
+        ...inputConfigs.password,
+      },
+      confirmPassword: {
+        ...inputConfigs.confirmPassword,
+      },
+    };
+
     if (!inputConfigs.fName.value) {
       valid = false;
       inputErrors = {
         ...inputErrors,
         fName: inputConfigs.fName.errorMsg,
       };
-      let fNameConfig = {
-        ...inputConfigs,
+      newConfig = {
+        ...newConfig,
         fName: {
-          ...inputConfigs.fName,
+          ...newConfig.fName,
           isValid: false,
         },
       };
-      setInputConfigs(fNameConfig);
     }
     if (!inputConfigs.lName.value) {
       valid = false;
@@ -107,14 +129,13 @@ const Signup = (props) => {
         ...inputErrors,
         lName: inputConfigs.lName.errorMsg,
       };
-      const newConfig = {
-        ...inputConfigs,
+      newConfig = {
+        ...newConfig,
         lName: {
-          ...inputConfigs.lName,
-          isValid: valid,
+          ...newConfig.lName,
+          isValid: false,
         },
       };
-      setInputConfigs(newConfig);
     }
     if (!inputConfigs.username.value) {
       valid = false;
@@ -122,29 +143,41 @@ const Signup = (props) => {
         ...inputErrors,
         username: inputConfigs.username.errorMsg,
       };
-      const newConfig = {
-        ...inputConfigs,
+      newConfig = {
+        ...newConfig,
         username: {
-          ...inputConfigs.username,
-          isValid: valid,
+          ...newConfig.username,
+          isValid: false,
         },
       };
-      setInputConfigs(newConfig);
     }
-    if (!inputConfigs.email.value) {
+    if (!inputConfigs.email.value || !validateEmail(inputConfigs.email.value)) {
       valid = false;
       inputErrors = {
         ...inputErrors,
         email: inputConfigs.email.errorMsg,
       };
-      const newConfig = {
-        ...inputConfigs,
+      newConfig = {
+        ...newConfig,
         email: {
-          ...inputConfigs.email,
-          isValid: valid,
+          ...newConfig.email,
+          isValid: false,
         },
       };
-      setInputConfigs(newConfig);
+    }
+    if (inputConfigs.password.value !== inputConfigs.confirmPassword.value) {
+      valid = false;
+      inputErrors = {
+        ...inputErrors,
+        confirmPassword: "Your passwords don't match!",
+      };
+      newConfig = {
+        ...newConfig,
+        confirmPassword: {
+          ...newConfig.confirmPassword,
+          isValid: false,
+        },
+      };
     }
     if (!inputConfigs.password.value) {
       valid = false;
@@ -152,14 +185,13 @@ const Signup = (props) => {
         ...inputErrors,
         password: inputConfigs.password.errorMsg,
       };
-      const newConfig = {
-        ...inputConfigs,
+      newConfig = {
+        ...newConfig,
         password: {
-          ...inputConfigs.password,
-          isValid: valid,
+          ...newConfig.password,
+          isValid: false,
         },
       };
-      setInputConfigs(newConfig);
     }
     if (!inputConfigs.confirmPassword.value) {
       valid = false;
@@ -167,17 +199,25 @@ const Signup = (props) => {
         ...inputErrors,
         confirmPassword: inputConfigs.confirmPassword.errorMsg,
       };
-      const newConfig = {
-        ...inputConfigs,
+      newConfig = {
+        ...newConfig,
         confirmPassword: {
-          ...inputConfigs.confirmPassword,
-          isValid: valid,
+          ...newConfig.confirmPassword,
+          isValid: false,
         },
       };
-      setInputConfigs(newConfig);
     }
+
     setErrors(inputErrors);
+    setInputConfigs(newConfig);
     return valid;
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    if (validateInputs()) {
+      return;
+    }
   };
 
   return (
@@ -186,10 +226,10 @@ const Signup = (props) => {
       type="signup"
       config={inputConfigs}
       title={formTitle}
-      passwordCheck={checkIfPasswordsSame}
       changed={inputChangedHandler}
       validate={validateInputs}
       errors={errors}
+      submit={submitHandler}
     ></DisplayModal>
   );
 };

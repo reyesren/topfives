@@ -1,23 +1,30 @@
 import React, { useState } from "react";
 
 import Modal from "react-bootstrap/Modal";
-import "./DisplayModal.css";
 
 const DisplayModal = (props) => {
   const [show, setShow] = useState(true);
   const handleClose = () => {
     setShow(false);
-    props.type === "login"
-      ? props.closeLoginHandler()
-      : props.closeSignupHandler();
+    props.closeHandler();
   };
 
   return (
     <Modal className="my-modal" show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton>
+      <Modal.Header
+        closeButton
+        className={props.styles ? props.styles.title : null}
+      >
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{props.body}</Modal.Body>
+      <Modal.Body className={props.styles ? props.styles.body : null}>
+        {props.body}
+      </Modal.Body>
+      {props.footer ? (
+        <Modal.Footer className={props.styles ? props.styles.footer : null}>
+          {props.footer}
+        </Modal.Footer>
+      ) : null}
     </Modal>
   );
 };

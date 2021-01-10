@@ -224,7 +224,7 @@ const Signup = (props) => {
 
   return (
     <AuthForm
-      closeSignupHandler={props.closeSignupHandler}
+      closeHandler={props.closeSignupHandler}
       type="signup"
       config={inputConfigs}
       title={formTitle}

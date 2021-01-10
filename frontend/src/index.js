@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import SuccessModal from "./components/SuccessModal";
+import SuccessAccCreated from "./components/Auth/Signup/SuccessAccCreated";
 import DashboardPage from "./pages/DashboardPage";
 import "./styles/styles.scss";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <SuccessModal />
+    <SuccessAccCreated></SuccessAccCreated>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -53,7 +53,7 @@ const AuthForm = (props) => {
       body={formBody}
       title={props.title}
       type={props.type}
-      closeSignupHandler={props.closeSignupHandler}
+      closeHandler={props.closeHandler}
     ></DisplayModal>
   );
 };

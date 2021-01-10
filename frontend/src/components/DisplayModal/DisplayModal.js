@@ -12,8 +12,8 @@ const DisplayModal = (props) => {
   return (
     <Modal className="my-modal" show={show} onHide={handleClose} centered>
       <Modal.Header
-        className={props.styles ? props.styles.header : null}
-        closeButton
+        className={props.styles ? props.styles.title : null}
+        closeButton={props.styles ? false : true}
       >
         <Modal.Title className={props.styles ? props.styles.title : null}>
           {props.title}

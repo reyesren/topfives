@@ -4,6 +4,7 @@ import Signup from "./components/Auth/Signup/Signup";
 import Login from "./components/Auth/Login/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
+import "./App.css";
 
 // adding this comment to be able to commit Develop branch
 const App = (props) => {

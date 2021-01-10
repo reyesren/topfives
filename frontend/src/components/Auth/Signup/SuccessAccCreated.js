@@ -7,7 +7,8 @@ const SuccessAccCreated = () => {
   const title = "Welcome to TopFives!";
   const footer = <Button variant="success">Enter TopFives</Button>;
   const styles = {
-    title: "success-header",
+    header: "success-header",
+    title: "success-title",
     body: "success-body",
     footer: "success-footer",
   };

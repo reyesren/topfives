@@ -32,6 +32,7 @@ const signup = async (req, res, next) => {
   }
   // console.log(`first existing user: ${existingUser}`);
   if (existingUser.length > 0) {
+    res.status(400);
     return next(new Error("That email is already in use"));
   }
   try {
@@ -41,6 +42,7 @@ const signup = async (req, res, next) => {
   }
   // console.log(`second existing user: ${existingUser}`);
   if (existingUser.length > 0) {
+    res.status(400);
     return next(new Error("That username is already in use"));
   }
 

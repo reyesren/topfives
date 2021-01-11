@@ -237,10 +237,10 @@ const Signup = (props) => {
         .then((response) => {
           setIsLoading(false);
           setSubmitting(true);
-          console.log(response);
+          console.log(response.message);
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response);
         });
     }
   };

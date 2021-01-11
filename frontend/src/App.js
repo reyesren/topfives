@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Header from "./components/Nav/Header";
+
 // import Signup from "./components/UI/DisplayModal/DisplayModalCopy";
 import Signup from "./components/Auth/Signup/Signup";
 import Login from "./components/Auth/Login/Login";

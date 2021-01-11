@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import AuthForm from "../../AuthForm/AuthForm";
+import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
+import SuccessAccCreated from "./SuccessAccCreated";
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [inputConfigs, setInputConfigs] = useState({
     fName: {
       label: "Full Name",
@@ -217,12 +222,30 @@ const Signup = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    setIsLoading(true);
     if (validateInputs()) {
-      return;
+      const reqBody = {
+        name: inputConfigs.fName.value + " " + inputConfigs.lName.value,
+        username: inputConfigs.username.value,
+        password: inputConfigs.password.value,
+        email: inputConfigs.email.value,
+        subscriptions: [],
+        lists: [],
+      };
+      axios
+        .post("http://localhost:5000/api/users/signup", reqBody)
+        .then((response) => {
+          setIsLoading(false);
+          setSubmitting(true);
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
-
-  return (
+  // console.log(props.show);
+  let modalBody = (
     <AuthForm
       closeHandler={props.closeSignupHandler}
       type="signup"
@@ -232,8 +255,16 @@ const Signup = (props) => {
       validate={validateInputs}
       errors={errors}
       submit={submitHandler}
+      showForm={props.show}
     ></AuthForm>
   );
+  if (isLoading && !submitting) {
+    modalBody = <Spinner animation="border" role="status"></Spinner>;
+  } else if (submitting) {
+    modalBody = <SuccessAccCreated></SuccessAccCreated>;
+  }
+
+  return modalBody;
 };
 
 export default Signup;

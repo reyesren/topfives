@@ -24,9 +24,8 @@ const App = (props) => {
     setOpenLogin(false);
   };
 
-  const signupModal = openSignup ? (
-    <Signup closeSignupHandler={closeSignupHandler}></Signup>
-  ) : null;
+  const signupModal = openSignup ? <Signup show={openSignup}></Signup> : null;
+  // const loginModal = openLogin ? <Login></Login> : null;
   const loginModal = openLogin ? (
     <Login closeLoginHandler={closeLoginHandler}></Login>
   ) : null;

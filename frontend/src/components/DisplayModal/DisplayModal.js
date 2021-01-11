@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Modal from "react-bootstrap/Modal";
 
 const DisplayModal = (props) => {
-  const [show, setShow] = useState(true);
   const handleClose = () => {
-    setShow(false);
     props.closeHandler();
   };
-
   return (
-    <Modal className="my-modal" show={show} onHide={handleClose} centered>
+    <Modal className="my-modal" show={props.show} onHide={handleClose} centered>
       <Modal.Header
         className={props.styles ? props.styles.title : null}
         closeButton={props.styles ? false : true}

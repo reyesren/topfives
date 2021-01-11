@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import AuthForm from "../../AuthForm/AuthForm";
+import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [inputConfigs, setInputConfigs] = useState({
     fName: {
       label: "Full Name",
@@ -217,14 +221,33 @@ const Signup = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    setIsLoading(true);
     if (validateInputs()) {
-      return;
+      const reqBody = {
+        name: inputConfigs.fName.value + " " + inputConfigs.lName.value,
+        username: inputConfigs.username.value,
+        password: inputConfigs.password.value,
+        email: inputConfigs.email.value,
+        subscriptions: [],
+        lists: [],
+      };
+      axios
+        .post("http://localhost:5000/api/users/signup", reqBody)
+        .then((response) => {
+          setIsLoading(false);
+          setSubmitting(true);
+          props.closeHandler();
+          props.isModalReady();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
     }
   };
-
-  return (
+  let modalBody = (
     <AuthForm
-      closeHandler={props.closeSignupHandler}
+      show={props.show}
+      closeHandler={props.closeHandler}
       type="signup"
       config={inputConfigs}
       title={formTitle}
@@ -234,6 +257,19 @@ const Signup = (props) => {
       submit={submitHandler}
     ></AuthForm>
   );
+  if (isLoading && !submitting) {
+    modalBody = <Spinner animation="border" role="status"></Spinner>;
+  }
+  // else if (submitting) {
+  //   modalBody = (
+  //     <SuccessAccCreated
+  //       show={successAccountCreated}
+  //       closeHandler={closeSuccessCreation}
+  //     ></SuccessAccCreated>
+  //   );
+  // }
+
+  return modalBody;
 };
 
 export default Signup;

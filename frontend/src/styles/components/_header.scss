@@ -4,7 +4,7 @@ nav {
   max-height: 70px;
 }
 
-.navbar-nav {
+.nav-loggedIn {
   margin-right: 30px;
   display: flex;
   flex-direction: row;
@@ -13,6 +13,10 @@ nav {
   width: 100%;
 }
 
+.nav-loggedOut {
+  margin-left: auto;
+  display: flex;
+}
 .dropdown-menu {
   background-color: #9fb3c8;
 }

@@ -104,7 +104,8 @@ const Login = (props) => {
 
   return (
     <AuthForm
-      closeHandler={props.closeLoginHandler}
+      closeHandler={props.closeHandler}
+      show={props.show}
       type="login"
       config={loginForm}
       title={formTitle}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import DisplayModal from "../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -54,6 +54,7 @@ const AuthForm = (props) => {
       title={props.title}
       type={props.type}
       closeHandler={props.closeHandler}
+      show={props.show}
     ></DisplayModal>
   );
 };

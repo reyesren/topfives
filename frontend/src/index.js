@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import SuccessAccCreated from "./components/Auth/Signup/SuccessAccCreated";
-import DashboardPage from "./pages/DashboardPage";
-import Header from "./components/Nav/Header";
 import "./styles/styles.scss";
 import reportWebVitals from "./reportWebVitals";
 

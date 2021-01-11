@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import AuthForm from "../../AuthForm/AuthForm";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-import SuccessAccCreated from "./SuccessAccCreated";
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
@@ -237,7 +236,8 @@ const Signup = (props) => {
         .then((response) => {
           setIsLoading(false);
           setSubmitting(true);
-          console.log(response.message);
+          props.closeHandler();
+          props.isModalReady();
         })
         .catch((err) => {
           console.log(err.response);
@@ -246,7 +246,8 @@ const Signup = (props) => {
   };
   let modalBody = (
     <AuthForm
-      closeHandler={props.closeSignupHandler}
+      show={props.show}
+      closeHandler={props.closeHandler}
       type="signup"
       config={inputConfigs}
       title={formTitle}
@@ -258,9 +259,15 @@ const Signup = (props) => {
   );
   if (isLoading && !submitting) {
     modalBody = <Spinner animation="border" role="status"></Spinner>;
-  } else if (submitting) {
-    modalBody = <SuccessAccCreated></SuccessAccCreated>;
   }
+  // else if (submitting) {
+  //   modalBody = (
+  //     <SuccessAccCreated
+  //       show={successAccountCreated}
+  //       closeHandler={closeSuccessCreation}
+  //     ></SuccessAccCreated>
+  //   );
+  // }
 
   return modalBody;
 };

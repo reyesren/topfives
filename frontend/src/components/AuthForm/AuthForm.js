@@ -52,7 +52,6 @@ const AuthForm = (props) => {
     <DisplayModal
       body={formBody}
       title={props.title}
-      type={props.type}
       closeHandler={props.closeHandler}
     ></DisplayModal>
   );

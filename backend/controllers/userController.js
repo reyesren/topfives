@@ -28,20 +28,24 @@ const signup = async (req, res, next) => {
       email: { $regex: new RegExp("^" + email.toLowerCase(), "i") },
     });
   } catch (err) {
-    return next(new Error("Sorry, something went wrong"));
+    return next(new Error("Sorry, something went wrong!"));
   }
   // console.log(`first existing user: ${existingUser}`);
   if (existingUser.length > 0) {
-    return next(new Error("That email is already in use"));
+    return next(
+      new Error("That email is already in use! Please try another one.")
+    );
   }
   try {
     existingUser = await User.find({ username: username });
   } catch (err) {
-    return next(new Error("Something went wrong"));
+    return next(new Error("Something went wrong!"));
   }
   // console.log(`second existing user: ${existingUser}`);
   if (existingUser.length > 0) {
-    return next(new Error("That username is already in use"));
+    return next(
+      new Error("That username is already in use! Please try another one.")
+    );
   }
 
   try {

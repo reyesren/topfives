@@ -3,12 +3,15 @@ import AuthForm from "../../AuthForm/AuthForm";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import SuccessAccCreated from "./SuccessAccCreated";
+import DisplayModal from "../../DisplayModal/DisplayModal";
+import Button from "react-bootstrap/Button";
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [inputConfigs, setInputConfigs] = useState({
     fName: {
       label: "Full Name",
@@ -240,11 +243,16 @@ const Signup = (props) => {
           console.log(response);
         })
         .catch((err) => {
-          console.log(err);
+          setIsLoading(false);
+          setSubmitError(err.response.data.message);
         });
     }
   };
-  // console.log(props.show);
+
+  const goBackToFormHandler = () => {
+    setSubmitError(false);
+  };
+
   let modalBody = (
     <AuthForm
       closeHandler={props.closeSignupHandler}
@@ -255,11 +263,38 @@ const Signup = (props) => {
       validate={validateInputs}
       errors={errors}
       submit={submitHandler}
-      showForm={props.show}
     ></AuthForm>
   );
+
   if (isLoading && !submitting) {
     modalBody = <Spinner animation="border" role="status"></Spinner>;
+  } else if (submitError) {
+    const styles = {
+      title: "signup-error-title",
+      body: "signup-error-body",
+    };
+    const errorBody = (
+      <div>
+        <div>{submitError}</div>
+        <Button
+          className="float-right signup-error-button"
+          variant="primary"
+          type="submit"
+          onClick={goBackToFormHandler}
+        >
+          Go back
+        </Button>
+      </div>
+    );
+
+    modalBody = (
+      <DisplayModal
+        title={"Error!"}
+        body={errorBody}
+        closeHandler={props.closeSignupHandler}
+        styles={styles}
+      ></DisplayModal>
+    );
   } else if (submitting) {
     modalBody = <SuccessAccCreated></SuccessAccCreated>;
   }

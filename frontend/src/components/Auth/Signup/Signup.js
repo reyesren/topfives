@@ -244,7 +244,6 @@ const Signup = (props) => {
         });
     }
   };
-  // console.log(props.show);
   let modalBody = (
     <AuthForm
       closeHandler={props.closeSignupHandler}
@@ -255,7 +254,6 @@ const Signup = (props) => {
       validate={validateInputs}
       errors={errors}
       submit={submitHandler}
-      showForm={props.show}
     ></AuthForm>
   );
   if (isLoading && !submitting) {

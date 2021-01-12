@@ -7,9 +7,10 @@ router.get("/:id", (req, res, next) =>
   res.json({ message: "success getting account" })
 );
 router.post("/signup", usersController.signup);
-router.post("/login", (req, res, next) =>
-  res.json({ message: "success logging in" })
-);
+// router.post("/login", (req, res, next) =>
+//   res.json({ message: "success logging in" })
+// );
+router.post("/login", usersController.login);
 router.put("/:id/edit", (req, res, next) =>
   res.json({ message: "success editting" })
 );

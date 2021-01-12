@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import AuthForm from "../../AuthForm/AuthForm";
+import Spinner from "react-bootstrap/Spinner";
+import DisplayModal from "../../DisplayModal/DisplayModal";
+import Button from "react-bootstrap/Button";
+import { connect } from "react-redux";
+import * as actions from "../../../store/actions/index";
 
 const Login = (props) => {
   const [errors, setErrors] = useState({});
@@ -97,12 +102,13 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    props.onLoginStart();
     if (validateInputs()) {
-      return;
+      props.onLogin(loginForm.username.value, loginForm.password.value);
     }
   };
 
-  return (
+  let modalBody = (
     <AuthForm
       closeHandler={props.closeHandler}
       show={props.show}
@@ -115,6 +121,55 @@ const Login = (props) => {
       submit={submitHandler}
     />
   );
+  if (props.loading) {
+    modalBody = <Spinner animation="border" role="status"></Spinner>;
+  } else if (props.submitError) {
+    console.log(props.submitError);
+    const styles = {
+      title: "signup-error-title",
+      body: "signup-error-body",
+    };
+    const errorBody = (
+      <div>
+        <div>{props.submitError}</div>
+        <Button
+          className="float-right signup-error-button"
+          variant="primary"
+          type="submit"
+          onClick={props.onLoginGoBackToForm}
+        >
+          Go back
+        </Button>
+      </div>
+    );
+
+    modalBody = (
+      <DisplayModal
+        title={"Error!"}
+        body={errorBody}
+        closeHandler={props.closeLoginHandler}
+        styles={styles}
+      ></DisplayModal>
+    );
+  }
+
+  return modalBody;
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.login.loading,
+    submitError: state.login.submitError,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogin: (username, password) =>
+      dispatch(actions.login(username, password)),
+    onLoginGoBackToForm: () => dispatch(actions.loginGoBackToForm()),
+    onLoginStart: () => dispatch(actions.loginStart()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

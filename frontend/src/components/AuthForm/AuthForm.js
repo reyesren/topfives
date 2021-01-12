@@ -36,12 +36,7 @@ const AuthForm = (props) => {
   const formBody = (
     <Form noValidate onSubmit={props.submit}>
       {formFields}
-      <Button
-        className="float-right"
-        variant="success"
-        type="submit"
-        // onClick={handleClose}
-      >
+      <Button className="float-right" variant="success" type="submit">
         {props.type === "login" && "Log In"}
         {props.type === "signup" && "Sign Up"}
       </Button>
@@ -52,7 +47,6 @@ const AuthForm = (props) => {
     <DisplayModal
       body={formBody}
       title={props.title}
-      type={props.type}
       closeHandler={props.closeHandler}
       show={props.show}
     ></DisplayModal>

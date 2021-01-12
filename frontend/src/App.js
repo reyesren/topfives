@@ -8,6 +8,32 @@ import DashboardPage from "./pages/DashboardPage";
 
 // adding this comment to be able to commit Develop branch
 const App = (props) => {
+<<<<<<< HEAD
+=======
+  const [openSignup, setOpenSignup] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+
+  const openSignupHandler = () => {
+    setOpenSignup(true);
+  };
+  const openLoginHandler = () => {
+    setOpenLogin(true);
+  };
+  const closeSignupHandler = () => {
+    setOpenSignup(false);
+  };
+  const closeLoginHandler = () => {
+    setOpenLogin(false);
+  };
+
+  const signupModal = openSignup ? (
+    <Signup closeSignupHandler={closeSignupHandler}></Signup>
+  ) : null;
+  const loginModal = openLogin ? (
+    <Login closeLoginHandler={closeLoginHandler}></Login>
+  ) : null;
+
+>>>>>>> TOP19
   return (
     <Router>
       <Header />

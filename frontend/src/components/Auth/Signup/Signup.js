@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import AuthForm from "../../AuthForm/AuthForm";
 import Spinner from "react-bootstrap/Spinner";
-<<<<<<< HEAD
-=======
 import SuccessAccCreated from "./SuccessAccCreated";
 import DisplayModal from "../../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions/index";
->>>>>>> TOP19
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
@@ -229,29 +226,6 @@ const Signup = (props) => {
 
     props.onSignupStart();
     if (validateInputs()) {
-<<<<<<< HEAD
-      const reqBody = {
-        name: inputConfigs.fName.value + " " + inputConfigs.lName.value,
-        username: inputConfigs.username.value,
-        password: inputConfigs.password.value,
-        email: inputConfigs.email.value,
-        subscriptions: [],
-        lists: [],
-      };
-      axios
-        .post("http://localhost:5000/api/users/signup", reqBody)
-        .then((response) => {
-          setIsLoading(false);
-          setSubmitting(true);
-          props.closeHandler();
-          props.successModalReadyHandler();
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
-    }
-  };
-=======
       props.onSignup(
         inputConfigs.fName.value,
         inputConfigs.lName.value,
@@ -268,7 +242,6 @@ const Signup = (props) => {
   //   setSubmitError(false);
   // };
 
->>>>>>> TOP19
   let modalBody = (
     <AuthForm
       show={props.show}
@@ -285,8 +258,6 @@ const Signup = (props) => {
 
   if (props.loading && !props.readyToSubmit) {
     modalBody = <Spinner animation="border" role="status"></Spinner>;
-<<<<<<< HEAD
-=======
   } else if (props.submitError) {
     const styles = {
       title: "signup-error-title",
@@ -316,7 +287,6 @@ const Signup = (props) => {
     );
   } else if (props.readyToSubmit) {
     modalBody = <SuccessAccCreated></SuccessAccCreated>;
->>>>>>> TOP19
   }
   // else if (submitting) {
   //   modalBody = (

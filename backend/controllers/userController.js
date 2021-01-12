@@ -38,9 +38,7 @@ const signup = async (req, res, next) => {
       } catch (err) {
         return next(new Error("Sorry, something went wrong!"));
       }
-      // console.log(`first existing user: ${existingUser}`);
       if (existingUser) {
-        console.log(existingUser.username);
         return next(
           new Error("That email is already in use! Please try another one.")
         );
@@ -79,26 +77,7 @@ const login = async (req, res, next) => {
       username: req.body.username,
     });
   } catch (err) {
-<<<<<<< HEAD
-    return next(new Error("Sorry, something went wrong"));
-  }
-  // console.log(`first existing user: ${existingUser}`);
-  if (existingUser.length > 0) {
-    res.status(400);
-    return next(new Error("That email is already in use"));
-  }
-  try {
-    existingUser = await User.find({ username: username });
-  } catch (err) {
-    return next(new Error("Something went wrong"));
-  }
-  // console.log(`second existing user: ${existingUser}`);
-  if (existingUser.length > 0) {
-    res.status(400);
-    return next(new Error("That username is already in use"));
-=======
     return next(new Error("Sorry, something went wrong!"));
->>>>>>> TOP19
   }
 
   if (!existingUser) {

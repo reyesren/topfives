@@ -1,15 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-<<<<<<< HEAD
-=======
 import SuccessAccCreated from "./components/Auth/Signup/SuccessAccCreated";
 import DashboardPage from "./pages/DashboardPage";
 import Header from "./components/Nav/Header";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
->>>>>>> TOP19
 import "./styles/styles.scss";
 import signupReducer from "./store/reducers/signup";
 import loginReducer from "./store/reducers/login";

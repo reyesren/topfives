@@ -21,7 +21,7 @@ const Header = () => {
   const [modalReady, setModalReady] = useState(false);
   const [successAccountCreated, setSuccessAccountCreated] = useState(false);
 
-  const isModalReady = () => {
+  const successModalReadyHandler = () => {
     setModalReady(true);
     openSuccessCreation();
   };
@@ -52,7 +52,7 @@ const Header = () => {
     <Signup
       show={openSignup}
       closeHandler={closeSignupHandler}
-      isModalReady={isModalReady}
+      successModalReadyHandler={successModalReadyHandler}
     ></Signup>
   ) : null;
   // const loginModal = openLogin ? <Login></Login> : null;

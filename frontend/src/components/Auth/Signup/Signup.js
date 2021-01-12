@@ -237,7 +237,7 @@ const Signup = (props) => {
           setIsLoading(false);
           setSubmitting(true);
           props.closeHandler();
-          props.isModalReady();
+          props.successModalReadyHandler();
         })
         .catch((err) => {
           console.log(err.response);

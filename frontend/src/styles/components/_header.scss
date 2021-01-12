@@ -17,8 +17,9 @@ nav {
   margin-left: auto;
   display: flex;
 }
-.dropdown-menu {
+.navbar-nav .dropdown-menu {
   background-color: #9fb3c8;
+  min-width: 100px;
 }
 
 nav a {

@@ -228,7 +228,8 @@ const Signup = (props) => {
     setIsLoading(true);
     if (validateInputs()) {
       const reqBody = {
-        name: inputConfigs.fName.value + " " + inputConfigs.lName.value,
+        firstName: inputConfigs.fName.value,
+        lastName: inputConfigs.lName.value,
         username: inputConfigs.username.value,
         password: inputConfigs.password.value,
         email: inputConfigs.email.value,

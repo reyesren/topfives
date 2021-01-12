@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import DisplayModal from "../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -36,12 +36,7 @@ const AuthForm = (props) => {
   const formBody = (
     <Form noValidate onSubmit={props.submit}>
       {formFields}
-      <Button
-        className="float-right"
-        variant="success"
-        type="submit"
-        // onClick={handleClose}
-      >
+      <Button className="float-right" variant="success" type="submit">
         {props.type === "login" && "Log In"}
         {props.type === "signup" && "Sign Up"}
       </Button>

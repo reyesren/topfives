@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import AuthForm from "../../AuthForm/AuthForm";
-import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import SuccessAccCreated from "./SuccessAccCreated";
 import DisplayModal from "../../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
+import { connect } from "react-redux";
+import * as actions from "../../../store/actions/index";
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
   const [inputConfigs, setInputConfigs] = useState({
     fName: {
       label: "Full Name",
@@ -225,34 +223,24 @@ const Signup = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    setIsLoading(true);
+
+    props.onSignupStart();
     if (validateInputs()) {
-      const reqBody = {
-        firstName: inputConfigs.fName.value,
-        lastName: inputConfigs.lName.value,
-        username: inputConfigs.username.value,
-        password: inputConfigs.password.value,
-        email: inputConfigs.email.value,
-        subscriptions: [],
-        lists: [],
-      };
-      axios
-        .post("http://localhost:5000/api/users/signup", reqBody)
-        .then((response) => {
-          setIsLoading(false);
-          setSubmitting(true);
-          console.log(response);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          setSubmitError(err.response.data.message);
-        });
+      props.onSignup(
+        inputConfigs.fName.value,
+        inputConfigs.lName.value,
+        inputConfigs.username.value,
+        inputConfigs.password.value,
+        inputConfigs.email.value,
+        [],
+        []
+      );
     }
   };
 
-  const goBackToFormHandler = () => {
-    setSubmitError(false);
-  };
+  // const goBackToFormHandler = () => {
+  //   setSubmitError(false);
+  // };
 
   let modalBody = (
     <AuthForm
@@ -267,21 +255,21 @@ const Signup = (props) => {
     ></AuthForm>
   );
 
-  if (isLoading && !submitting) {
+  if (props.loading && !props.readyToSubmit) {
     modalBody = <Spinner animation="border" role="status"></Spinner>;
-  } else if (submitError) {
+  } else if (props.submitError) {
     const styles = {
       title: "signup-error-title",
       body: "signup-error-body",
     };
     const errorBody = (
       <div>
-        <div>{submitError}</div>
+        <div>{props.submitError}</div>
         <Button
           className="float-right signup-error-button"
           variant="primary"
           type="submit"
-          onClick={goBackToFormHandler}
+          onClick={props.onSignupGoBackToForm}
         >
           Go back
         </Button>
@@ -296,11 +284,46 @@ const Signup = (props) => {
         styles={styles}
       ></DisplayModal>
     );
-  } else if (submitting) {
+  } else if (props.readyToSubmit) {
     modalBody = <SuccessAccCreated></SuccessAccCreated>;
   }
 
   return modalBody;
 };
 
-export default Signup;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.signup.loading,
+    readyToSubmit: state.signup.readyToSubmit,
+    submitError: state.signup.submitError,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSignup: (
+      firstName,
+      lastName,
+      username,
+      password,
+      email,
+      subscriptions,
+      lists
+    ) =>
+      dispatch(
+        actions.signup(
+          firstName,
+          lastName,
+          username,
+          password,
+          email,
+          subscriptions,
+          lists
+        )
+      ),
+    onSignupGoBackToForm: () => dispatch(actions.signupGoBackToForm()),
+    onSignupStart: () => dispatch(actions.signupStart()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

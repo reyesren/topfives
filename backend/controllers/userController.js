@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 const signup = async (req, res, next) => {
@@ -31,25 +32,27 @@ const signup = async (req, res, next) => {
 
       let existingUser;
       try {
-        existingUser = await User.find({
+        existingUser = await User.findOne({
           email: { $regex: new RegExp("^" + email.toLowerCase(), "i") },
         });
       } catch (err) {
         return next(new Error("Sorry, something went wrong!"));
       }
       // console.log(`first existing user: ${existingUser}`);
-      if (existingUser.length > 0) {
+      if (existingUser) {
+        console.log(existingUser.username);
         return next(
           new Error("That email is already in use! Please try another one.")
         );
       }
       try {
-        existingUser = await User.find({ username: username });
+        existingUser = await User.findOne({ username: username });
       } catch (err) {
         return next(new Error("Something went wrong!"));
       }
       // console.log(`second existing user: ${existingUser}`);
-      if (existingUser.length > 0) {
+      if (existingUser) {
+        console.log(existingUser.username);
         return next(
           new Error("That username is already in use! Please try another one.")
         );
@@ -66,4 +69,41 @@ const signup = async (req, res, next) => {
   });
 };
 
-exports.signup = signup;
+const login = async (req, res, next) => {
+  let inputPassword = req.body.password;
+  let existingUser;
+  let accessToken;
+
+  try {
+    existingUser = await User.findOne({
+      username: req.body.username,
+    });
+  } catch (err) {
+    return next(new Error("Sorry, something went wrong!"));
+  }
+
+  if (!existingUser) {
+    return next(new Error("There is no account with that username."));
+  } else {
+    bcrypt.compare(inputPassword, existingUser.password, (err, result) => {
+      if (result) {
+        accessToken = jwt.sign(
+          { username: existingUser.username },
+          process.env.TOKEN_SECRET,
+          {
+            algorithm: "HS256",
+            expiresIn: 3600,
+          }
+        );
+        res.send(accessToken);
+      } else {
+        return next(new Error("Your password is incorrect. Please try again."));
+      }
+    });
+  }
+};
+
+module.exports = {
+  signup: signup,
+  login: login,
+};

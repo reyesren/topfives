@@ -29,7 +29,6 @@ const Header = (props) => {
   };
 
   const closeLoginHandler = () => {
-    console.log(openLogin);
     setOpenLogin(false);
   };
 

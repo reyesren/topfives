@@ -11,20 +11,12 @@ import {
 } from "react-bootstrap";
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
-import SuccessAccCreated from "../Auth/Signup/SuccessAccCreated";
 
 const Header = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [openSignup, setOpenSignup] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
-  const [modalReady, setModalReady] = useState(false);
-  const [successAccountCreated, setSuccessAccountCreated] = useState(false);
-
-  const successModalReadyHandler = () => {
-    setModalReady(true);
-    openSuccessCreation();
-  };
 
   const openSignupHandler = () => {
     setOpenSignup(true);
@@ -40,35 +32,13 @@ const Header = () => {
     setOpenLogin(false);
   };
 
-  const openSuccessCreation = () => {
-    setSuccessAccountCreated(true);
-  };
-  const closeSuccessCreation = () => {
-    setSuccessAccountCreated(false);
-    setModalReady(false);
-  };
-
   const signupModal = openSignup ? (
-    <Signup
-      show={openSignup}
-      closeHandler={closeSignupHandler}
-      successModalReadyHandler={successModalReadyHandler}
-    ></Signup>
+    <Signup show={openSignup} closeHandler={closeSignupHandler}></Signup>
   ) : null;
-  // const loginModal = openLogin ? <Login></Login> : null;
   const loginModal = openLogin ? (
     <Login show={openLogin} closeHandler={closeLoginHandler}></Login>
   ) : null;
-  const successAccCreatedModal = modalReady ? (
-    <SuccessAccCreated
-      show={successAccountCreated}
-      closeHandler={closeSuccessCreation}
-    ></SuccessAccCreated>
-  ) : null;
 
-  useEffect(() => {
-    setModalReady(false);
-  }, []);
   return (
     <>
       <Navbar expand="lg">
@@ -132,7 +102,6 @@ const Header = () => {
       </Navbar>
       {signupModal}
       {loginModal}
-      {successAccCreatedModal}
     </>
   );
 };

@@ -19,15 +19,3 @@ const App = (props) => {
 };
 
 export default App;
-// <div className="App">
-//   <header className="App-header">
-//     <Button variant="success" onClick={openSignupHandler}>
-//       Create a New Account
-//     </Button>
-//     <Button variant="success" onClick={openLoginHandler}>
-//       Login
-//     </Button>
-//     {signupModal}
-//     {loginModal}
-//   </header>
-// </div>

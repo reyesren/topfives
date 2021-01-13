@@ -1,2 +1,2 @@
-export { signup, signupGoBackToForm, signupStart } from "./signup";
-export { login, loginGoBackToForm, loginStart } from "./login";
+export { signup, signupGoBackToForm, signupStart, signupFail } from "./signup";
+export { login, loginGoBackToForm, loginStart, loginFail } from "./login";

@@ -8,6 +8,7 @@ import * as actions from "../../../store/actions/index";
 
 const Login = (props) => {
   const [errors, setErrors] = useState({});
+  const [openError, setOpenError] = useState(true);
   const [loginForm, setLoginForm] = useState({
     username: {
       label: "Username",
@@ -97,6 +98,9 @@ const Login = (props) => {
     }
     setErrors(inputErrors);
     setLoginForm(newConfig);
+    if (!valid) {
+      props.onLoginFail();
+    }
     return valid;
   };
 
@@ -147,7 +151,8 @@ const Login = (props) => {
       <DisplayModal
         title={"Error!"}
         body={errorBody}
-        closeHandler={props.closeLoginHandler}
+        closeHandler={() => setOpenError(false)}
+        show={openError}
         styles={styles}
       ></DisplayModal>
     );
@@ -169,6 +174,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.login(username, password)),
     onLoginGoBackToForm: () => dispatch(actions.loginGoBackToForm()),
     onLoginStart: () => dispatch(actions.loginStart()),
+    onLoginFail: () => dispatch(actions.loginFail()),
   };
 };
 

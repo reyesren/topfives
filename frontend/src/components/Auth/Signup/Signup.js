@@ -9,6 +9,8 @@ import * as actions from "../../../store/actions/index";
 
 const Signup = (props) => {
   const formTitle = "Create a New Account";
+  const [openSuccess, setOpenSuccess] = useState(true);
+  const [openError, setOpenError] = useState(true);
   const [errors, setErrors] = useState({});
   const [inputConfigs, setInputConfigs] = useState({
     fName: {
@@ -218,6 +220,9 @@ const Signup = (props) => {
 
     setErrors(inputErrors);
     setInputConfigs(newConfig);
+    if (!valid) {
+      props.onSignupFail();
+    }
     return valid;
   };
 
@@ -238,10 +243,6 @@ const Signup = (props) => {
     }
   };
 
-  // const goBackToFormHandler = () => {
-  //   setSubmitError(false);
-  // };
-
   let modalBody = (
     <AuthForm
       show={props.show}
@@ -255,6 +256,11 @@ const Signup = (props) => {
       submit={submitHandler}
     ></AuthForm>
   );
+
+  const successfulSignupHandler = () => {
+    setOpenSuccess(false);
+    props.onLogin(inputConfigs.username.value, inputConfigs.password.value);
+  };
 
   if (props.loading && !props.readyToSubmit) {
     modalBody = <Spinner animation="border" role="status"></Spinner>;
@@ -281,21 +287,19 @@ const Signup = (props) => {
       <DisplayModal
         title={"Error!"}
         body={errorBody}
-        closeHandler={props.closeSignupHandler}
+        closeHandler={() => setOpenError(false)}
         styles={styles}
+        show={openError}
       ></DisplayModal>
     );
   } else if (props.readyToSubmit) {
-    modalBody = <SuccessAccCreated></SuccessAccCreated>;
+    modalBody = (
+      <SuccessAccCreated
+        show={openSuccess}
+        closeHandler={successfulSignupHandler}
+      ></SuccessAccCreated>
+    );
   }
-  // else if (submitting) {
-  //   modalBody = (
-  //     <SuccessAccCreated
-  //       show={successAccountCreated}
-  //       closeHandler={closeSuccessCreation}
-  //     ></SuccessAccCreated>
-  //   );
-  // }
 
   return modalBody;
 };
@@ -330,8 +334,11 @@ const mapDispatchToProps = (dispatch) => {
           lists
         )
       ),
+    onLogin: (username, password) =>
+      dispatch(actions.login(username, password)),
     onSignupGoBackToForm: () => dispatch(actions.signupGoBackToForm()),
     onSignupStart: () => dispatch(actions.signupStart()),
+    onSignupFail: () => dispatch(actions.signupFail()),
   };
 };
 

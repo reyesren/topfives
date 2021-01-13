@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import {
   Nav,
   Navbar,
@@ -11,10 +11,9 @@ import {
 } from "react-bootstrap";
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
+import { connect } from "react-redux";
 
-const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
+const Header = (props) => {
   const [openSignup, setOpenSignup] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
 
@@ -38,9 +37,8 @@ const Header = () => {
   const loginModal = openLogin ? (
     <Login show={openLogin} closeHandler={closeLoginHandler}></Login>
   ) : null;
-
   return (
-    <>
+    <Fragment>
       <Navbar expand="lg">
         <Navbar.Brand href="#home">
           <Image
@@ -50,7 +48,7 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {loggedIn ? (
+          {props.loggedIn ? (
             <Nav className="nav-loggedIn">
               <Nav.Link id="nav-link__create" href="#create">
                 <i class="fas fa-plus"></i> Create List
@@ -102,8 +100,14 @@ const Header = () => {
       </Navbar>
       {signupModal}
       {loginModal}
-    </>
+    </Fragment>
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.login.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps)(Header);

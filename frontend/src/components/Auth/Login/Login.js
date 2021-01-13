@@ -109,6 +109,7 @@ const Login = (props) => {
     props.onLoginStart();
     if (validateInputs()) {
       props.onLogin(loginForm.username.value, loginForm.password.value);
+      props.closeHandler();
     }
   };
 

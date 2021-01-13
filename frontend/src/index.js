@@ -8,8 +8,7 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import "./styles/styles.scss";
-import signupReducer from "./store/reducers/signup";
-import loginReducer from "./store/reducers/login";
+import authReducer from "./store/reducers/auth";
 import reportWebVitals from "./reportWebVitals";
 
 const composeEnhancers =
@@ -18,8 +17,7 @@ const composeEnhancers =
     : null || compose;
 
 const rootReducer = combineReducers({
-  signup: signupReducer,
-  login: loginReducer,
+  auth: authReducer,
 });
 
 const store = createStore(

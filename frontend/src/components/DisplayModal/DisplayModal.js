@@ -8,6 +8,7 @@ const DisplayModal = (props) => {
   //   // props.closeHandler();
   //   // setShow(false);
   // };
+  // console.log(props.show);
   return (
     <Modal
       className="my-modal"

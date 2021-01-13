@@ -221,7 +221,7 @@ const Signup = (props) => {
     setErrors(inputErrors);
     setInputConfigs(newConfig);
     if (!valid) {
-      props.onSignupFail();
+      props.onAuthFail();
     }
     return valid;
   };
@@ -229,13 +229,14 @@ const Signup = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    props.onSignupStart();
+    props.onAuthStart();
     if (validateInputs()) {
       props.onSignup(
-        inputConfigs.fName.value,
-        inputConfigs.lName.value,
         inputConfigs.username.value,
         inputConfigs.password.value,
+        true,
+        inputConfigs.fName.value,
+        inputConfigs.lName.value,
         inputConfigs.email.value,
         [],
         []
@@ -259,7 +260,11 @@ const Signup = (props) => {
 
   const successfulSignupHandler = () => {
     setOpenSuccess(false);
-    props.onLogin(inputConfigs.username.value, inputConfigs.password.value);
+    props.onLogin(
+      inputConfigs.username.value,
+      inputConfigs.password.value,
+      false
+    );
   };
 
   if (props.loading && !props.readyToSubmit) {
@@ -276,7 +281,7 @@ const Signup = (props) => {
           className="float-right signup-error-button"
           variant="primary"
           type="submit"
-          onClick={props.onSignupGoBackToForm}
+          onClick={props.onAuthGoBackToForm}
         >
           Go back
         </Button>
@@ -306,39 +311,41 @@ const Signup = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.signup.loading,
-    readyToSubmit: state.signup.readyToSubmit,
-    submitError: state.signup.submitError,
+    loading: state.auth.loading,
+    readyToSubmit: state.auth.readyToSubmit,
+    submitError: state.auth.submitError,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSignup: (
-      firstName,
-      lastName,
       username,
       password,
+      isSignup,
+      firstName,
+      lastName,
       email,
       subscriptions,
       lists
     ) =>
       dispatch(
-        actions.signup(
-          firstName,
-          lastName,
+        actions.auth(
           username,
           password,
+          isSignup,
+          firstName,
+          lastName,
           email,
           subscriptions,
           lists
         )
       ),
-    onLogin: (username, password) =>
-      dispatch(actions.login(username, password)),
-    onSignupGoBackToForm: () => dispatch(actions.signupGoBackToForm()),
-    onSignupStart: () => dispatch(actions.signupStart()),
-    onSignupFail: () => dispatch(actions.signupFail()),
+    onLogin: (username, password, isSignup) =>
+      dispatch(actions.auth(username, password, isSignup)),
+    onAuthGoBackToForm: () => dispatch(actions.authGoBackToForm()),
+    onAuthStart: () => dispatch(actions.authStart()),
+    onAuthFail: () => dispatch(actions.authFail()),
   };
 };
 

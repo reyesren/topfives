@@ -24,10 +24,12 @@ const Header = (props) => {
     setOpenSignup(false);
   };
   const openLoginHandler = () => {
+    console.log(openLogin);
     setOpenLogin(true);
   };
 
   const closeLoginHandler = () => {
+    console.log(openLogin);
     setOpenLogin(false);
   };
 
@@ -106,7 +108,7 @@ const Header = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.login.loggedIn,
+    loggedIn: state.auth.loggedIn,
   };
 };
 

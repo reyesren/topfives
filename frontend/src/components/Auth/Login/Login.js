@@ -108,8 +108,12 @@ const Login = (props) => {
     event.preventDefault();
     props.onLoginStart();
     if (validateInputs()) {
-      props.onLogin(loginForm.username.value, loginForm.password.value);
-      props.closeHandler();
+      props.onLogin(
+        loginForm.username.value,
+        loginForm.password.value,
+        false,
+        props.closeHandler
+      );
     }
   };
 
@@ -164,18 +168,18 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.login.loading,
-    submitError: state.login.submitError,
+    loading: state.auth.loading,
+    submitError: state.auth.submitError,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLogin: (username, password) =>
-      dispatch(actions.login(username, password)),
-    onLoginGoBackToForm: () => dispatch(actions.loginGoBackToForm()),
-    onLoginStart: () => dispatch(actions.loginStart()),
-    onLoginFail: () => dispatch(actions.loginFail()),
+    onLogin: (username, password, isSignup, closeHandler) =>
+      dispatch(actions.auth(username, password, isSignup, closeHandler)),
+    onLoginGoBackToForm: () => dispatch(actions.authGoBackToForm()),
+    onLoginStart: () => dispatch(actions.authStart()),
+    onLoginFail: () => dispatch(actions.authFail()),
   };
 };
 

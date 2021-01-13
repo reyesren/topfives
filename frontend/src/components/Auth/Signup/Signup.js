@@ -4,7 +4,7 @@ import Spinner from "react-bootstrap/Spinner";
 import SuccessAccCreated from "./SuccessAccCreated";
 import DisplayModal from "../../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions/index";
 
 const Signup = (props) => {
@@ -62,6 +62,56 @@ const Signup = (props) => {
       isValid: true,
     },
   });
+
+  const dispatch = useDispatch();
+
+  const loading = useSelector((state) => {
+    return state.auth.loading;
+  });
+  const readyToSubmit = useSelector((state) => {
+    return state.auth.readyToSubmit;
+  });
+  const submitError = useSelector((state) => {
+    return state.auth.submitError;
+  });
+
+  const onSignup = (
+    username,
+    password,
+    isSignup,
+    closeHandler,
+    firstName,
+    lastName,
+    email,
+    subscriptions,
+    lists
+  ) => {
+    dispatch(
+      actions.auth(
+        username,
+        password,
+        isSignup,
+        closeHandler,
+        firstName,
+        lastName,
+        email,
+        subscriptions,
+        lists
+      )
+    );
+  };
+  const onLogin = (username, password, isSignup) => {
+    dispatch(actions.auth(username, password, isSignup));
+  };
+  const onAuthGoBackToForm = () => {
+    dispatch(actions.authGoBackToForm());
+  };
+  const onAuthStart = () => {
+    dispatch(actions.authStart());
+  };
+  const onAuthFail = () => {
+    dispatch(actions.authFail());
+  };
 
   const validateEmail = (email) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -221,7 +271,7 @@ const Signup = (props) => {
     setErrors(inputErrors);
     setInputConfigs(newConfig);
     if (!valid) {
-      props.onAuthFail();
+      onAuthFail();
     }
     return valid;
   };
@@ -229,9 +279,9 @@ const Signup = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    props.onAuthStart();
+    onAuthStart();
     if (validateInputs()) {
-      props.onSignup(
+      onSignup(
         inputConfigs.username.value,
         inputConfigs.password.value,
         true,
@@ -261,28 +311,24 @@ const Signup = (props) => {
 
   const successfulSignupHandler = () => {
     setOpenSuccess(false);
-    props.onLogin(
-      inputConfigs.username.value,
-      inputConfigs.password.value,
-      false
-    );
+    onLogin(inputConfigs.username.value, inputConfigs.password.value, false);
   };
 
-  if (props.loading && !props.readyToSubmit) {
+  if (loading && !readyToSubmit) {
     modalBody = <Spinner animation="border" role="status"></Spinner>;
-  } else if (props.submitError) {
+  } else if (submitError) {
     const styles = {
       title: "signup-error-title",
       body: "signup-error-body",
     };
     const errorBody = (
       <div>
-        <div>{props.submitError}</div>
+        <div>{submitError}</div>
         <Button
           className="float-right signup-error-button"
           variant="primary"
           type="submit"
-          onClick={props.onAuthGoBackToForm}
+          onClick={onAuthGoBackToForm}
         >
           Go back
         </Button>
@@ -298,7 +344,7 @@ const Signup = (props) => {
         show={openError}
       ></DisplayModal>
     );
-  } else if (props.readyToSubmit) {
+  } else if (readyToSubmit) {
     modalBody = (
       <SuccessAccCreated
         show={openSuccess}
@@ -310,46 +356,4 @@ const Signup = (props) => {
   return modalBody;
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loading: state.auth.loading,
-    readyToSubmit: state.auth.readyToSubmit,
-    submitError: state.auth.submitError,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSignup: (
-      username,
-      password,
-      isSignup,
-      closeHandler,
-      firstName,
-      lastName,
-      email,
-      subscriptions,
-      lists
-    ) =>
-      dispatch(
-        actions.auth(
-          username,
-          password,
-          isSignup,
-          closeHandler,
-          firstName,
-          lastName,
-          email,
-          subscriptions,
-          lists
-        )
-      ),
-    onLogin: (username, password, isSignup) =>
-      dispatch(actions.auth(username, password, isSignup)),
-    onAuthGoBackToForm: () => dispatch(actions.authGoBackToForm()),
-    onAuthStart: () => dispatch(actions.authStart()),
-    onAuthFail: () => dispatch(actions.authFail()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default Signup;

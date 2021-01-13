@@ -3,7 +3,7 @@ import AuthForm from "../../AuthForm/AuthForm";
 import Spinner from "react-bootstrap/Spinner";
 import DisplayModal from "../../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions/index";
 
 const Login = (props) => {
@@ -28,6 +28,28 @@ const Login = (props) => {
     },
   });
   const formTitle = "Login To Existing Account";
+
+  const dispatch = useDispatch();
+
+  const loading = useSelector((state) => {
+    return state.auth.loading;
+  });
+  const submitError = useSelector((state) => {
+    return state.auth.submitError;
+  });
+
+  const onLogin = (username, password, isSignup, closeHandler) => {
+    dispatch(actions.auth(username, password, isSignup, closeHandler));
+  };
+  const onLoginGoBackToForm = () => {
+    dispatch(actions.authGoBackToForm());
+  };
+  const onLoginStart = () => {
+    dispatch(actions.authStart());
+  };
+  const onLoginFail = () => {
+    dispatch(actions.authFail());
+  };
 
   const inputChangedHandler = (event, inputEl) => {
     const updatedLoginForm = {
@@ -99,16 +121,16 @@ const Login = (props) => {
     setErrors(inputErrors);
     setLoginForm(newConfig);
     if (!valid) {
-      props.onLoginFail();
+      onLoginFail();
     }
     return valid;
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLoginStart();
+    onLoginStart();
     if (validateInputs()) {
-      props.onLogin(
+      onLogin(
         loginForm.username.value,
         loginForm.password.value,
         false,
@@ -130,22 +152,21 @@ const Login = (props) => {
       submit={submitHandler}
     />
   );
-  if (props.loading) {
+  if (loading) {
     modalBody = <Spinner animation="border" role="status"></Spinner>;
-  } else if (props.submitError) {
-    console.log(props.submitError);
+  } else if (submitError) {
     const styles = {
       title: "signup-error-title",
       body: "signup-error-body",
     };
     const errorBody = (
       <div>
-        <div>{props.submitError}</div>
+        <div>{submitError}</div>
         <Button
           className="float-right signup-error-button"
           variant="primary"
           type="submit"
-          onClick={props.onLoginGoBackToForm}
+          onClick={onLoginGoBackToForm}
         >
           Go back
         </Button>
@@ -166,21 +187,4 @@ const Login = (props) => {
   return modalBody;
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loading: state.auth.loading,
-    submitError: state.auth.submitError,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onLogin: (username, password, isSignup, closeHandler) =>
-      dispatch(actions.auth(username, password, isSignup, closeHandler)),
-    onLoginGoBackToForm: () => dispatch(actions.authGoBackToForm()),
-    onLoginStart: () => dispatch(actions.authStart()),
-    onLoginFail: () => dispatch(actions.authFail()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

@@ -42,7 +42,7 @@ const Header = (props) => {
   return (
     <Fragment>
       <Navbar expand="lg">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <Image
             className="nav-home__image"
             src="/images/logo-title.png"

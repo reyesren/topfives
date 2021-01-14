@@ -2,6 +2,7 @@ nav {
   background-color: #9fb3c8;
   max-width: 100vw;
   max-height: 70px;
+  opacity: 0.85;
 }
 
 .nav-loggedIn {
@@ -28,6 +29,8 @@ nav a {
 
 .dropdown-item:hover {
   background-color: #627d98;
+  // background-color: #f4af1b;
+  // background-color: #9acd32;
 }
 
 .nav-link {

@@ -1,14 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Modal from "react-bootstrap/Modal";
 
 const DisplayModal = (props) => {
-  // const handleClose = () => {
-  //   // console.log(" I");
-  //   // props.closeHandler();
-  //   // setShow(false);
-  // };
-  // console.log(props.show);
   return (
     <Modal
       className="my-modal"

@@ -11,12 +11,14 @@ import {
 } from "react-bootstrap";
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
+import Logout from "../Auth/Logout/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/index";
 
 const Header = (props) => {
   const [openSignup, setOpenSignup] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
+  const [openLogout, setOpenLogout] = useState(false);
 
   const openSignupHandler = () => {
     setOpenSignup(true);
@@ -24,13 +26,24 @@ const Header = (props) => {
   const closeSignupHandler = () => {
     setOpenSignup(false);
   };
+
   const openLoginHandler = () => {
-    console.log(openLogin);
     setOpenLogin(true);
   };
-
   const closeLoginHandler = () => {
     setOpenLogin(false);
+  };
+
+  const openLogoutHandler = () => {
+    setOpenLogout(true);
+  };
+  const closeLogoutHandler = (event, toLogout) => {
+    if (toLogout) {
+      setOpenLogout(false);
+      onAuthLogout();
+    } else {
+      setOpenLogout(false);
+    }
   };
 
   const dispatch = useDispatch();
@@ -49,6 +62,10 @@ const Header = (props) => {
   const loginModal = openLogin ? (
     <Login show={openLogin} closeHandler={closeLoginHandler}></Login>
   ) : null;
+  const logoutModal = openLogout ? (
+    <Logout show={openLogout} closeHandler={closeLogoutHandler}></Logout>
+  ) : null;
+
   return (
     <Fragment>
       <Navbar expand="lg">
@@ -93,7 +110,10 @@ const Header = (props) => {
                   Subscriber List
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">Settings</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4" onClick={onAuthLogout}>
+                <NavDropdown.Item
+                  href="#action/3.4"
+                  onClick={openLogoutHandler}
+                >
                   Logout
                 </NavDropdown.Item>
               </NavDropdown>
@@ -114,6 +134,7 @@ const Header = (props) => {
       </Navbar>
       {signupModal}
       {loginModal}
+      {logoutModal}
     </Fragment>
   );
 };

@@ -45,6 +45,16 @@ const authGoBackToForm = (state, action) => {
   };
 };
 
+const authLogout = (state, action) => {
+  return {
+    ...state,
+    loading: false,
+    readyToSubmit: false,
+    submitError: "",
+    loggedIn: false,
+  };
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
@@ -55,6 +65,8 @@ const reducer = (state = initialState, action) => {
       return authError(state, action);
     case actionTypes.AUTH_GO_BACK:
       return authGoBackToForm(state, action);
+    case actionTypes.AUTH_LOGOUT:
+      return authLogout(state, action);
     default:
       return state;
   }

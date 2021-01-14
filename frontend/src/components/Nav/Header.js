@@ -11,7 +11,8 @@ import {
 } from "react-bootstrap";
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../store/actions/index";
 
 const Header = (props) => {
   const [openSignup, setOpenSignup] = useState(false);
@@ -32,6 +33,16 @@ const Header = (props) => {
     setOpenLogin(false);
   };
 
+  const dispatch = useDispatch();
+
+  const loggedIn = useSelector((state) => {
+    return state.auth.loggedIn;
+  });
+
+  const onAuthLogout = () => {
+    dispatch(actions.logout());
+  };
+
   const signupModal = openSignup ? (
     <Signup show={openSignup} closeHandler={closeSignupHandler}></Signup>
   ) : null;
@@ -49,7 +60,7 @@ const Header = (props) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {props.loggedIn ? (
+          {loggedIn ? (
             <Nav className="nav-loggedIn">
               <Nav.Link id="nav-link__create" href="#create">
                 <i class="fas fa-plus"></i> Create List
@@ -82,7 +93,9 @@ const Header = (props) => {
                   Subscriber List
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">Settings</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.4" onClick={onAuthLogout}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           ) : (
@@ -105,10 +118,4 @@ const Header = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.auth.loggedIn,
-  };
-};
-
-export default connect(mapStateToProps)(Header);
+export default Header;

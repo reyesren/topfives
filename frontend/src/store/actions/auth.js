@@ -27,6 +27,24 @@ export const authGoBackToForm = () => {
   };
 };
 
+export const logout = () => {
+  localStorage.removeItem("token");
+  return {
+    type: actionTypes.AUTH_LOGOUT,
+  };
+};
+
+export const authCheckIfLoggedIn = () => {
+  return (dispatch) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      dispatch(logout());
+    } else {
+      dispatch(authSuccess(false));
+    }
+  };
+};
+
 export const auth = (
   username,
   password,

@@ -1,4 +1,134 @@
-nav {
+@import url("https://fonts.googleapis.com/css2?family=B612:ital,wght@1,700&display=swap");
+
+.flex-column.nav {
+  background-color: #1f2933;
+  width: 220px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  opacity: 0.85;
+}
+
+.nav-home__image {
+  height: 60px;
+}
+
+.nav-link {
+  font-size: 20px;
+  color: white;
+  text-align: right;
+  font-family: "B612", sans-serif;
+  letter-spacing: 2px;
+  width: 100%;
+  padding-left: 0;
+  font-weight: bold;
+}
+
+.nav-link.nav-logo {
+  margin-bottom: 150px;
+}
+
+.nav-profile {
+  margin-top: auto;
+  padding: 0;
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  background-color: #627d98;
+}
+
+.nav-profile.nav-item {
+  font-size: 20px;
+  color: white;
+  text-align: right;
+  font-family: "B612", sans-serif;
+  letter-spacing: 2px;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#profile-logout__btn:hover {
+  color: #0056b3;
+}
+
+#nav-profile__settings {
+  padding-right: 0px;
+}
+
+.nav-profile button {
+  display: flex;
+  background-color: #627d98;
+  outline: none;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  margin-top: auto;
+}
+
+.nav-profile__pic {
+  height: 50px;
+  width: 50px;
+}
+.nav-profile__name {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  padding-top: 10px;
+}
+
+.nav-profile__name p {
+  margin-bottom: 0;
+  font-size: 14px;
+  text-align: right;
+}
+
+.logged-out__nav-container {
+}
+
+.logged-out__options {
+  font-size: 20px;
+  color: white;
+  text-align: right;
+  font-family: "Courier Prime";
+  letter-spacing: 2px;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#logged-out__options-1:hover {
+  color: #0056b3;
+}
+#logged-out__options-2:hover {
+  color: #0056b3;
+}
+
+#nav-link__create {
+  height: auto;
+  background-color: #9acd32;
+  border-radius: 2em;
+  margin-right: auto;
+  font-weight: bold;
+  font-size: 20px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: 16px;
+  margin-top: 20px;
+}
+
+/* nav {
   background-color: #9fb3c8;
   max-width: 100vw;
   max-height: 70px;
@@ -72,3 +202,4 @@ nav #userOrList2 {
   border-radius: 0px;
   background-color: #d9e2ec;
 }
+ */

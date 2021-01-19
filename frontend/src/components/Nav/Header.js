@@ -1,14 +1,5 @@
 import React, { useState, Fragment } from "react";
-import {
-  Nav,
-  Navbar,
-  NavDropdown,
-  Image,
-  Form,
-  InputGroup,
-  FormControl,
-  Button,
-} from "react-bootstrap";
+import { Nav, Image, Collapse } from "react-bootstrap";
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
 import Logout from "../Auth/Logout/Logout";
@@ -19,6 +10,7 @@ const Header = (props) => {
   const [openSignup, setOpenSignup] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
+  const [expand, setExpand] = useState(false);
 
   const openSignupHandler = () => {
     setOpenSignup(true);
@@ -55,6 +47,9 @@ const Header = (props) => {
   const onAuthLogout = () => {
     dispatch(actions.logout());
   };
+  const expandHandler = () => {
+    setExpand((prevState) => !prevState);
+  };
 
   const signupModal = openSignup ? (
     <Signup show={openSignup} closeHandler={closeSignupHandler}></Signup>
@@ -68,70 +63,71 @@ const Header = (props) => {
 
   return (
     <Fragment>
-      <Navbar expand="lg">
-        <Navbar.Brand href="/">
+      <Nav defaultActiveKey="/home" className="flex-column">
+        <Nav.Link className="nav-logo" href="/home">
           <Image
             className="nav-home__image"
             src="/images/logo-title.png"
           ></Image>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          {loggedIn ? (
-            <Nav className="nav-loggedIn">
-              <Nav.Link id="nav-link__create" href="#create">
-                <i class="fas fa-plus"></i> Create List
-              </Nav.Link>
-              <Form inline>
-                <InputGroup>
-                  <FormControl
-                    type="text"
-                    placeholder="Search"
-                    className="nav-search"
-                  />
-                  <InputGroup.Append>
-                    <Button className="nav-search__btn" variant="light">
-                      <i class="fas fa-search"></i>
-                    </Button>
-                  </InputGroup.Append>
-                  <InputGroup.Append>
-                    <Form.Group controlId="userOrList2">
-                      <Form.Control as="select" custom>
-                        <option>User</option>
-                        <option>List</option>
-                      </Form.Control>
-                    </Form.Group>
-                  </InputGroup.Append>
-                </InputGroup>
-              </Form>
-              <NavDropdown title="Cha1nman" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Subscriber List
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Settings</NavDropdown.Item>
-                <NavDropdown.Item
-                  href="#action/3.4"
-                  onClick={openLogoutHandler}
-                >
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          ) : (
-            <Nav className="nav-loggedOut">
-              <NavDropdown title="Account" id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={openLoginHandler}>
-                  Log In
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={openSignupHandler}>
-                  Sign Up
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          )}
-        </Navbar.Collapse>
-      </Navbar>
+        </Nav.Link>
+        {loggedIn ? (
+          <>
+            <Nav.Link eventKey="link-1">Home</Nav.Link>
+            <Nav.Link eventKey="link-2">Subscribers</Nav.Link>
+            <Nav.Link eventKey="link-3">Notifications</Nav.Link>
+            <Nav.Link eventKey="link-4">Profile</Nav.Link>
+            <Nav.Link id="nav-link__create" eventKey="link-5">
+              <i class="fas fa-plus"></i> Create List
+            </Nav.Link>
+            <Nav.Item className={`nav-profile`}>
+              <Collapse in={expand}>
+                <Nav.Item className={`nav-profile__auth`}>
+                  <Nav.Link id="nav-profile__settings" eventKey="link-7">
+                    Settings
+                  </Nav.Link>
+                  <Nav.Item
+                    id="profile-logout__btn"
+                    onClick={openLogoutHandler}
+                  >
+                    Log Out
+                  </Nav.Item>
+                </Nav.Item>
+              </Collapse>
+              <button onClick={expandHandler}>
+                <span>
+                  <Image
+                    src="https://codepen-pictures.s3.us-east-2.amazonaws.com/Expanded+Cards/michael+henry.png"
+                    alt="profile icon"
+                    className="nav-profile__pic"
+                  ></Image>
+                </span>
+                <span className="nav-profile__name">
+                  <p>Cha1nman</p>
+                  <p>Michael Henry</p>
+                </span>
+              </button>
+            </Nav.Item>
+          </>
+        ) : (
+          <Nav.Item className="logged-out__nav-container">
+            <Nav.Link>Home</Nav.Link>
+            <Nav.Item
+              className="logged-out__options"
+              id="logged-out__options-1"
+              onClick={openLoginHandler}
+            >
+              Login
+            </Nav.Item>
+            <Nav.Item
+              className="logged-out__options"
+              id="logged-out__options-2"
+              onClick={openSignupHandler}
+            >
+              Signup
+            </Nav.Item>
+          </Nav.Item>
+        )}
+      </Nav>
       {signupModal}
       {loginModal}
       {logoutModal}

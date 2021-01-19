@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import SuccessAccCreated from "./components/Auth/Signup/SuccessAccCreated";
-import DashboardPage from "./pages/DashboardPage";
-import Header from "./components/Nav/Header";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";

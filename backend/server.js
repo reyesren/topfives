@@ -2,6 +2,7 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
+const listRoutes = require("./routes/listRoutes");
 const mongoose = require("mongoose");
 const db = require("./config/db");
 const dotenv = require("dotenv");
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/lists", listRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

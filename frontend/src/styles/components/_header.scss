@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=B612:ital,wght@1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap");
 
 .flex-column.nav {
   background-color: #1f2933;
@@ -19,11 +19,10 @@
   font-size: 20px;
   color: white;
   text-align: right;
-  font-family: "B612", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   letter-spacing: 2px;
   width: 100%;
   padding-left: 0;
-  font-weight: bold;
 }
 
 .nav-link.nav-logo {
@@ -43,7 +42,7 @@
   font-size: 20px;
   color: white;
   text-align: right;
-  font-family: "B612", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   letter-spacing: 2px;
   width: 100%;
   padding-left: 0;
@@ -51,7 +50,6 @@
   padding-top: 8px;
   padding-bottom: 8px;
   cursor: pointer;
-  font-weight: bold;
 }
 
 #profile-logout__btn:hover {
@@ -97,7 +95,7 @@
   font-size: 20px;
   color: white;
   text-align: right;
-  font-family: "B612", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   letter-spacing: 2px;
   width: 100%;
   padding-left: 0;
@@ -105,7 +103,6 @@
   padding-top: 8px;
   padding-bottom: 8px;
   cursor: pointer;
-  font-weight: bold;
 }
 
 #logged-out__options-1:hover {
@@ -120,7 +117,6 @@
   background-color: #9acd32;
   border-radius: 2em;
   margin-right: auto;
-  font-weight: bold;
   font-size: 20px;
   width: 80%;
   margin-left: auto;

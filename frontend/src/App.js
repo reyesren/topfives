@@ -7,6 +7,7 @@ import "./App.css";
 import DashboardPage from "./pages/DashboardPage";
 import { useDispatch } from "react-redux";
 import * as actions from "./store/actions/index";
+import UserPage from "./pages/UserPage";
 
 // adding this comment to be able to commit Develop branch
 const App = (props) => {
@@ -23,6 +24,9 @@ const App = (props) => {
       <Header />
       <Route path="/" exact>
         <DashboardPage />
+      </Route>
+      <Route path="/userpage">
+        <UserPage />
       </Route>
     </Router>
   );

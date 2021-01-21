@@ -1,9 +1,13 @@
 @import "./base/settings";
 @import "./base/base";
 
-@import "./components/displayModal";
 @import "./pages/dashboardPage";
+@import "./pages/userPage";
+
+@import "./components/displayModal";
 @import "./components/successModal";
 @import "./components/header";
 @import "./components/signupErrorModal";
 @import "./components/logoutModal";
+@import "./components/listItems";
+@import "./components/listItemDetails";

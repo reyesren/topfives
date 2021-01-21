@@ -85,8 +85,9 @@ const login = async (req, res, next) => {
   } else {
     bcrypt.compare(inputPassword, existingUser.password, (err, result) => {
       if (result) {
+        console.log(existingUser._id);
         accessToken = jwt.sign(
-          { username: existingUser.username },
+          { id: existingUser._id },
           process.env.TOKEN_SECRET,
           {
             algorithm: "HS256",

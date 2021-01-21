@@ -77,7 +77,7 @@ const Header = (props) => {
             <Nav.Link eventKey="link-3">Notifications</Nav.Link>
             <Nav.Link eventKey="link-4">Profile</Nav.Link>
             <Nav.Link id="nav-link__create" eventKey="link-5">
-              <i class="fas fa-plus"></i> Create List
+              <i className="fas fa-plus"></i> Create List
             </Nav.Link>
             <Nav.Item className={`nav-profile`}>
               <Collapse in={expand}>

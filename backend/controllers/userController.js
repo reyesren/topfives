@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Image = require("../models/image");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
@@ -13,11 +14,18 @@ const signup = async (req, res, next) => {
         lastName,
         username,
         email,
-        bio,
-        subscriptions,
-        lists,
-        image,
+        bio = "",
+        subscriptions = [],
+        lists = [],
       } = req.body;
+
+      // create default image
+      let image;
+      try {
+        image = await Image.findById("6009ede342d4b9bd664dfa20");
+      } catch (err) {
+        return next(new Error("Sorry, something went wrong!"));
+      }
       const createdUser = new User({
         firstName,
         lastName,
@@ -48,7 +56,6 @@ const signup = async (req, res, next) => {
       } catch (err) {
         return next(new Error("Something went wrong!"));
       }
-      // console.log(`second existing user: ${existingUser}`);
       if (existingUser) {
         console.log(existingUser.username);
         return next(
@@ -61,6 +68,7 @@ const signup = async (req, res, next) => {
       } catch (err) {
         return next(err);
       }
+      console.log(createdUser);
 
       res.json(createdUser);
     });
@@ -102,7 +110,21 @@ const login = async (req, res, next) => {
   }
 };
 
+const getUser = async (req, res, next) => {
+  let user;
+  try {
+    user = await User.findById(
+      req.params.id,
+      "firstName lastName username email lists subscribers bio image"
+    ).populate("image");
+  } catch (err) {
+    return next(new Error("Sorry, something went wrong!"));
+  }
+  res.json(user);
+};
+
 module.exports = {
   signup: signup,
   login: login,
+  getUser: getUser,
 };

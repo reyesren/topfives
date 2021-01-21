@@ -80,17 +80,13 @@ export const auth = (
         dispatch(authSuccess(isSignup));
         if (!isSignup && closeHandler) {
           localStorage.setItem("token", response.data);
-          console.log("I GET INSDIE HERE");
           console.log(closeHandler);
           closeHandler();
-          console.log("I GET HERE TOO");
         } else if (!isSignup && !closeHandler) {
           localStorage.setItem("token", response.data);
         }
       })
       .catch((err) => {
-        console.log("ERR BLOCK");
-        console.log(isSignup);
         dispatch(authFail(err.response.data.message));
       });
   };

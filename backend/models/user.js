@@ -9,7 +9,7 @@ const userSchema = new Schema(
     lastName: { type: String, required: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
-    image: { type: String },
+    image: { type: mongoose.Schema.Types.ObjectId, ref: "Image" },
     bio: { type: String },
     lists: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
     password: { type: String, required: true },

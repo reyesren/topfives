@@ -3,6 +3,7 @@ import lists from "../data/listData";
 import { Container, Row, Col, Image, Dropdown, Button } from "react-bootstrap";
 import ListItems from "../components/ListItems";
 import ListItemDetails from "../components/ListItemDetails";
+import EditProfile from "../components/EditProfile/EditProfile";
 
 const UserPage = (props) => {
   const [selectedList, setSelectedList] = useState("Cha1nman's TopFives List");
@@ -12,6 +13,7 @@ const UserPage = (props) => {
   const [showItemDetails, setShowItemDetails] = useState(false);
   const [dropdownEnabled, setDropdownEnabled] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
 
   const onSelectHandler = (e) => {
     setDropdownEnabled(false);
@@ -38,12 +40,29 @@ const UserPage = (props) => {
     setShowFullList(true);
   };
 
+  const toggleEditProfileHandler = () => {
+    setShowEditProfile(!showEditProfile);
+  };
+
+  // const closeEditProfileHandler = () => {
+  //   setShowEditProfile(false);
+  // };
+  const editProfileModal = showEditProfile ? (
+    <EditProfile
+      show={showEditProfile}
+      closeHandler={toggleEditProfileHandler}
+    ></EditProfile>
+  ) : null;
+
   return (
     <Container className="user-page__container">
       <Row className="user-info__row">
         <Col id="user-info__col-1" lg={6}>
           <Image className="profile-picture" src="/images/michael.jpeg"></Image>
-          <Button className="edit-profile__btn">
+          <Button
+            className="edit-profile__btn"
+            onClick={toggleEditProfileHandler}
+          >
             <h3>Edit Profile</h3>
           </Button>
         </Col>
@@ -122,6 +141,7 @@ const UserPage = (props) => {
           )}
         </Row>
       </Row>
+      {editProfileModal}
     </Container>
   );
 };

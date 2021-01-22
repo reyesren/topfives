@@ -39,6 +39,7 @@ const AuthForm = (props) => {
       <Button className="float-right" variant="success" type="submit">
         {props.type === "login" && "Log In"}
         {props.type === "signup" && "Sign Up"}
+        {props.type === "edit" && "Submit Changes"}
       </Button>
     </Form>
   );

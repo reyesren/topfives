@@ -29,6 +29,7 @@ export const authGoBackToForm = () => {
 
 export const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("userInfo");
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -77,13 +78,25 @@ export const auth = (
     axios
       .post(url, authData)
       .then((response) => {
-        dispatch(authSuccess(isSignup));
+        let userInfo = {
+          username: response.data.username,
+          name: response.data.name,
+          _id: response.data._id,
+        };
+        dispatch(
+          authSuccess({
+            isSignup,
+            userInfo: userInfo,
+          })
+        );
         if (!isSignup && closeHandler) {
-          localStorage.setItem("token", response.data);
+          localStorage.setItem("token", response.data.accessToken);
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
           console.log(closeHandler);
           closeHandler();
         } else if (!isSignup && !closeHandler) {
-          localStorage.setItem("token", response.data);
+          localStorage.setItem("token", response.data.accessToken);
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
         }
       })
       .catch((err) => {

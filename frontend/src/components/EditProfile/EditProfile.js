@@ -9,7 +9,7 @@ const EditProfile = (props) => {
   const [errors, setErrors] = useState({});
   const [editFields, setEditFields] = useState({
     fName: {
-      label: "Full Name",
+      label: "First Name",
       placeholder: "First Name",
       type: "",
       value: "",
@@ -17,7 +17,7 @@ const EditProfile = (props) => {
       isValid: true,
     },
     lName: {
-      label: "",
+      label: "Last Name",
       placeholder: "Last Name",
       type: "",
       value: "",
@@ -27,7 +27,8 @@ const EditProfile = (props) => {
     bio: {
       label: "Bio",
       placeholder: "Enter password",
-      type: "password",
+      type: "text",
+      as: "textarea",
       value: "",
       errorMsg: "Please provide a password.",
       isValid: true,

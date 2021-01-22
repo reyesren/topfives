@@ -1,7 +1,6 @@
 import React from "react";
 import DisplayModal from "../DisplayModal/DisplayModal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Button, Container, Form } from "react-bootstrap";
 
 const AuthForm = (props) => {
   const formElementsArray = [];
@@ -24,6 +23,8 @@ const AuthForm = (props) => {
           required
           value={formEl.config.value}
           onChange={(event) => props.changed(event, formEl.id)}
+          as={formEl.config.as}
+          rows={5}
         ></Form.Control>
         {!formEl.config.isValid ? (
           <div className="text-danger">{props.errors[formEl.id]}</div>
@@ -35,12 +36,17 @@ const AuthForm = (props) => {
 
   const formBody = (
     <Form noValidate onSubmit={props.submit}>
-      {formFields}
-      <Button className="float-right" variant="success" type="submit">
-        {props.type === "login" && "Log In"}
-        {props.type === "signup" && "Sign Up"}
-        {props.type === "edit" && "Submit Changes"}
-      </Button>
+      <Container>
+        {formFields}
+        <Button variant="danger" onClick={props.closeHandler}>
+          Cancel
+        </Button>
+        <Button className="float-right" variant="success" type="submit">
+          {props.type === "login" && "Log In"}
+          {props.type === "signup" && "Sign Up"}
+          {props.type === "edit" && "Submit Changes"}
+        </Button>
+      </Container>
     </Form>
   );
 

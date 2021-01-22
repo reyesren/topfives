@@ -6,7 +6,10 @@ const DashboardPage = () => {
     <Container className="dashboard-container" fluid>
       <Row>
         <Col>
-          <Image src="/images/logo-title.png"></Image>
+          <Image
+            className="dashboard-logo"
+            src="/images/logo-title.png"
+          ></Image>
         </Col>
       </Row>
       <Row>

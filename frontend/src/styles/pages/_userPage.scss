@@ -11,6 +11,7 @@
   max-width: calc(100vw - 220px);
   margin: 0;
   position: relative;
+  height: 100vh;
 }
 
 .profile-picture {
@@ -43,7 +44,6 @@
 
 .list-dropdown {
   width: 50%;
-  margin-bottom: 300px;
 }
 
 .list-dropdown button {
@@ -67,7 +67,6 @@
   background-color: #1f2933;
   color: white;
   width: 100%;
-  height: 150px;
 }
 
 #dropdown-basic {
@@ -75,7 +74,7 @@
 }
 
 .dropdown-menu.show {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 .dropdown-menu .dropdown-item {
   color: white;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AuthForm from "../../AuthForm/AuthForm";
+import ReusableForm from "../../ReusableForm/ReusableForm";
 import Spinner from "react-bootstrap/Spinner";
 import DisplayModal from "../../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
@@ -28,6 +28,7 @@ const Login = (props) => {
     },
   });
   const formTitle = "Login To Existing Account";
+  const formLayout = ["username", "password"];
 
   const dispatch = useDispatch();
 
@@ -140,7 +141,7 @@ const Login = (props) => {
   };
 
   let modalBody = (
-    <AuthForm
+    <ReusableForm
       closeHandler={props.closeHandler}
       show={props.show}
       type="login"
@@ -150,6 +151,7 @@ const Login = (props) => {
       validate={validateInputs}
       errors={errors}
       submit={submitHandler}
+      layout={formLayout}
     />
   );
   if (loading) {

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import AuthForm from "../AuthForm/AuthForm";
-
-import Spinner from "react-bootstrap/Spinner";
-// import DisplayModal from "../../DisplayModal/DisplayModal";
-import Button from "react-bootstrap/Button";
+// import Spinner from "react-bootstrap/Spinner";
+// // import DisplayModal from "../../DisplayModal/DisplayModal";
+// import Button from "react-bootstrap/Button";
+import ReusableForm from "../ReusableForm/ReusableForm";
 
 const EditProfile = (props) => {
   const [errors, setErrors] = useState({});
@@ -26,7 +25,7 @@ const EditProfile = (props) => {
     },
     bio: {
       label: "Bio",
-      placeholder: "Enter password",
+      placeholder: "Enter Bio",
       type: "text",
       as: "textarea",
       value: "",
@@ -35,6 +34,7 @@ const EditProfile = (props) => {
     },
   });
   const formTitle = "Edit Profile";
+  const formLayout = [["fName", "lName"], "bio"];
 
   //   const dispatch = useDispatch();
 
@@ -147,13 +147,14 @@ const EditProfile = (props) => {
   //   };
 
   let modalBody = (
-    <AuthForm
+    <ReusableForm
       closeHandler={props.closeHandler}
       show={props.show}
       type="edit"
       config={editFields}
       title={formTitle}
       changed={inputChangedHandler}
+      layout={formLayout}
       //   validate={validateInputs}
       //   errors={errors}
       //   submit={submitHandler}

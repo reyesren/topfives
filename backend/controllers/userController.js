@@ -102,7 +102,12 @@ const login = async (req, res, next) => {
             expiresIn: 3600,
           }
         );
-        res.send(accessToken);
+        res.json({
+          _id: existingUser._id,
+          username: existingUser.username,
+          name: `${existingUser.firstName} ${existingUser.lastName}`,
+          accessToken: accessToken,
+        });
       } else {
         return next(new Error("Your password is incorrect. Please try again."));
       }

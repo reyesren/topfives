@@ -78,8 +78,8 @@ const Header = (props) => {
           />
         </Navbar.Toggle>
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav defaultActiveKey="/home" className="flex-column">
-            <Nav.Link className="nav-logo" href="/home">
+          <Nav defaultActiveKey="/" className="flex-column">
+            <Nav.Link className="nav-logo" href="/">
               <Image
                 className="nav-home__image"
                 src="/images/logo-title.png"

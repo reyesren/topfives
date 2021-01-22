@@ -17,6 +17,7 @@
 .nav-profile__pic {
   height: 50px;
   width: 50px;
+  border-radius: 50%;
 }
 
 .nav-profile {
@@ -49,7 +50,7 @@
 }
 
 .nav-item {
-  color: rgba(255, 255, 255, 0.5);
+  color: white;
   padding-top: 8px;
   padding-bottom: 8px;
 }
@@ -64,8 +65,15 @@
   font-size: 24px;
 }
 
-.navbar-dark .navbar-toggler {
+.navbar-dark .navbar-toggler,
+.navbar-dark .navbar-toggler:focus {
   margin-right: 10px;
+  border-color: transparent;
+  outline: none;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
 }
 
 @media (min-width: 992px) {
@@ -142,12 +150,8 @@
     cursor: pointer;
   }
 
-  #profile-logout__btn:hover {
-    color: #0056b3;
-  }
-
-  #nav-profile__settings {
-    padding-right: 0px;
+  #profile-logout__btn {
+    padding-right: 10px;
   }
 
   .nav-profile button {
@@ -163,6 +167,7 @@
   .nav-profile__pic {
     height: 50px;
     width: 50px;
+    border-radius: 50%;
   }
   .nav-profile__name {
     color: white;

@@ -7,10 +7,12 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (isSignup) => {
+export const authSuccess = (isSignup, userInfo) => {
+  console.log(isSignup);
   return {
     type: actionTypes.AUTH_SUCCESS,
     isSignup: isSignup,
+    userInfo: userInfo,
   };
 };
 
@@ -83,12 +85,7 @@ export const auth = (
           name: response.data.name,
           _id: response.data._id,
         };
-        dispatch(
-          authSuccess({
-            isSignup,
-            userInfo: userInfo,
-          })
-        );
+        dispatch(authSuccess(isSignup, userInfo));
         if (!isSignup && closeHandler) {
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("userInfo", JSON.stringify(userInfo));

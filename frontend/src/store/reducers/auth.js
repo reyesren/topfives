@@ -19,7 +19,7 @@ const authStart = (state, action) => {
 
 const authSuccess = (state, action) => {
   console.log(action);
-  if (action.isSignup.isSignup) {
+  if (action.isSignup) {
     return {
       ...state,
       loading: false,
@@ -30,9 +30,7 @@ const authSuccess = (state, action) => {
       ...state,
       loading: false,
       loggedIn: true,
-      userInfo: action.isSignup.userInfo
-        ? action.isSignup.userInfo
-        : state.userInfo,
+      userInfo: action.userInfo ? action.userInfo : state.userInfo,
     };
   }
 };

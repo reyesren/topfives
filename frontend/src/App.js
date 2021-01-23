@@ -25,7 +25,7 @@ const App = (props) => {
       <Route path="/" exact>
         <DashboardPage />
       </Route>
-      <Route path="/userpage">
+      <Route path="/user/:id">
         <UserPage />
       </Route>
     </Router>

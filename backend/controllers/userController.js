@@ -70,7 +70,11 @@ const signup = async (req, res, next) => {
       }
       console.log(createdUser);
 
-      res.json(createdUser);
+      res.json({
+        name: `${createdUser.firstName} ${createdUser.lastName}`,
+        username: createdUser.username,
+        _id: createdUser._id,
+      });
     });
   });
 };

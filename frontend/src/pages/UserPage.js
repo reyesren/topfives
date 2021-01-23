@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import lists from "../data/listData";
 import { Container, Row, Col, Image, Dropdown, Button } from "react-bootstrap";
 import ListItems from "../components/ListItems";
 import ListItemDetails from "../components/ListItemDetails";
+import { getProfile } from "../store/actions/profile";
 
 const UserPage = (props) => {
-  const [selectedList, setSelectedList] = useState("Cha1nman's TopFives List");
+  const dispatch = useDispatch();
+
+  const profile = useSelector((state) => {
+    return state.profile;
+  });
+  const { firstName, lastName, username, bio } = profile;
+
+  console.log(profile);
+  const [selectedList, setSelectedList] = useState("TopFives Lists");
   const [showFullList, setShowFullList] = useState(false);
   const [listDetails, setListDetails] = useState(null);
   const [itemDetails, setItemDetails] = useState(null);
@@ -25,7 +35,7 @@ const UserPage = (props) => {
     setShowFullList(false);
     setDropdownEnabled(true);
     setShowMenu(true);
-    setSelectedList("TopFives List");
+    setSelectedList("TopFives Lists");
   };
 
   const showItemDetailsHandler = () => {
@@ -38,6 +48,10 @@ const UserPage = (props) => {
     setShowFullList(true);
   };
 
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch, username]);
+
   return (
     <Container className="user-page__container">
       <Row className="user-info__row">
@@ -48,14 +62,9 @@ const UserPage = (props) => {
           </Button>
         </Col>
         <Col id="user-info__col-2" lg={6}>
-          <h1>Michael Henry</h1>
-          <h2>aka Cha1nman</h2>
-          <p>
-            I am a McMaster University Alumni who graduated from the Computer
-            Engineering program. During my tenure at McMaster, my interest in
-            web development grew and I have continued to pursue this area of
-            development.
-          </p>
+          <h1>{`${firstName} ${lastName}`}</h1>
+          <h2>aka {username}</h2>
+          <p>{bio}</p>
         </Col>
       </Row>
       <Row className="user-list__row">

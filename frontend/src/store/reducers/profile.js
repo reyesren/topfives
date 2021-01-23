@@ -15,6 +15,7 @@ export const profileReducer = (
     image: null,
     loading: false,
     error: null,
+    bio: null,
   },
   action
 ) => {
@@ -34,6 +35,7 @@ export const profileReducer = (
         lists: action.payload.lists,
         image: action.payload.image,
         subscribers: action.payload.subscribers,
+        bio: action.payload.bio,
         loading: false,
       };
     case USER_PROFILE_FAIL:

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AuthForm from "../../AuthForm/AuthForm";
+import ReusableForm from "../../ReusableForm/ReusableForm";
 import Spinner from "react-bootstrap/Spinner";
 import SuccessAccCreated from "./SuccessAccCreated";
 import DisplayModal from "../../DisplayModal/DisplayModal";
@@ -14,7 +14,7 @@ const Signup = (props) => {
   const [errors, setErrors] = useState({});
   const [inputConfigs, setInputConfigs] = useState({
     fName: {
-      label: "Full Name",
+      label: "First Name",
       placeholder: "First Name",
       type: "",
       value: "",
@@ -22,7 +22,7 @@ const Signup = (props) => {
       isValid: true,
     },
     lName: {
-      label: "",
+      label: "Last Name",
       placeholder: "Last Name",
       type: "",
       value: "",
@@ -62,6 +62,13 @@ const Signup = (props) => {
       isValid: true,
     },
   });
+  const formLayout = [
+    ["fName", "lName"],
+    "username",
+    "email",
+    "password",
+    "confirmPassword",
+  ];
 
   const dispatch = useDispatch();
 
@@ -296,7 +303,7 @@ const Signup = (props) => {
   };
 
   let modalBody = (
-    <AuthForm
+    <ReusableForm
       show={props.show}
       closeHandler={props.closeHandler}
       type="signup"
@@ -306,7 +313,8 @@ const Signup = (props) => {
       validate={validateInputs}
       errors={errors}
       submit={submitHandler}
-    ></AuthForm>
+      layout={formLayout}
+    ></ReusableForm>
   );
 
   const successfulSignupHandler = () => {

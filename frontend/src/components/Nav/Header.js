@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { Nav, Image, Collapse, Navbar } from "react-bootstrap";
+
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
 import Logout from "../Auth/Logout/Logout";
@@ -12,29 +13,18 @@ const Header = (props) => {
   const [openLogout, setOpenLogout] = useState(false);
   const [expand, setExpand] = useState(false);
 
-  const openSignupHandler = () => {
-    setOpenSignup(true);
-  };
-  const closeSignupHandler = () => {
-    setOpenSignup(false);
+  const toggleSignupHandler = () => {
+    setOpenSignup(!openSignup);
   };
 
-  const openLoginHandler = () => {
-    setOpenLogin(true);
-  };
-  const closeLoginHandler = () => {
-    setOpenLogin(false);
+  const toggleLoginHandler = () => {
+    setOpenLogin(!openLogin);
   };
 
-  const openLogoutHandler = () => {
-    setOpenLogout(true);
-  };
-  const closeLogoutHandler = (event, toLogout) => {
+  const toggleLogoutHandler = (event, toLogout) => {
+    setOpenLogout(!openLogout);
     if (toLogout) {
-      setOpenLogout(false);
       onAuthLogout();
-    } else {
-      setOpenLogout(false);
     }
   };
 
@@ -49,8 +39,6 @@ const Header = (props) => {
     return state.auth.userInfo._id;
   });
 
-  console.log(userId);
-
   const onAuthLogout = () => {
     dispatch(actions.logout());
   };
@@ -59,13 +47,13 @@ const Header = (props) => {
   };
 
   const signupModal = openSignup ? (
-    <Signup show={openSignup} closeHandler={closeSignupHandler}></Signup>
+    <Signup show={openSignup} closeHandler={toggleSignupHandler}></Signup>
   ) : null;
   const loginModal = openLogin ? (
-    <Login show={openLogin} closeHandler={closeLoginHandler}></Login>
+    <Login show={openLogin} closeHandler={toggleLoginHandler}></Login>
   ) : null;
   const logoutModal = openLogout ? (
-    <Logout show={openLogout} closeHandler={closeLogoutHandler}></Logout>
+    <Logout show={openLogout} closeHandler={toggleLogoutHandler}></Logout>
   ) : null;
 
   return (
@@ -117,7 +105,7 @@ const Header = (props) => {
                       </Nav.Link>
                       <Nav.Item
                         id="profile-logout__btn"
-                        onClick={openLogoutHandler}
+                        onClick={toggleLogoutHandler}
                       >
                         Log Out
                       </Nav.Item>
@@ -147,14 +135,14 @@ const Header = (props) => {
                 <Nav.Item
                   className="logged-out__options"
                   id="logged-out__options-1"
-                  onClick={openLoginHandler}
+                  onClick={toggleLoginHandler}
                 >
                   Login
                 </Nav.Item>
                 <Nav.Item
                   className="logged-out__options"
                   id="logged-out__options-2"
-                  onClick={openSignupHandler}
+                  onClick={toggleSignupHandler}
                 >
                   Signup
                 </Nav.Item>

@@ -22,12 +22,8 @@ const App = (props) => {
   return (
     <Router>
       <Header />
-      <Route path="/" exact>
-        <DashboardPage />
-      </Route>
-      <Route path="/user/:id">
-        <UserPage />
-      </Route>
+      <Route component={DashboardPage} path="/" exact />
+      <Route component={UserPage} path="/user/:id" />
     </Router>
   );
 };

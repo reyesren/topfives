@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Image = require("../models/image");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
@@ -13,11 +14,18 @@ const signup = async (req, res, next) => {
         lastName,
         username,
         email,
-        bio,
-        subscriptions,
-        lists,
-        image,
+        bio = "Waiting on a bio from the user. When the user adds one, it will appear here.",
+        subscriptions = [],
+        lists = [],
       } = req.body;
+
+      // create default image
+      let image;
+      try {
+        image = await Image.findById("6009ede342d4b9bd664dfa20");
+      } catch (err) {
+        return next(new Error("Sorry, something went wrong!"));
+      }
       const createdUser = new User({
         firstName,
         lastName,
@@ -48,9 +56,7 @@ const signup = async (req, res, next) => {
       } catch (err) {
         return next(new Error("Something went wrong!"));
       }
-      // console.log(`second existing user: ${existingUser}`);
       if (existingUser) {
-        console.log(existingUser.username);
         return next(
           new Error("That username is already in use! Please try another one.")
         );
@@ -62,7 +68,11 @@ const signup = async (req, res, next) => {
         return next(err);
       }
 
-      res.json(createdUser);
+      res.json({
+        name: `${createdUser.firstName} ${createdUser.lastName}`,
+        username: createdUser.username,
+        _id: createdUser._id,
+      });
     });
   });
 };
@@ -85,7 +95,6 @@ const login = async (req, res, next) => {
   } else {
     bcrypt.compare(inputPassword, existingUser.password, (err, result) => {
       if (result) {
-        console.log(existingUser._id);
         accessToken = jwt.sign(
           { id: existingUser._id },
           process.env.TOKEN_SECRET,
@@ -94,7 +103,12 @@ const login = async (req, res, next) => {
             expiresIn: 3600,
           }
         );
-        res.send(accessToken);
+        res.json({
+          _id: existingUser._id,
+          username: existingUser.username,
+          name: `${existingUser.firstName} ${existingUser.lastName}`,
+          accessToken: accessToken,
+        });
       } else {
         return next(new Error("Your password is incorrect. Please try again."));
       }
@@ -102,7 +116,22 @@ const login = async (req, res, next) => {
   }
 };
 
+const getUser = async (req, res, next) => {
+  let user;
+  console.log(req.params.id);
+  try {
+    user = await User.findById(
+      req.params.id,
+      "firstName lastName username email lists subscribers bio image"
+    ).populate("image");
+  } catch (err) {
+    return next(new Error("Sorry, something went wrong!"));
+  }
+  res.json(user);
+};
+
 module.exports = {
   signup: signup,
   login: login,
+  getUser: getUser,
 };

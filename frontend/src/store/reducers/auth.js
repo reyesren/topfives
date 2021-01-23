@@ -5,6 +5,9 @@ const initialState = {
   readyToSubmit: false,
   submitError: "",
   loggedIn: false,
+  userInfo: localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null,
 };
 
 const authStart = (state, action) => {
@@ -26,6 +29,7 @@ const authSuccess = (state, action) => {
       ...state,
       loading: false,
       loggedIn: true,
+      userInfo: action.userInfo ? action.userInfo : state.userInfo,
     };
   }
 };
@@ -52,6 +56,7 @@ const authLogout = (state, action) => {
     readyToSubmit: false,
     submitError: "",
     loggedIn: false,
+    userInfo: null,
   };
 };
 

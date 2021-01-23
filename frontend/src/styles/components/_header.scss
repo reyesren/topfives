@@ -1,201 +1,227 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap");
-
-.flex-column.nav {
-  background-color: #1f2933;
-  width: 220px;
-  height: 100vh;
+.navbar {
+  padding-left: 0;
+  padding-right: 0;
+  width: 100vw;
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
   z-index: 3;
-  opacity: 0.85;
+  font-size: 20px;
 }
 
 .nav-home__image {
-  height: 60px;
-}
-
-.nav-link {
-  font-size: 20px;
-  color: white;
-  text-align: right;
-  font-family: "IBM Plex Sans", sans-serif;
-  letter-spacing: 2px;
-  width: 100%;
-  padding-left: 0;
-}
-
-.nav-link.nav-logo {
-  margin-bottom: 150px;
-}
-
-.nav-profile {
-  margin-top: auto;
-  padding: 0;
-  display: flex;
-  height: auto;
-  flex-direction: column;
-  background-color: #627d98;
-}
-
-.nav-profile.nav-item {
-  font-size: 20px;
-  color: white;
-  text-align: right;
-  font-family: "IBM Plex Sans", sans-serif;
-  letter-spacing: 2px;
-  width: 100%;
-  padding-left: 0;
-  padding-right: 16px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  cursor: pointer;
-}
-
-#profile-logout__btn:hover {
-  color: #0056b3;
-}
-
-#nav-profile__settings {
-  padding-right: 0px;
-}
-
-.nav-profile button {
-  display: flex;
-  background-color: #627d98;
-  outline: none;
-  border: none;
-  width: 100%;
-  padding: 10px;
-  margin-top: auto;
+  display: none;
 }
 
 .nav-profile__pic {
   height: 50px;
   width: 50px;
+  border-radius: 50%;
 }
-.nav-profile__name {
-  color: white;
+
+.nav-profile {
+  display: none;
+}
+
+.nav-brand {
+  height: 56px;
+  width: 150px;
   display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  padding-top: 10px;
+  z-index: 3;
 }
 
-.nav-profile__name p {
-  margin-bottom: 0;
+#nav-link__create-lg {
+  display: none;
+}
+
+#nav-link__create-sm {
+  display: flex;
+  background-color: #9acd32;
+  border-radius: 2em;
   font-size: 14px;
-  text-align: right;
-}
-
-.logged-out__nav-container {
-}
-
-.logged-out__options {
-  font-size: 20px;
+  align-items: center;
+  justify-content: space-between;
   color: white;
-  text-align: right;
-  font-family: "IBM Plex Sans", sans-serif;
-  letter-spacing: 2px;
-  width: 100%;
-  padding-left: 0;
-  padding-right: 16px;
+  margin-right: auto;
+}
+.navbar-collapse.collapse.show.nav-link {
+  padding-left: 10px;
+}
+
+.nav-item {
+  color: white;
   padding-top: 8px;
   padding-bottom: 8px;
-  cursor: pointer;
 }
 
-#logged-out__options-1:hover {
-  color: #0056b3;
-}
-#logged-out__options-2:hover {
-  color: #0056b3;
+#nav-profile__settings-sm {
+  padding: 0;
 }
 
-#nav-link__create {
-  height: auto;
-  background-color: #9acd32;
-  border-radius: 2em;
-  margin-right: auto;
-  font-size: 20px;
-  width: 80%;
-  margin-left: auto;
-  margin-right: 16px;
-  margin-top: 20px;
+.navbar-nav .nav-link,
+.navbar-nav .nav-item {
+  padding-left: 10px;
+  font-size: 24px;
 }
 
-/* nav {
-  background-color: #9fb3c8;
-  max-width: 100vw;
-  max-height: 70px;
-  opacity: 0.85;
-}
-
-.nav-loggedIn {
-  margin-right: 30px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.nav-loggedOut {
-  margin-left: auto;
-  display: flex;
-}
-.navbar-nav .dropdown-menu {
-  background-color: #9fb3c8;
-  min-width: 100px;
-}
-
-nav a {
-  color: $light-grey !important;
-}
-
-.dropdown-item:hover {
-  background-color: #627d98;
-  // background-color: #f4af1b;
-  // background-color: #9acd32;
-}
-
-.nav-link {
-  background-color: #627d98;
-  margin-left: 10px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-#basic-nav-dropdown {
-  border-radius: 50%;
-  padding: 10px;
-}
-
-.nav-home__image {
-  height: 60px;
-}
-
-#nav-link__create {
-  height: 25px;
-  background-color: #9acd32;
-  border-radius: 2em;
-  margin-right: auto;
-}
-
-.form-inline .nav-search {
-  width: 170px;
-}
-
-.nav-search__btn {
-  background-color: white;
-}
-.nav-search__btn:focus {
+.navbar-dark .navbar-toggler,
+.navbar-dark .navbar-toggler:focus {
+  margin-right: 10px;
+  border-color: transparent;
   outline: none;
-  box-shadow: none;
 }
 
-nav #userOrList2 {
-  border-radius: 0px;
-  background-color: #d9e2ec;
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
 }
- */
+
+@media (min-width: 992px) {
+  .navbar.navbar-expand-lg {
+    position: fixed;
+    flex-direction: column;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 220px;
+    padding: 0;
+  }
+  .navbar-collapse.collapse {
+    flex-direction: column;
+    left: 0;
+    top: 0;
+    padding: 0;
+    width: 220px;
+  }
+  .flex-column.navbar-nav {
+    background-color: #1f2933;
+    width: 220px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    opacity: 0.85;
+  }
+
+  .nav-brand {
+    display: none;
+  }
+  .nav-home__image {
+    height: 60px;
+    display: inline;
+    width: 220px;
+    padding-left: 0;
+  }
+
+  .nav-link {
+    font-size: 20px;
+    color: white;
+    text-align: right;
+    font-family: "IBM Plex Sans", sans-serif;
+    letter-spacing: 2px;
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .nav-logo.nav-link {
+    margin-bottom: 150px;
+    padding-left: 0;
+  }
+
+  .nav-profile {
+    margin-top: auto;
+    padding: 0;
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    background-color: #627d98;
+  }
+
+  .nav-profile.nav-item {
+    font-size: 20px;
+    color: white;
+    text-align: right;
+    font-family: "IBM Plex Sans", sans-serif;
+    letter-spacing: 2px;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0px;
+    cursor: pointer;
+  }
+
+  #profile-logout__btn {
+    padding-right: 10px;
+  }
+
+  .nav-profile button {
+    display: flex;
+    background-color: #627d98;
+    outline: none;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    margin-top: auto;
+  }
+
+  .nav-profile__pic {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+  .nav-profile__name {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    padding-top: 10px;
+  }
+
+  .nav-profile__name p {
+    margin-bottom: 0;
+    font-size: 14px;
+    text-align: right;
+  }
+
+  .logged-out__options {
+    font-size: 20px;
+    color: white;
+    text-align: right;
+    font-family: "IBM Plex Sans", sans-serif;
+    letter-spacing: 2px;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    cursor: pointer;
+  }
+
+  #logged-out__options-1:hover {
+    color: #0056b3;
+  }
+  #logged-out__options-2:hover {
+    color: #0056b3;
+  }
+
+  #nav-link__create-lg {
+    display: inline-block;
+    height: auto;
+    background-color: #9acd32;
+    border-radius: 2em;
+    margin-right: auto;
+    font-size: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: 16px;
+    margin-top: 20px;
+  }
+
+  #nav-link__create-sm {
+    display: none;
+  }
+
+  #nav-profile__settings-sm {
+    display: none;
+  }
+}

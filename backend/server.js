@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 
 const bodyParser = require("body-parser");
@@ -5,10 +9,9 @@ const userRoutes = require("./routes/userRoutes");
 const listRoutes = require("./routes/listRoutes");
 const mongoose = require("mongoose");
 const db = require("./config/db");
-const dotenv = require("dotenv");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
-dotenv.config();
 db();
 const app = express();
 

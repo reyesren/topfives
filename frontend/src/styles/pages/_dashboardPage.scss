@@ -1,5 +1,4 @@
 .dashboard-container {
-  // background: url("../../assets/mountain-bg.png");
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.99)),
     url("../../assets/test2.jpeg");
   background-repeat: no-repeat;
@@ -7,12 +6,31 @@
   background-position: center;
   padding: 0;
   margin: 0;
-  height: 100vh;
-  width: calc(100vw - 220px);
+  height: calc(100vh - 56px);
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .dashboard-container {
+    // background: url("../../assets/mountain-bg.png");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.99)),
+      url("../../assets/test2.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: calc(100vw - 220px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 }
 
 .form-label {
@@ -21,4 +39,8 @@
 
 .user-search {
   display: flex;
+}
+
+.dashboard-logo {
+  width: 350px;
 }

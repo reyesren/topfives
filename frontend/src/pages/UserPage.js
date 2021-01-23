@@ -50,6 +50,10 @@ const UserPage = (props) => {
     setShowFullList(true);
   };
 
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
+
   const toggleEditProfileHandler = () => {
     setShowEditProfile(!showEditProfile);
   };

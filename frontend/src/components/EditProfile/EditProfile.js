@@ -32,9 +32,12 @@ const EditProfile = (props) => {
       errorMsg: "Please provide a password.",
       isValid: true,
     },
+    image: {
+      label: "Change Profile Picture",
+    },
   });
   const formTitle = "Edit Profile";
-  const formLayout = [["fName", "lName"], "bio"];
+  const formLayout = [["fName", "lName"], "image", "bio"];
 
   //   const dispatch = useDispatch();
 

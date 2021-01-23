@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DisplayModal from "../DisplayModal/DisplayModal";
-import { Button, Container, Form, Col } from "react-bootstrap";
+import { Button, Container, Form, Col, Image } from "react-bootstrap";
+import bsCustomFileInput from "bs-custom-file-input";
 
 const ReusableForm = (props) => {
+  useEffect(() => {
+    bsCustomFileInput.init();
+  }, []);
+
   let formFields = props.layout.map((formEl) => {
     let returnEl;
     if (Array.isArray(formEl)) {
@@ -34,6 +39,21 @@ const ReusableForm = (props) => {
         rowEl.push(elemInRow);
       }
       returnEl = <Form.Row>{rowEl}</Form.Row>;
+    } else if (formEl === "image") {
+      const config = props.config[formEl];
+      returnEl = (
+        <Form.Row className={"imageRow"}>
+          <Col lg={9}>
+            <Form.File label={config.label} custom className={"imageField"} />
+          </Col>
+          <Col lg={3}>
+            <Image
+              src="https://res.cloudinary.com/dvshxfwff/image/upload/v1611263162/TopFives/test-avatar_o3eand.jpg"
+              className={"imagePreview"}
+            />
+          </Col>
+        </Form.Row>
+      );
     } else {
       const id = formEl;
       const config = props.config[id];
@@ -62,10 +82,18 @@ const ReusableForm = (props) => {
     <Form noValidate onSubmit={props.submit}>
       <Container>
         {formFields}
-        <Button variant="danger" onClick={props.closeHandler}>
+        <Button
+          variant="danger"
+          onClick={props.closeHandler}
+          className={"buttonRow"}
+        >
           Cancel
         </Button>
-        <Button className="float-right" variant="success" type="submit">
+        <Button
+          className="float-right buttonRow"
+          variant="success"
+          type="submit"
+        >
           {props.type === "login" && "Log In"}
           {props.type === "signup" && "Sign Up"}
           {props.type === "edit" && "Submit Changes"}

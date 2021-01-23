@@ -18,7 +18,6 @@ const authStart = (state, action) => {
 };
 
 const authSuccess = (state, action) => {
-  console.log(action);
   if (action.isSignup) {
     return {
       ...state,

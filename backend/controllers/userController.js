@@ -14,7 +14,7 @@ const signup = async (req, res, next) => {
         lastName,
         username,
         email,
-        bio = "",
+        bio = "Waiting on a bio from the user. When the user adds one, it will appear here.",
         subscriptions = [],
         lists = [],
       } = req.body;
@@ -57,7 +57,6 @@ const signup = async (req, res, next) => {
         return next(new Error("Something went wrong!"));
       }
       if (existingUser) {
-        console.log(existingUser.username);
         return next(
           new Error("That username is already in use! Please try another one.")
         );
@@ -68,7 +67,6 @@ const signup = async (req, res, next) => {
       } catch (err) {
         return next(err);
       }
-      console.log(createdUser);
 
       res.json({
         name: `${createdUser.firstName} ${createdUser.lastName}`,
@@ -97,7 +95,6 @@ const login = async (req, res, next) => {
   } else {
     bcrypt.compare(inputPassword, existingUser.password, (err, result) => {
       if (result) {
-        console.log(existingUser._id);
         accessToken = jwt.sign(
           { id: existingUser._id },
           process.env.TOKEN_SECRET,
@@ -121,6 +118,7 @@ const login = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   let user;
+  console.log(req.params.id);
   try {
     user = await User.findById(
       req.params.id,

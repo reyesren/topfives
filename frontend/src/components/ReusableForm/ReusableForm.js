@@ -16,9 +16,8 @@ const ReusableForm = (props) => {
       for (let i = 0; i < formEl.length; i++) {
         const id = formEl[i];
         const config = props.config[id];
-
         elemInRow = (
-          <Col lg={12 / formEl.length}>
+          <Col lg={12 / formEl.length} key={id}>
             <Form.Group>
               {config.label ? <Form.Label>{config.label}</Form.Label> : null}
               <Form.Control
@@ -38,19 +37,16 @@ const ReusableForm = (props) => {
         );
         rowEl.push(elemInRow);
       }
-      returnEl = <Form.Row>{rowEl}</Form.Row>;
+      returnEl = <Form.Row key={formEl}>{rowEl}</Form.Row>;
     } else if (formEl === "image") {
       const config = props.config[formEl];
       returnEl = (
-        <Form.Row className={"imageRow"}>
+        <Form.Row className={"imageRow"} key={formEl}>
           <Col lg={9}>
             <Form.File label={config.label} custom className={"imageField"} />
           </Col>
           <Col lg={3}>
-            <Image
-              src="https://res.cloudinary.com/dvshxfwff/image/upload/v1611263162/TopFives/test-avatar_o3eand.jpg"
-              className={"imagePreview"}
-            />
+            <Image src={config.value} className={"imagePreview"} />
           </Col>
         </Form.Row>
       );

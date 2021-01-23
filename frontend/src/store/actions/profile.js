@@ -10,16 +10,13 @@ export const getProfile = (id) => async (dispatch) => {
     dispatch({
       type: USER_PROFILE_REQUEST,
     });
-    const payload = await axios.get(
-      "http://localhost:5000/api/users/600b22aa41a9a749042e75cb"
-    );
+    const payload = await axios.get(`http://localhost:5000/api/users/${id}`);
     dispatch({
       type: USER_PROFILE_SUCCESS,
       payload: payload.data,
     });
 
     // const payloadData = await payload.json();
-    console.log(payload);
   } catch (err) {
     dispatch({
       type: USER_PROFILE_FAIL,

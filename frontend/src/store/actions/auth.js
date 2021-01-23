@@ -8,7 +8,6 @@ export const authStart = () => {
 };
 
 export const authSuccess = (isSignup, userInfo) => {
-  console.log(isSignup);
   return {
     type: actionTypes.AUTH_SUCCESS,
     isSignup: isSignup,
@@ -89,7 +88,6 @@ export const auth = (
         if (!isSignup && closeHandler) {
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
-          console.log(closeHandler);
           closeHandler();
         } else if (!isSignup && !closeHandler) {
           localStorage.setItem("token", response.data.accessToken);

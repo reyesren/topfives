@@ -13,10 +13,20 @@ const UserPage = (props) => {
   const profile = useSelector((state) => {
     return state.profile;
   });
-  const { firstName, lastName, username, bio } = profile;
 
-  console.log(profile);
-  const [selectedList, setSelectedList] = useState("TopFives Lists");
+  const loggedIn = useSelector((state) => {
+    return state.auth.loggedIn;
+  });
+  const { firstName, lastName, username, bio, loading } = profile;
+
+  const userId = useSelector((state) => {
+    if (!loggedIn) return;
+    return state.auth.userInfo._id;
+  });
+
+  const [selectedList, setSelectedList] = useState(
+    `${username} TopFives Lists`
+  );
   const [showFullList, setShowFullList] = useState(false);
   const [listDetails, setListDetails] = useState(null);
   const [itemDetails, setItemDetails] = useState(null);
@@ -51,8 +61,8 @@ const UserPage = (props) => {
   };
 
   useEffect(() => {
-    dispatch(getProfile());
-  }, [dispatch]);
+    dispatch(getProfile(userId));
+  }, [dispatch, userId]);
 
   const toggleEditProfileHandler = () => {
     setShowEditProfile(!showEditProfile);

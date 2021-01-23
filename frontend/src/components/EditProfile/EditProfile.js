@@ -3,15 +3,26 @@ import React, { useState } from "react";
 // // import DisplayModal from "../../DisplayModal/DisplayModal";
 // import Button from "react-bootstrap/Button";
 import ReusableForm from "../ReusableForm/ReusableForm";
+import { useDispatch, useSelector } from "react-redux";
 
 const EditProfile = (props) => {
+  const dispatch = useDispatch();
+
+  // const loading = useSelector((state) => {
+  //   return state.auth.loading;
+  // });
+  const profile = useSelector((state) => {
+    return state.profile;
+  });
+  const { firstName, lastName, bio, image } = profile;
+
   const [errors, setErrors] = useState({});
   const [editFields, setEditFields] = useState({
     fName: {
       label: "First Name",
       placeholder: "First Name",
       type: "",
-      value: "",
+      value: firstName,
       errorMsg: "Your first name cannot be empty!",
       isValid: true,
     },
@@ -19,7 +30,7 @@ const EditProfile = (props) => {
       label: "Last Name",
       placeholder: "Last Name",
       type: "",
-      value: "",
+      value: lastName,
       errorMsg: "Your last name cannot be empty!",
       isValid: true,
     },
@@ -28,38 +39,31 @@ const EditProfile = (props) => {
       placeholder: "Enter Bio",
       type: "text",
       as: "textarea",
-      value: "",
+      value: bio,
       errorMsg: "Please provide a password.",
       isValid: true,
     },
     image: {
       label: "Change Profile Picture",
+      value: image.url,
     },
   });
+  console.log(editFields.fName.value);
   const formTitle = "Edit Profile";
   const formLayout = [["fName", "lName"], "image", "bio"];
 
-  //   const dispatch = useDispatch();
-
-  //   const loading = useSelector((state) => {
-  //     return state.auth.loading;
-  //   });
-  //   const submitError = useSelector((state) => {
-  //     return state.auth.submitError;
-  //   });
-
-  //   const onLogin = (username, password, isSignup, closeHandler) => {
-  //     dispatch(actions.auth(username, password, isSignup, closeHandler));
-  //   };
-  //   const onLoginGoBackToForm = () => {
-  //     dispatch(actions.authGoBackToForm());
-  //   };
-  //   const onLoginStart = () => {
-  //     dispatch(actions.authStart());
-  //   };
-  //   const onLoginFail = () => {
-  //     dispatch(actions.authFail());
-  //   };
+  // const onLogin = (username, password, isSignup, closeHandler) => {
+  //   dispatch(actions.auth(username, password, isSignup, closeHandler));
+  // };
+  // const onLoginGoBackToForm = () => {
+  //   dispatch(actions.authGoBackToForm());
+  // };
+  // const onLoginStart = () => {
+  //   dispatch(actions.authStart());
+  // };
+  // const onLoginFail = () => {
+  //   dispatch(actions.authFail());
+  // };
 
   const inputChangedHandler = (event, field) => {
     const updatedFields = {

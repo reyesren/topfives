@@ -38,8 +38,6 @@ const Header = (props) => {
     return state.auth.userInfo._id;
   });
 
-  console.log(userId);
-
   const onAuthLogout = () => {
     dispatch(actions.logout());
   };

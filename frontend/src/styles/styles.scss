@@ -4,11 +4,16 @@
 @import "./pages/dashboardPage";
 @import "./pages/userPage";
 
+@import "./components/buttons";
+@import "./components/rows";
+@import "./components/list";
+@import "./components/dropdown";
+@import "./components/profile";
+@import "./components/columns";
+
 @import "./components/displayModal";
 @import "./components/successModal";
 @import "./components/header";
 @import "./components/signupErrorModal";
 @import "./components/logoutModal";
-@import "./components/listItems";
-@import "./components/listItemDetails";
 @import "./components/reusableForm";

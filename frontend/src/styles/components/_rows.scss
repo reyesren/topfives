@@ -1,0 +1,68 @@
+.user-info__row {
+  margin-bottom: 20px;
+}
+
+.user-list__row {
+  margin-top: 20px;
+  width: 80%;
+  margin: auto auto;
+}
+
+.full-list__row {
+  position: relative;
+  width: 100%;
+}
+
+.list-row {
+  width: 100%;
+}
+
+.list-item__row h1,
+.list-item__row h3 {
+  text-align: right;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.details-row {
+  color: white;
+  background-color: #1f2933;
+  width: 100%;
+  position: relative;
+  white-space: normal;
+}
+
+.details-body {
+  padding-bottom: 25px;
+  word-break: break-word;
+}
+
+.details-footer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.details-header-plus-body {
+  width: 100%;
+  padding: 10px;
+}
+
+@media (min-width: 992px) {
+  .user-list__row {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .full-list__row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+}

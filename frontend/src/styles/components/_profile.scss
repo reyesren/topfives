@@ -1,0 +1,28 @@
+.user-page__container {
+  width: 100%;
+  color: white;
+  padding-top: 20px;
+}
+
+.profile-picture {
+  width: 200px;
+  height: 200px;
+  margin: auto auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 992px) {
+  .user-page__container {
+    padding: 0;
+    max-width: calc(100vw - 220px);
+    margin: 0;
+    position: relative;
+    height: 100vh;
+  }
+
+  .profile-picture {
+    width: 230px;
+    height: 200px;
+  }
+}

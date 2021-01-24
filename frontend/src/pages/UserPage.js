@@ -156,7 +156,7 @@ const UserPage = (props) => {
                       <Button
                         className="see-all-lists"
                         onClick={enableDropdownHandler}
-                        id="go-back"
+                        id="go-back__btn"
                       >
                         <h3>
                           <i className="fas fa-arrow-left"></i> See All Lists

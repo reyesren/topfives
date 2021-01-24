@@ -3,6 +3,7 @@
   padding-left: 0;
   padding-right: 0;
   width: 100vw;
+  height: 82px;
   position: fixed;
   top: 0;
   left: 0;
@@ -44,6 +45,10 @@
   justify-content: space-between;
   color: white;
   margin-right: auto;
+}
+
+.navbar-collapse {
+  background-color: #343a40 !important;
 }
 .navbar-collapse.collapse.show.nav-link {
   padding-left: 10px;

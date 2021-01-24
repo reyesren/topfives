@@ -57,12 +57,14 @@
 
 .details-resource__image {
   width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  height: 150px;
+  margin: auto auto;
+  display: block;
 }
 
 .title-and-desc {
   text-align: right;
+  padding-top: 20px;
 }
 
 #resource-origin {
@@ -78,6 +80,111 @@
   padding-top: 50px;
 }
 
+#resource-url__description {
+  text-align: right;
+}
+
 #resource-link__header {
   text-align: center;
+  margin-top: 10px;
+}
+
+#resource-link {
+  text-align: center;
+  margin: auto auto;
+  display: block;
+}
+
+@media (min-width: 992px) {
+  .details-row {
+    color: white;
+    background-color: #1f2933;
+    width: 100%;
+    position: relative;
+    white-space: normal;
+  }
+
+  .details-name {
+    width: 50%;
+    margin: auto auto;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+
+  .details-name h1 {
+    margin: auto auto;
+  }
+
+  .details-body {
+    padding-bottom: 25px;
+    word-break: break-word;
+  }
+
+  .details-footer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .details-rank {
+    display: flex;
+    align-items: center;
+    color: #f1b24a;
+    font-weight: bold;
+    font-size: 80px;
+    margin-left: auto;
+    padding-right: 15px;
+  }
+
+  .back-to-list h3 {
+    font-size: 1.5rem;
+  }
+  .back-to-list,
+  .back-to-list:focus,
+  .back-to-list:hover,
+  .back-to-list.btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #1f2933;
+    border-color: #1f2933;
+    box-shadow: none;
+  }
+
+  .details-header-plus-body {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .details-resource__image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .title-and-desc {
+    text-align: right;
+    padding-top: 0px;
+  }
+
+  #resource-origin {
+    margin: auto auto;
+    text-align: center;
+  }
+
+  #resource-quote {
+    text-align: center;
+  }
+
+  #resource-quote__description {
+    padding-top: 50px;
+  }
+
+  #resource-url__description {
+    text-align: left;
+  }
+
+  #resource-link__header {
+    text-align: center;
+  }
+
+  #resource-image__column {
+    position: relative;
+  }
 }

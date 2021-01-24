@@ -1,9 +1,7 @@
 @import "./base/settings";
 @import "./base/base";
 
-@import "./pages/dashboardPage";
-@import "./pages/userPage";
-
+@import "./components/dashboard";
 @import "./components/buttons";
 @import "./components/rows";
 @import "./components/list";

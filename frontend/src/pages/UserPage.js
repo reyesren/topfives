@@ -45,7 +45,7 @@ const UserPage = (props) => {
     setShowFullList(false);
     setDropdownEnabled(true);
     setShowMenu(true);
-    setSelectedList("TopFives Lists");
+    setSelectedList(`${username} TopFives Lists`);
   };
 
   const showItemDetailsHandler = () => {
@@ -88,7 +88,7 @@ const UserPage = (props) => {
       {!loading && (
         <>
           <Row className="user-info__row">
-            <Col id="user-info__col-1" lg={6}>
+            <Col id="user-info__col-1" lg={6} md={6} sm={6} xs={12}>
               <Image
                 className="profile-picture"
                 src="/images/michael.jpeg"
@@ -100,7 +100,7 @@ const UserPage = (props) => {
                 <h3>Edit Profile</h3>
               </Button>
             </Col>
-            <Col id="user-info__col-2" lg={6}>
+            <Col id="user-info__col-2" lg={6} md={6} sm={6} xs={12}>
               <h1>{`${firstName} ${lastName}`}</h1>
               <h2>aka {username}</h2>
               <p>{bio}</p>
@@ -156,7 +156,7 @@ const UserPage = (props) => {
                       <Button
                         className="see-all-lists"
                         onClick={enableDropdownHandler}
-                        id="go-back"
+                        id="go-back__btn"
                       >
                         <h3>
                           <i className="fas fa-arrow-left"></i> See All Lists

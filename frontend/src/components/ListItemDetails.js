@@ -34,10 +34,14 @@ const ListItemDetails = (props) => {
             <h1>{props.item.name}</h1>
           </Row>
           <Row className="details-body">
-            <Col lg={7}>{props.item.description}</Col>
+            <Col id="resource-url__description" lg={7}>
+              {props.item.description}
+            </Col>
             <Col lg={5}>
               <p id="resource-link__header">Check this out!</p>
-              <a href={props.item.resource}>{props.item.resource}</a>
+              <a id="resource-link" href={props.item.resource}>
+                {props.item.resource}
+              </a>
               <br></br>
             </Col>
           </Row>
@@ -54,7 +58,7 @@ const ListItemDetails = (props) => {
       {props.item.resourceType === "image" && (
         <>
           <Row className="details-header-plus-body">
-            <Col lg={5}>
+            <Col id="resource-image__column" lg={5}>
               <Image
                 className="details-resource__image"
                 src={props.item.resource}

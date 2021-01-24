@@ -4,10 +4,10 @@ import { Col } from "react-bootstrap";
 const ListItems = (props) => {
   return (
     <>
-      <Col lg={4} id="item-rank">
+      <Col lg={2} xs={3} id="item-rank">
         {props.rank}
       </Col>
-      <Col lg={8} id="item-name">
+      <Col lg={10} xs={9} id="item-name">
         {props.name}
       </Col>
     </>

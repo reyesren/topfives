@@ -1,0 +1,113 @@
+button.close {
+  color: #fff;
+  opacity: 1;
+}
+
+button.close:hover {
+  color: gold;
+  opacity: 1;
+}
+
+.back-to-list h3 {
+  font-size: 1.5rem;
+}
+.back-to-list,
+.back-to-list:focus,
+.back-to-list:hover,
+.back-to-list.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #1f2933;
+  border-color: #1f2933;
+  box-shadow: none;
+}
+
+#go-back__btn {
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#go-back h3 {
+  font-size: 1.5rem;
+}
+
+.list-items__details-btn {
+  width: 100%;
+  color: white;
+  background-color: #1f2933;
+  font-size: 30px;
+  border-bottom: 2px solid black;
+  display: flex;
+  outline: none;
+  border-color: black;
+}
+
+.list-items__details-btn:hover,
+.list-items__details-btn:focus,
+.list-items__details-btn:active {
+  background-color: rgb(24, 24, 24);
+  border-color: rgb(24, 24, 24);
+  box-shadow: none;
+}
+
+.edit-profile__btn,
+.edit-profile__btn:focus,
+.edit-profile__btn:hover,
+.edit-profile__btn.btn-primary:not(:disabled):not(.disabled):active,
+.see-all-lists,
+.see-all-lists:focus,
+.see-all-lists:hover,
+.see-all-lists.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #28292c;
+  border-color: #28292c;
+  box-shadow: none;
+}
+
+.edit-profile__btn {
+  margin: auto auto;
+  display: block;
+}
+
+.edit-profile__btn h3 {
+  font-size: 20px;
+}
+
+.list-dropdown button {
+  width: 100%;
+  background-color: #1f2933;
+}
+
+.list-dropdown button:hover,
+.list-dropdown button:active,
+.list-dropdown button:focus,
+.show > .btn-primary.dropdown-toggle:focus,
+.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #1f2933;
+}
+
+@media (min-width: 992px) {
+  #profile-logout__btn {
+    padding-right: 10px;
+  }
+
+  .nav-profile button {
+    display: flex;
+    background-color: #627d98;
+    outline: none;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    margin-top: auto;
+  }
+
+  .edit-profile__btn {
+    display: flex;
+    align-self: flex-start;
+    padding-left: 0;
+  }
+  .list-items__details-btn {
+    font-size: 50px;
+  }
+}

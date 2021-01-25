@@ -7,7 +7,7 @@ const listSchema = new Schema({
   title: { type: String, required: true },
   listType: { type: String, required: true },
   entries: [
-    { type: mongoose.Schema.Types.ObjectId, required: true, ref: "listEntry" },
+    { type: mongoose.Schema.Types.ObjectId, required: true, ref: "ListEntry" },
   ],
   creator: {
     type: mongoose.Schema.Types.ObjectId,

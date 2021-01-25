@@ -11,9 +11,13 @@ const userSchema = new Schema(
     email: { type: String, required: true },
     image: { type: mongoose.Schema.Types.ObjectId, ref: "Image" },
     bio: { type: String },
-    lists: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
+    lists: [
+      { type: mongoose.Schema.Types.ObjectId, required: true, ref: "List" },
+    ],
     password: { type: String, required: true },
-    subscribers: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
+    subscribers: [
+      { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+    ],
   },
   { timestamps: true } // creates 'createdAt' and 'updatedAt' field for us);
 );

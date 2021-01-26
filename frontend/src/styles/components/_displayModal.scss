@@ -1,5 +1,10 @@
 .my-modal .modal-content {
   background-color: $off-black;
+  width: 80%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .my-modal {
@@ -15,3 +20,15 @@ button.close:hover {
   color: gold;
   opacity: 1;
 }
+
+// .modal_sizing {
+//   width: 50% !important;
+//   top: 20%;
+// }
+
+// @media (min-width: 992px) {
+//   .modal_sizing {
+//     height: 1px;
+//     width: 1px;
+//   }
+// }

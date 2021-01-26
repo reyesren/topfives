@@ -40,15 +40,35 @@ const EditProfile = (props) => {
       type: "text",
       as: "textarea",
       value: bio,
-      errorMsg: "Please provide a password.",
+      errorMsg: "Your bio must contain either 0 characters or at least 75.",
       isValid: true,
     },
     image: {
       label: "Change Profile Picture",
       value: image.url,
+      errorMsg:
+        "This is not a valid photo. Use only .png, .jpeg, .jpg formats.",
     },
   });
-  console.log(editFields.fName.value);
+  // const changeImageHandler = (e) => {
+  //   // console.log(e.target.files[0]);
+  //   let file = e.target.files[0];
+  //   let reader = new FileReader();
+  //   // console.log(url);
+  //   // console.log(editFields.image.value);
+  //   reader.onloadend = () => {
+  //     setEditFields({
+  //       ...editFields,
+  //       image: {
+  //         ...image,
+  //         value: reader.result,
+  //       },
+  //     });
+  //   };
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
   const formTitle = "Edit Profile";
   const formLayout = [["fName", "lName"], "image", "bio"];
 
@@ -66,6 +86,7 @@ const EditProfile = (props) => {
   // };
 
   const inputChangedHandler = (event, field) => {
+    console.log("I GET HERE");
     const updatedFields = {
       ...editFields,
       [field]: {
@@ -76,82 +97,99 @@ const EditProfile = (props) => {
     setEditFields(updatedFields);
   };
 
-  //   const validateInputs = () => {
-  //     let inputErrors = {};
-  //     let valid = true;
+  const validateInputs = () => {
+    let inputErrors = {};
+    let valid = true;
 
-  //     let newConfig = {
-  //       ...loginForm,
-  //       username: {
-  //         ...loginForm.username,
-  //       },
-  //       password: {
-  //         ...loginForm.password,
-  //       },
-  //     };
-  //     if (!loginForm.username.value) {
-  //       valid = false;
-  //       inputErrors = {
-  //         ...inputErrors,
-  //         username: loginForm.username.errorMsg,
-  //       };
-  //       newConfig = {
-  //         ...newConfig,
-  //         username: {
-  //           ...newConfig.username,
-  //           isValid: false,
-  //         },
-  //       };
-  //     }
+    let newConfig = {
+      ...editFields,
+      fName: {
+        ...editFields.fName,
+      },
+      lName: {
+        ...editFields.lName,
+      },
+      bio: {
+        ...editFields.bio,
+      },
+      image: {
+        ...editFields.image,
+      },
+    };
+    if (!editFields.fName.value) {
+      valid = false;
+      inputErrors = {
+        ...inputErrors,
+        fName: editFields.fName.errorMsg,
+      };
+      newConfig = {
+        ...newConfig,
+        fName: {
+          ...newConfig.fName,
+          isValid: false,
+        },
+      };
+    }
 
-  //     if (loginForm.password.value.length < 6) {
-  //       valid = false;
-  //       inputErrors = {
-  //         ...inputErrors,
-  //         password: "Your password must be at least 6 characters long.",
-  //       };
-  //       newConfig = {
-  //         ...newConfig,
-  //         password: {
-  //           ...newConfig.password,
-  //           isValid: false,
-  //         },
-  //       };
-  //     }
-  //     if (!loginForm.password.value) {
-  //       valid = false;
-  //       inputErrors = {
-  //         ...inputErrors,
-  //         password: loginForm.password.errorMsg,
-  //       };
-  //       newConfig = {
-  //         ...newConfig,
-  //         password: {
-  //           ...newConfig.password,
-  //           isValid: false,
-  //         },
-  //       };
-  //     }
-  //     setErrors(inputErrors);
-  //     setLoginForm(newConfig);
-  //     if (!valid) {
-  //       onLoginFail();
-  //     }
-  //     return valid;
-  //   };
+    if (!editFields.lName.value) {
+      valid = false;
+      inputErrors = {
+        ...inputErrors,
+        lName: editFields.lName.errorMsg,
+      };
+      newConfig = {
+        ...newConfig,
+        lName: {
+          ...newConfig.lName,
+          isValid: false,
+        },
+      };
+    }
 
-  //   const submitHandler = (event) => {
-  //     event.preventDefault();
-  //     onLoginStart();
-  //     if (validateInputs()) {
-  //       onLogin(
-  //         loginForm.username.value,
-  //         loginForm.password.value,
-  //         false,
-  //         props.closeHandler
-  //       );
-  //     }
-  //   };
+    if (editFields.bio.value.length < 75) {
+      valid = false;
+      inputErrors = {
+        ...inputErrors,
+        bio: editFields.bio.errorMsg,
+      };
+      newConfig = {
+        ...newConfig,
+        bio: {
+          ...newConfig.bio,
+          isValid: false,
+        },
+      };
+    }
+
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    console.log(editFields.image.value);
+    if (!allowedExtensions.exec(editFields.image.value)) {
+      valid = false;
+      inputErrors = {
+        ...inputErrors,
+        image: editFields.image.errorMsg,
+      };
+      newConfig = {
+        ...newConfig,
+        image: {
+          ...newConfig.image,
+          isValid: false,
+        },
+      };
+    }
+
+    setErrors(inputErrors);
+    setEditFields(newConfig);
+    return valid;
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    // onLoginStart();
+    if (validateInputs()) {
+      console.log("inputs were validated");
+    }
+  };
 
   let modalBody = (
     <ReusableForm
@@ -162,9 +200,10 @@ const EditProfile = (props) => {
       title={formTitle}
       changed={inputChangedHandler}
       layout={formLayout}
-      //   validate={validateInputs}
-      //   errors={errors}
-      //   submit={submitHandler}
+      // changeImage={changeImageHandler}
+      validate={validateInputs}
+      errors={errors}
+      submit={submitHandler}
     />
   );
   //   if (loading) {

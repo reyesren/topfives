@@ -42,12 +42,21 @@ const ReusableForm = (props) => {
       const config = props.config[formEl];
       returnEl = (
         <Form.Row className={"imageRow"} key={formEl}>
-          <Col lg={9}>
-            <Form.File label={config.label} custom className={"imageField"} />
+          <Col>
+            <Form.File
+              label={config.label}
+              custom
+              className={"imageField"}
+              disabled={false}
+              onChange={(event) => props.changed(event, "image")}
+            />
+            {!config.isValid ? (
+              <div className="text-danger">{props.errors["image"]}</div>
+            ) : null}
           </Col>
-          <Col lg={3}>
+          {/*<Col lg={3}>
             <Image src={config.value} className={"imagePreview"} />
-          </Col>
+      </Col>*/}
         </Form.Row>
       );
     } else {
@@ -92,7 +101,7 @@ const ReusableForm = (props) => {
         >
           {props.type === "login" && "Log In"}
           {props.type === "signup" && "Sign Up"}
-          {props.type === "edit" && "Submit Changes"}
+          {props.type === "edit" && "Submit"}
         </Button>
       </Container>
     </Form>

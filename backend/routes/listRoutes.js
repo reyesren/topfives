@@ -1,5 +1,5 @@
 const express = require("express");
-// const listController = require("../controllers/listController");
+const listController = require("../controllers/listController");
 
 const router = express.Router();
 
@@ -10,9 +10,7 @@ router.get("/", (req, res, next) =>
 );
 
 // create a new list
-router.post("/", (req, res, next) =>
-  res.json({ message: "Success creating a new list" })
-);
+router.post("/", listController.createList);
 
 // get the entires of a list
 router.get("/:id", (req, res, next) =>

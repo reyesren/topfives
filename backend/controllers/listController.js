@@ -44,6 +44,7 @@ const createList = async (req, res, next) => {
     creator: creator,
     entries: [],
   });
+  console.log(createdList);
   if (listItems.length === 0) {
     try {
       await createdList.save();
@@ -54,44 +55,40 @@ const createList = async (req, res, next) => {
     const sess = await mongoose.startSession();
     sess.startTransaction();
 
-    let response = await createdList.save({ session: sess });
     // console.log(response);
     listItems.forEach(async (item) => {
       let listEntry = new ListEntry({
         ...item,
-        list: response._id,
+        list: createdList._id,
       });
       let responseTwo = await listEntry.save();
 
       createdList.entries.push(responseTwo);
       // console.log(createdList.entries);
       // let responseThree = await createdList.save();
-      let responseThree = await List.updateOne(
-        { _id: createdList._id },
-        { entries: createdList.entries }
-      );
+      try {
+        await List.updateOne(
+          { _id: createdList._id },
+          {
+            listTitle: createdList.listTitle,
+            listType: createdList.listType,
+            creator: createdList.creator,
+            entries: createdList.entries,
+          }
+        );
+        // console.log(createdList);
+      } catch (err) {
+        console.log(err);
+      }
       //console.log(listEntry);
       // console.log(responseThree);
     });
-
-    /*listItems.forEach(async (entry) => {
-      let listEntry = new ListEntry({
-        ...entry,
-      });
-      if (!listEntry) {
-        return next(new Error("Something went wrong. Please try again"));
-      }
-      try {
-        await listEntry.save();
-      } catch (err) {
-        return next(new Error("Something went wrong here. Please try again"));
-      }
-    });*/
+    createdList = await createdList.save({ session: sess });
     await sess.commitTransaction(); // only @ this point are the changes actually saved. if one thing fails, all operations are rolled back
   } catch (err) {
     return next(err);
   }
-  res.json({ message: "success.." });
+  res.json(createdList);
 };
 
 module.exports = {

@@ -12,6 +12,6 @@ const listEntrySchema = new Schema({
   list: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "List" }],
 });
 
-listSchema.plugin(uniqueValidator);
+listEntrySchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("ListEntry", listEntrySchema);

@@ -7,6 +7,7 @@ import ListItemDetails from "../components/ListItemDetails";
 import DisplaySpinner from "../components/DisplaySpinner/DisplaySpinner";
 import EditProfile from "../components/EditProfile/EditProfile";
 import { getProfile } from "../store/actions/profile";
+import { getListDetails } from "../store/actions/list";
 
 const UserPage = (props) => {
   const dispatch = useDispatch();
@@ -20,13 +21,16 @@ const UserPage = (props) => {
     return state.auth.loggedIn;
   });
   const { firstName, lastName, username, bio, loading } = profile;
+  const listDetails = useSelector((state) => {
+    return state.listDetails;
+  });
 
-  console.log(props);
+  const { entries } = listDetails;
   const userId = props.match.params.id;
 
   const [selectedList, setSelectedList] = useState("");
   const [showFullList, setShowFullList] = useState(false);
-  const [listDetails, setListDetails] = useState(null);
+  // const [listDetails, setListDetails] = useState(null);
   const [itemDetails, setItemDetails] = useState(null);
   const [showItemDetails, setShowItemDetails] = useState(false);
   const [dropdownEnabled, setDropdownEnabled] = useState(true);
@@ -37,8 +41,12 @@ const UserPage = (props) => {
     setDropdownEnabled(false);
     setSelectedList(e);
     setShowFullList(true);
-    let details = lists.find((list) => list.listTitle === e);
-    setListDetails(details.listItems);
+    console.log(e);
+    let details = profile.lists.find((list) => list.listTitle === e);
+    console.log(details);
+    dispatch(getListDetails(details._id));
+
+    //setListDetails(details.listItems);
   };
 
   const enableDropdownHandler = (e) => {
@@ -118,7 +126,7 @@ const UserPage = (props) => {
                   {selectedList}
                 </Dropdown.Toggle>
                 <Dropdown.Menu show={showMenu} flip={false}>
-                  {lists.map((list) => (
+                  {profile.lists.map((list) => (
                     <Dropdown.Item
                       eventKey={list.listTitle}
                       as="button"
@@ -135,7 +143,7 @@ const UserPage = (props) => {
             )}
             <Row className="full-list__row">
               {showFullList &&
-                listDetails.map((entry, index) => (
+                entries.map((entry, index) => (
                   <Row key={entry.rank} className="list-row">
                     <Button
                       onClick={() => {
@@ -148,11 +156,11 @@ const UserPage = (props) => {
                         key={entry.rank}
                         name={entry.name}
                         rank={entry.rank}
-                        end={index === listDetails.length - 1 ? true : false}
+                        end={index === entries.length - 1 ? true : false}
                         enableDropdownHandler={enableDropdownHandler}
                       />
                     </Button>
-                    {index === listDetails.length - 1 && (
+                    {index === entries.length - 1 && (
                       <Button
                         className="see-all-lists"
                         onClick={enableDropdownHandler}

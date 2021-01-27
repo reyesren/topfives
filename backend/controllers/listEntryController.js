@@ -111,7 +111,42 @@ const editEntry = async (req, res, next) => {
   res.json(existingEntry);
 };
 
+const deleteEntry = async (req, res, next) => {
+  const { _id: entryId, list } = req.body;
+  let existingEntry;
+  let parentList;
+  try {
+    existingEntry = await ListEntry.findById(entryId);
+  } catch (err) {
+    return next(new Error("Something went wrong here."));
+  }
+  if (!existingEntry) {
+    return next(new Error("An entry with thise ID does not exist"));
+  }
+  try {
+    parentList = await List.findById(list);
+  } catch (err) {
+    return next(new Error("Something went wrong. Please try again later"));
+  }
+  if (!parentList) {
+    return next(new Error("A parent list with this ID does not exist"));
+  }
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await existingEntry.remove({ session: sess });
+    parentList.entries.pull(existingEntry._id);
+    await parentList.save({ session: sess });
+    await sess.commitTransaction(); // only @ this point are the changes actually saved. if one thing fails, all operations are rolled back
+  } catch (err) {
+    console.log(err);
+    return next(new Error("Sorry, something went wrong. Try again later."));
+  }
+  res.json({ message: "deleted" });
+};
+
 module.exports = {
   addEntry,
   editEntry,
+  deleteEntry,
 };

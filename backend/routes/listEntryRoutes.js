@@ -3,12 +3,6 @@ const listEntryController = require("../controllers/listEntryController");
 
 const router = express.Router();
 
-// get route to retrieve all lists
-// can be used with query parameters
-/*router.get("/:id", (req, res, next) =>
-  res.json({ message: "success retrieving all lists" })
-);*/
-
 // create a new list
 router.put("/", listEntryController.editEntry);
 
@@ -16,6 +10,6 @@ router.put("/", listEntryController.editEntry);
 router.post("/", listEntryController.addEntry);
 
 // delete a list
-// router.delete("/", listControllerEntry.deleteList);
+router.delete("/", listEntryController.deleteEntry);
 
 module.exports = router;

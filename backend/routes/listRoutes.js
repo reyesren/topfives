@@ -13,9 +13,7 @@ router.get("/", (req, res, next) =>
 router.post("/", listController.createList);
 
 // get the entires of a list
-router.get("/:id", (req, res, next) =>
-  res.json({ message: "success retrieving list data" })
-);
+router.get("/:id", listController.getList);
 
 // modify existing list (whether titles or entries)
 router.patch("/:id", (req, res, next) =>

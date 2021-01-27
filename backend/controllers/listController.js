@@ -23,14 +23,26 @@ const ListEntry = require("../models/listEntry");
 
 */
 
-const getList = async (req, res, next) => {};
+const getList = async (req, res, next) => {
+  let listId = req.params.id;
+  let existingList;
+
+  try {
+    existingList = await List.findById(listId).populate("entries");
+  } catch (err) {
+    console.log(err);
+  }
+  if (!existingList) {
+    return next(new Error("This list doesn't exist"));
+  }
+
+  res.json(existingList);
+};
 
 const createList = async (req, res, next) => {
-  // console.log("hi");
   const { listTitle, listType, creator, listItems } = req.body;
   let existingList;
   let existingUser;
-  let final;
 
   try {
     existingUser = await User.findById(creator, "-password");
@@ -93,5 +105,6 @@ const createList = async (req, res, next) => {
 };
 
 module.exports = {
-  createList: createList,
+  createList,
+  getList,
 };

@@ -16,13 +16,9 @@ router.post("/", listController.createList);
 router.get("/:id", listController.getList);
 
 // modify existing list (whether titles or entries)
-router.patch("/:id", (req, res, next) =>
-  res.json({ message: "success editting" })
-);
+router.put("/:id", listController.editList);
 
 // delete a list
-router.delete("/:id", (req, res, next) =>
-  res.json({ message: "success deleting list" })
-);
+router.delete("/:id", listController.deleteList);
 
 module.exports = router;

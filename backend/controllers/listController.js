@@ -104,7 +104,81 @@ const createList = async (req, res, next) => {
   res.json(createdList);
 };
 
+const editList = async (req, res, next) => {
+  let listId = req.params.id;
+  let existingList;
+  const { listTitle } = req.body;
+
+  try {
+    existingList = await List.findById(listId).populate("entries");
+  } catch (err) {
+    console.log(err);
+  }
+  if (!existingList) {
+    return next(new Error("This list doesn't exist"));
+  }
+  existingList.listTitle = listTitle;
+  try {
+    await existingList.save();
+  } catch (err) {
+    return next(new Error("Something went wrong. Please try again"));
+  }
+  res.json(existingList);
+};
+
+const deleteList = async (req, res, next) => {
+  let { _id: listId, creator } = req.body;
+  console.log(listId);
+  let existingList;
+  let existingUser;
+
+  try {
+    existingUser = await User.findById(creator, "-password");
+  } catch (err) {
+    return next(new Error("Something went wrong"));
+  }
+  if (!existingUser) {
+    return next(new Error("User doesn't exist"));
+  }
+
+  try {
+    existingList = await List.findById(listId);
+  } catch (err) {
+    console.log(err);
+  }
+  if (!existingList) {
+    return next(new Error("This list doesn't exist"));
+  }
+  console.log(existingUser);
+
+  /*try {
+    await existingUser.lists.pull({ _id: listId });
+ 
+  } catch (err) {
+    console.log(err);
+  }*/
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+
+    for (let item of existingList.entries) {
+      let listEntry = await ListEntry.findById(item);
+      await listEntry.remove();
+    }
+    await existingUser.lists.pull(listId);
+    await existingUser.save();
+    await existingList.remove();
+
+    await sess.commitTransaction(); // only @ this point are the changes actually saved. if one thing fails, all operations are rolled back
+  } catch (err) {
+    return next(err);
+  }
+  res.json({ message: "deleted" });
+};
 module.exports = {
   createList,
   getList,
+  editList,
+  deleteList,
 };

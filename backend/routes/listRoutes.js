@@ -19,6 +19,6 @@ router.get("/:id", listController.getList);
 router.put("/:id", listController.editList);
 
 // delete a list
-router.delete("/:id", listController.deleteList);
+router.delete("/", listController.deleteList);
 
 module.exports = router;

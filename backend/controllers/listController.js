@@ -149,14 +149,6 @@ const deleteList = async (req, res, next) => {
   if (!existingList) {
     return next(new Error("This list doesn't exist"));
   }
-  console.log(existingUser);
-
-  /*try {
-    await existingUser.lists.pull({ _id: listId });
- 
-  } catch (err) {
-    console.log(err);
-  }*/
 
   try {
     const sess = await mongoose.startSession();
@@ -167,8 +159,8 @@ const deleteList = async (req, res, next) => {
       await listEntry.remove();
     }
     await existingUser.lists.pull(listId);
-    await existingUser.save();
-    await existingList.remove();
+    await existingUser.save({ session: sess });
+    await existingList.remove({ session: sess });
 
     await sess.commitTransaction(); // only @ this point are the changes actually saved. if one thing fails, all operations are rolled back
   } catch (err) {

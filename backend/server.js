@@ -7,6 +7,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 const listRoutes = require("./routes/listRoutes");
+const listEntryRoutes = require("./routes/listEntryRoutes");
 const mongoose = require("mongoose");
 const db = require("./config/db");
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/lists", listRoutes);
+app.use("/api/listEntry", listEntryRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

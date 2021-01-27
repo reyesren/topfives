@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col, Image, Button } from "react-bootstrap";
 
 const ListItemDetails = (props) => {
+  console.log(props.item);
   return (
     <Row className="details-row">
       {props.item.resourceType === "quote" && (

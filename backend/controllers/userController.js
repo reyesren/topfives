@@ -123,7 +123,9 @@ const getUser = async (req, res, next) => {
     user = await User.findById(
       req.params.id,
       "firstName lastName username email lists subscribers bio image"
-    ).populate("image");
+    )
+      .populate("image")
+      .populate("lists");
   } catch (err) {
     return next(new Error("Sorry, something went wrong!"));
   }

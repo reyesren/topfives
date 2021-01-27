@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const List = require("../models/list");
+const User = require("../models/user");
 const ListEntry = require("../models/listEntry");
 
 /*
@@ -28,9 +29,19 @@ const createList = async (req, res, next) => {
   // console.log("hi");
   const { listTitle, listType, creator, listItems } = req.body;
   let existingList;
-  // console.log(listItems);
+  let existingUser;
+  let final;
+
   try {
-    // existingList = await List.find({ listTitle: listTitle });
+    existingUser = await User.findById(creator, "-password");
+  } catch (err) {
+    return next(new Error("Something went wrong"));
+  }
+  if (!existingUser) {
+    return next(new Error("User doesn't exist"));
+  }
+  try {
+    existingList = await List.findOne({ listTitle: listTitle });
   } catch (err) {
     return next(new Error("Something went wrong"));
   }
@@ -44,50 +55,40 @@ const createList = async (req, res, next) => {
     creator: creator,
     entries: [],
   });
-  console.log(createdList);
   if (listItems.length === 0) {
     try {
       await createdList.save();
       res.json({ message: "did it" });
-    } catch (err) {}
+    } catch (err) {
+      return next(new Error("Something went wrong"));
+    }
   }
+  // await createdList.save();
+
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
 
-    // console.log(response);
-    listItems.forEach(async (item) => {
+    for (let item of listItems) {
       let listEntry = new ListEntry({
         ...item,
         list: createdList._id,
       });
-      let responseTwo = await listEntry.save();
-
+      let responseTwo = await listEntry.save({ session: sess });
       createdList.entries.push(responseTwo);
-      // console.log(createdList.entries);
-      // let responseThree = await createdList.save();
-      try {
-        await List.updateOne(
-          { _id: createdList._id },
-          {
-            listTitle: createdList.listTitle,
-            listType: createdList.listType,
-            creator: createdList.creator,
-            entries: createdList.entries,
-          }
-        );
-        // console.log(createdList);
-      } catch (err) {
-        console.log(err);
-      }
-      //console.log(listEntry);
-      // console.log(responseThree);
-    });
+    }
     createdList = await createdList.save({ session: sess });
+
+    existingUser.lists.push(createdList);
+    await existingUser.save({ session: sess });
+
     await sess.commitTransaction(); // only @ this point are the changes actually saved. if one thing fails, all operations are rolled back
   } catch (err) {
     return next(err);
   }
+  /*final = await List.findById(createdList._id);
+  console.log(final);*/
+
   res.json(createdList);
 };
 

@@ -14,12 +14,14 @@
 
 .dropdown-menu.show {
   margin-bottom: 20px !important;
+  padding-bottom: 0;
 }
 .dropdown-menu .dropdown-item {
   color: white;
   position: relative;
   width: 100%;
   border-bottom: 1px solid black;
+  padding-bottom: 0;
 }
 
 .dropdown-menu .dropdown-item:hover,

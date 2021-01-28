@@ -4,7 +4,15 @@ const User = require("../models/user");
 const ListEntry = require("../models/listEntry");
 
 const addEntry = async (req, res, next) => {
-  const { resource, resourceOrigin, rank, description, list, name } = req.body;
+  const {
+    resource,
+    resourceOrigin,
+    resourceType,
+    rank,
+    description,
+    list,
+    name,
+  } = req.body;
   let existingEntry;
   let parentList;
   let createdEntry;
@@ -31,6 +39,7 @@ const addEntry = async (req, res, next) => {
   let entry = new ListEntry({
     name,
     resource,
+    resourceType,
     resourceOrigin,
     rank,
     description,
@@ -54,6 +63,7 @@ const editEntry = async (req, res, next) => {
   const {
     _id: entryId,
     resource,
+    resourceType,
     resourceOrigin,
     rank,
     description,
@@ -91,12 +101,14 @@ const editEntry = async (req, res, next) => {
   if (existingEntry.resource !== resource) {
     existingEntry.resource = resource;
   }
+  if (existingEntry.resourceType !== resourceType) {
+    existingEntry.resourceType = resourceType;
+  }
   if (existingEntry.resourceOrigin) {
     if (existingEntry.resourceOrigin !== resourceOrigin) {
       existingEntry.resourceOrigin = resourceOrigin;
     }
   }
-
   if (existingEntry.name !== name) {
     existingEntry.name = name;
   }

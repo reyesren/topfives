@@ -7,7 +7,10 @@ import thunk from "redux-thunk";
 import "./styles/styles.scss";
 import authReducer from "./store/reducers/auth";
 import { listEntriesReducer } from "./store/reducers/listEntry";
-import { profileReducer } from "./store/reducers/profile";
+import {
+  profileReducer,
+  searchUsersResultsReducer,
+} from "./store/reducers/profile";
 import reportWebVitals from "./reportWebVitals";
 
 const composeEnhancers =
@@ -19,6 +22,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
   listEntries: listEntriesReducer,
+  searchUsersResults: searchUsersResultsReducer,
 });
 
 const store = createStore(

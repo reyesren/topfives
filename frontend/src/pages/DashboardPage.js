@@ -1,6 +1,6 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
-import { Container, Row, Col, Image, Form } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 const DashboardPage = () => {
   return (

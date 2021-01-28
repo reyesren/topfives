@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Row, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../store/actions/profile";
 
 const SearchBar = () => {
+  const dispatch = useDispatch();
   const [searchOption, setSearchOption] = useState("User");
   const [searchText, setSearchText] = useState("");
 
@@ -12,9 +15,18 @@ const SearchBar = () => {
     console.log(e.target.value);
     setSearchText(e.target.value);
   };
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    if (searchOption === "User") {
+      console.log("hi");
+      dispatch(getUsers(searchText));
+    } else {
+      console.log("List");
+    }
+  };
   return (
     <Row>
-      <Form className="user-search py-3">
+      <Form onSubmit={onSubmitHandler} className="user-search py-3">
         <Form.Group controlId="Search">
           <Form.Control
             value={searchText}

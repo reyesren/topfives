@@ -39,6 +39,28 @@ const getList = async (req, res, next) => {
   res.json(existingList);
 };
 
+const getLists = async (req, res, next) => {
+  const listTitle = req.query.listTitle
+    ? {
+        listTitle: {
+          $regex: req.query.listTitle, // this allows us to search without being exactly correct .iph will give us iphone results
+          $options: "i", // case insensitive
+        },
+      }
+    : {};
+  let users = [];
+
+  try {
+    lists = await List.find({ ...listTitle });
+  } catch (err) {
+    return next(new Error("Something unexpected happened. Try again later."));
+  }
+  if (lists.length === 0) {
+    return next(new Error("There are no lists with that title"));
+  }
+  res.json(lists);
+};
+
 const createList = async (req, res, next) => {
   const { listTitle, listType, creator, listItems } = req.body;
   let existingList;
@@ -169,6 +191,7 @@ const deleteList = async (req, res, next) => {
   res.json({ message: "deleted" });
 };
 module.exports = {
+  getLists,
   createList,
   getList,
   editList,

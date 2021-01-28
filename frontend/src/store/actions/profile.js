@@ -6,6 +6,7 @@ import {
   USER_SEARCH_FAIL,
   USER_SEARCH_REQUEST,
   USER_SEARCH_SUCCESS,
+  LIST_SEARCH_RESET,
 } from "./actionTypes";
 
 export const getProfile = (id) => async (dispatch) => {
@@ -30,6 +31,9 @@ export const getProfile = (id) => async (dispatch) => {
 export const getUsers = (username) => async (dispatch) => {
   try {
     dispatch({
+      type: LIST_SEARCH_RESET,
+    });
+    dispatch({
       type: USER_SEARCH_REQUEST,
     });
 
@@ -43,6 +47,10 @@ export const getUsers = (username) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: USER_SEARCH_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
     });
   }
 };

@@ -5,6 +5,7 @@ import {
   USER_SEARCH_REQUEST,
   USER_SEARCH_SUCCESS,
   USER_SEARCH_FAIL,
+  USER_SEARCH_RESET,
 } from "../actions/actionTypes";
 
 export const profileReducer = (
@@ -52,7 +53,7 @@ export const profileReducer = (
   }
 };
 
-export const searchUsersResultsReducer = (state = {}, action) => {
+export const searchUsersResultsReducer = (state = { users: [] }, action) => {
   switch (action.type) {
     case USER_SEARCH_REQUEST:
       return {
@@ -70,6 +71,11 @@ export const searchUsersResultsReducer = (state = {}, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      };
+    case USER_SEARCH_RESET:
+      return {
+        ...state,
+        users: [],
       };
     default:
       return state;

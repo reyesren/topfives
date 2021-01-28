@@ -15,7 +15,7 @@ export const listDetailsReducer = (state = { entries: [] }, action) => {
       return {
         ...state,
         _id: action.payload._id,
-        listTitle: action.payload._id,
+        listTitle: action.payload.listTitle,
         listType: action.payload.listType,
         creator: action.payload.creator,
         entries: action.payload.entries,

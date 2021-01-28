@@ -7,7 +7,7 @@ import ListItemDetails from "../components/ListItemDetails";
 import DisplaySpinner from "../components/DisplaySpinner/DisplaySpinner";
 import EditProfile from "../components/EditProfile/EditProfile";
 import { getProfile } from "../store/actions/profile";
-import { getListDetails } from "../store/actions/list";
+import { getListEntries } from "../store/actions/listEntry";
 
 const UserPage = (props) => {
   const dispatch = useDispatch();
@@ -21,11 +21,11 @@ const UserPage = (props) => {
     return state.auth.loggedIn;
   });
   const { firstName, lastName, username, bio, loading } = profile;
-  const listDetails = useSelector((state) => {
-    return state.listDetails;
+  const listEntries = useSelector((state) => {
+    return state.listEntries;
   });
 
-  const { entries } = listDetails;
+  const { entries } = listEntries;
   const userId = props.match.params.id;
 
   const [selectedList, setSelectedList] = useState("");
@@ -44,7 +44,7 @@ const UserPage = (props) => {
     console.log(e);
     let details = profile.lists.find((list) => list.listTitle === e);
     console.log(details);
-    dispatch(getListDetails(details._id));
+    dispatch(getListEntries(details._id));
 
     //setListDetails(details.listItems);
   };

@@ -3,6 +3,21 @@ const List = require("../models/list");
 const User = require("../models/user");
 const ListEntry = require("../models/listEntry");
 
+const getListEntries = async (req, res, next) => {
+  let listId = req.params.listId;
+  let existingList;
+
+  try {
+    existingList = await List.findById(listId).populate("entries");
+  } catch (err) {
+    console.log(err);
+  }
+  if (!existingList) {
+    return next(new Error("This list doesn't exist"));
+  }
+  let entries = [...existingList.entries];
+  res.json(entries);
+};
 const addEntry = async (req, res, next) => {
   const {
     resource,
@@ -158,6 +173,7 @@ const deleteEntry = async (req, res, next) => {
 };
 
 module.exports = {
+  getListEntries,
   addEntry,
   editEntry,
   deleteEntry,

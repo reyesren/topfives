@@ -3,6 +3,7 @@ const listEntryController = require("../controllers/listEntryController");
 
 const router = express.Router();
 
+router.get("/:listId", listEntryController.getListEntries);
 // create a new list
 router.put("/", listEntryController.editEntry);
 

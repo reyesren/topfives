@@ -132,8 +132,31 @@ const getUser = async (req, res, next) => {
   res.json(user);
 };
 
+const getUsers = async (req, res, next) => {
+  const username = req.query.username
+    ? {
+        username: {
+          $regex: req.query.username, // this allows us to search without being exactly correct .iph will give us iphone results
+          $options: "i", // case insensitive
+        },
+      }
+    : {};
+  let users = [];
+
+  try {
+    users = await User.find({ ...username }, "-password");
+  } catch (err) {
+    return next(new Error("Something unexpected happened. Try again later."));
+  }
+  if (users.length === 0) {
+    return next(new Error("There are no users with that name"));
+  }
+  res.json(users);
+};
+
 module.exports = {
   signup: signup,
   login: login,
   getUser: getUser,
+  getUsers,
 };

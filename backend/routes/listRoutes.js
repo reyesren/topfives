@@ -5,9 +5,7 @@ const router = express.Router();
 
 // get route to retrieve all lists
 // can be used with query parameters
-router.get("/", (req, res, next) =>
-  res.json({ message: "success retrieving all lists" })
-);
+router.get("/", listController.getLists);
 
 // create a new list
 router.post("/", listController.createList);

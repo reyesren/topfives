@@ -48,6 +48,23 @@
   padding: 10px;
 }
 
+#search-page__paginate-row {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.search-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#search-row__search {
+  margin-left: auto;
+  margin-right: 50px;
+}
+
 @media (min-width: 992px) {
   .user-list__row {
     width: 100%;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import lists from "../data/listData";
 import { Container, Row, Col, Image, Dropdown, Button } from "react-bootstrap";
 import ListItems from "../components/ListItems";
 import ListItemDetails from "../components/ListItemDetails";
@@ -11,15 +10,11 @@ import { getListEntries } from "../store/actions/listEntry";
 
 const UserPage = (props) => {
   const dispatch = useDispatch();
-  const [localUsername, setLocalUsername] = useState("");
 
   const profile = useSelector((state) => {
     return state.profile;
   });
 
-  const loggedIn = useSelector((state) => {
-    return state.auth.loggedIn;
-  });
   const { firstName, lastName, username, bio, loading } = profile;
   const listEntries = useSelector((state) => {
     return state.listEntries;
@@ -72,7 +67,6 @@ const UserPage = (props) => {
 
   useEffect(() => {
     console.log(username);
-    setLocalUsername(username);
     setSelectedList(`${username}'s TopFives List`);
   }, [username]);
 

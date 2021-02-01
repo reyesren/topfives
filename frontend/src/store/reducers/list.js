@@ -17,6 +17,7 @@ export const searchListsResultsReducer = (state = { lists: [] }, action) => {
         ...state,
         lists: action.payload,
         loading: false,
+        error: "",
       };
     case LIST_SEARCH_FAIL:
       return {

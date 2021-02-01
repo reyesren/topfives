@@ -1,6 +1,19 @@
 #user-info__col-2 {
   text-align: center;
 }
+
+.search-results__col {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.search-pages__col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 70vh;
+}
 @media (min-width: 992px) {
   #user-info__col-1 {
     display: flex;

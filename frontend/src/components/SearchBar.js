@@ -33,7 +33,7 @@ const SearchBar = () => {
       dispatch({ type: USER_SEARCH_RESET });
       dispatch({ type: LIST_SEARCH_RESET });
     };
-  });
+  }, [dispatch]);
   return (
     <Row>
       <Form onSubmit={onSubmitHandler} className="user-search py-3">

@@ -5,5 +5,14 @@
 
 .search-container {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 0;
+}
+
+@media (min-width: 600px) {
+  .search-container {
+    display: flex;
+    flex-direction: row;
+  }
 }

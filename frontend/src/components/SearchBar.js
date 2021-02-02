@@ -39,7 +39,7 @@ const SearchBar = () => {
   }, [dispatch]);
   return (
     <Row>
-      <Form onSubmit={onSubmitHandler} className="user-search py-3">
+      <Form onSubmit={onSubmitHandler} className="user-search">
         <Form.Group controlId="Search">
           <Form.Control
             value={searchText}

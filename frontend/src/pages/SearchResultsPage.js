@@ -57,6 +57,10 @@ const SearchResultsPage = () => {
             <Link to="/">Next Page</Link>
           </Row>
         </Col>
+        <Row id="search-page__paginate-row__small">
+          <Link to="/">Prev Page</Link>
+          <Link to="/">Next Page</Link>
+        </Row>
       </Container>
     </Container>
   );

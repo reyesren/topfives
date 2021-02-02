@@ -17,6 +17,14 @@
   width: 100%;
 }
 
+.empty-list__row {
+  background-color: #1f2933;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
+
 .list-item__row h1,
 .list-item__row h3 {
   text-align: right;

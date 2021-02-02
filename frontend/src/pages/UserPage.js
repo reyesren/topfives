@@ -10,11 +10,28 @@ import { getListEntries } from "../store/actions/listEntry";
 import { LIST_RESET } from "../store/actions/actionTypes";
 
 const UserPage = (props) => {
+  const [selectedList, setSelectedList] = useState("");
+  const [showFullList, setShowFullList] = useState(false);
+  const [itemDetails, setItemDetails] = useState(null);
+  const [showItemDetails, setShowItemDetails] = useState(false);
+  const [dropdownEnabled, setDropdownEnabled] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [isMyProfile, setIsMyProfile] = useState(false);
+
+  const userId = props.match.params.id;
+
   const dispatch = useDispatch();
 
   const profile = useSelector((state) => {
     return state.profile;
   });
+
+  const auth = useSelector((state) => {
+    return state.auth;
+  });
+
+  const { loggedIn, userInfo } = auth;
 
   const { firstName, lastName, username, bio, loading } = profile;
   const listEntries = useSelector((state) => {
@@ -22,20 +39,10 @@ const UserPage = (props) => {
   });
 
   const { entries } = listEntries;
-  const userId = props.match.params.id;
 
   const preloadedList = useSelector((state) => {
     return state.showList.list;
   });
-
-  const [selectedList, setSelectedList] = useState("");
-  const [showFullList, setShowFullList] = useState(false);
-  // const [listDetails, setListDetails] = useState(null);
-  const [itemDetails, setItemDetails] = useState(null);
-  const [showItemDetails, setShowItemDetails] = useState(false);
-  const [dropdownEnabled, setDropdownEnabled] = useState(true);
-  const [showMenu, setShowMenu] = useState(false);
-  const [showEditProfile, setShowEditProfile] = useState(false);
 
   const onSelectHandler = useCallback(
     (e) => {
@@ -72,12 +79,25 @@ const UserPage = (props) => {
     setShowFullList(true);
   };
 
+  const toggleEditProfileHandler = () => {
+    setShowEditProfile(!showEditProfile);
+  };
+
+  // const closeEditProfileHandler = () => {
+  //   setShowEditProfile(false);
+  // };
+  const editProfileModal = showEditProfile ? (
+    <EditProfile
+      show={showEditProfile}
+      closeHandler={toggleEditProfileHandler}
+    ></EditProfile>
+  ) : null;
+
   useEffect(() => {
     dispatch(getProfile(userId));
   }, [dispatch, userId]);
 
   useEffect(() => {
-    console.log(username);
     setSelectedList(`${username}'s TopFives List`);
   }, [username]);
 
@@ -94,19 +114,16 @@ const UserPage = (props) => {
     }
   }, [preloadedList, onSelectHandler, profile]);
 
-  const toggleEditProfileHandler = () => {
-    setShowEditProfile(!showEditProfile);
-  };
-
-  // const closeEditProfileHandler = () => {
-  //   setShowEditProfile(false);
-  // };
-  const editProfileModal = showEditProfile ? (
-    <EditProfile
-      show={showEditProfile}
-      closeHandler={toggleEditProfileHandler}
-    ></EditProfile>
-  ) : null;
+  useEffect(() => {
+    if (loggedIn) {
+      // console.log(userInfo._id, userId);
+      if (userInfo._id === userId) {
+        setIsMyProfile(true);
+      } else {
+        setIsMyProfile(false);
+      }
+    }
+  }, [loggedIn, userId, userInfo._id]);
 
   return (
     <Container className="user-page__container">
@@ -136,62 +153,86 @@ const UserPage = (props) => {
             {(!dropdownEnabled || preloadedList.listTitle) && (
               <h1 id="list-title">{selectedList}</h1>
             )}
-            {dropdownEnabled && !preloadedList.listTitle && (
-              <Dropdown
-                className="list-dropdown"
-                onSelect={onSelectHandler}
-                onClick={() => setShowMenu((prev) => !prev)}
-              >
-                <Dropdown.Toggle id="dropdown-basic">
-                  {selectedList}
-                </Dropdown.Toggle>
-                <Dropdown.Menu show={showMenu} flip={false}>
-                  {profile.lists.map((list) => (
-                    <Dropdown.Item
-                      eventKey={list.listTitle}
-                      as="button"
-                      key={list.listTitle}
-                    >
-                      <div className="list-item__row">
-                        <h1>{list.listTitle}</h1>
-                        <h3>Type: {list.listType}</h3>
-                      </div>
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
+            {profile.lists.length > 0 ? (
+              dropdownEnabled &&
+              !preloadedList.listTitle && (
+                <Dropdown
+                  className="list-dropdown"
+                  onSelect={onSelectHandler}
+                  onClick={() => setShowMenu((prev) => !prev)}
+                  show={showMenu}
+                >
+                  <Dropdown.Toggle id="dropdown-basic">
+                    {selectedList}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu show={showMenu} flip={false}>
+                    {profile.lists.map((list) => (
+                      <Dropdown.Item
+                        eventKey={list.listTitle}
+                        as="button"
+                        key={list.listTitle}
+                      >
+                        <div className="list-item__row">
+                          <h1>{list.listTitle}</h1>
+                          <h3>Type: {list.listType}</h3>
+                        </div>
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              )
+            ) : (
+              <h2>When {username} adds a list, it will appear here</h2>
             )}
             <Row className="full-list__row">
               {(showFullList || preloadedList.listTitle) &&
-                entries.map((entry, index) => (
-                  <Row key={entry.rank} className="list-row">
-                    <Button
-                      onClick={() => {
-                        setItemDetails({ ...entry });
-                        showItemDetailsHandler();
-                      }}
-                      className="list-items__details-btn"
-                    >
-                      <ListItems
-                        key={entry.rank}
-                        name={entry.name}
-                        rank={entry.rank}
-                        end={index === entries.length - 1 ? true : false}
-                        enableDropdownHandler={enableDropdownHandler}
-                      />
-                    </Button>
-                    {index === entries.length - 1 && (
+                (entries.length > 0 ? (
+                  entries.map((entry, index) => (
+                    <Row key={entry.rank} className="list-row">
                       <Button
-                        className="see-all-lists"
-                        onClick={enableDropdownHandler}
-                        id="go-back__btn"
+                        onClick={() => {
+                          setItemDetails({ ...entry });
+                          showItemDetailsHandler();
+                        }}
+                        className="list-items__details-btn"
                       >
-                        <h3>
-                          <i className="fas fa-arrow-left"></i> See All Lists
-                        </h3>
+                        <ListItems
+                          key={entry.rank}
+                          name={entry.name}
+                          rank={entry.rank}
+                          end={index === entries.length - 1 ? true : false}
+                          enableDropdownHandler={enableDropdownHandler}
+                        />
                       </Button>
-                    )}
-                  </Row>
+                      {index === entries.length - 1 && (
+                        <Button
+                          className="see-all-lists"
+                          onClick={enableDropdownHandler}
+                          id="go-back__btn"
+                        >
+                          <h3>
+                            <i className="fas fa-arrow-left"></i> See All Lists
+                          </h3>
+                        </Button>
+                      )}
+                    </Row>
+                  ))
+                ) : (
+                  <>
+                    <Row className="list-row empty-list__row">
+                      <h2>This list has no entries</h2>
+                    </Row>
+
+                    <Button
+                      className="see-all-lists"
+                      onClick={enableDropdownHandler}
+                      id="go-back__btn"
+                    >
+                      <h3>
+                        <i className="fas fa-arrow-left"></i> See All Lists
+                      </h3>
+                    </Button>
+                  </>
                 ))}
               {showItemDetails && (
                 <ListItemDetails

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Image, Dropdown, Button } from "react-bootstrap";
 import ListItems from "../components/ListItems";
@@ -7,6 +7,7 @@ import DisplaySpinner from "../components/DisplaySpinner/DisplaySpinner";
 import EditProfile from "../components/EditProfile/EditProfile";
 import { getProfile } from "../store/actions/profile";
 import { getListEntries } from "../store/actions/listEntry";
+import { LIST_RESET } from "../store/actions/actionTypes";
 
 const UserPage = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +24,10 @@ const UserPage = (props) => {
   const { entries } = listEntries;
   const userId = props.match.params.id;
 
+  const preloadedList = useSelector((state) => {
+    return state.showList.list;
+  });
+
   const [selectedList, setSelectedList] = useState("");
   const [showFullList, setShowFullList] = useState(false);
   // const [listDetails, setListDetails] = useState(null);
@@ -32,28 +37,34 @@ const UserPage = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
 
-  const onSelectHandler = (e) => {
-    setDropdownEnabled(false);
-    setSelectedList(e);
-    setShowFullList(true);
-    console.log(e);
-    let details = profile.lists.find((list) => list.listTitle === e);
-    console.log(details);
-    dispatch(getListEntries(details._id));
+  const onSelectHandler = useCallback(
+    (e) => {
+      setDropdownEnabled(false);
+      setSelectedList(e);
+      setShowFullList(true);
+      console.log(e);
+      let details = profile.lists.find((list) => list.listTitle === e);
+      console.log(details);
+      dispatch(getListEntries(details._id));
 
-    //setListDetails(details.listItems);
-  };
+      //setListDetails(details.listItems);
+    },
+    [dispatch, profile.lists]
+  );
 
   const enableDropdownHandler = (e) => {
+    dispatch({ type: LIST_RESET });
     setShowFullList(false);
     setDropdownEnabled(true);
     setShowMenu(true);
+
     setSelectedList(`${username} TopFives Lists`);
   };
 
   const showItemDetailsHandler = () => {
     setShowFullList(false);
     setShowItemDetails(true);
+    dispatch({ type: LIST_RESET });
   };
 
   const goBackHandler = () => {
@@ -69,6 +80,19 @@ const UserPage = (props) => {
     console.log(username);
     setSelectedList(`${username}'s TopFives List`);
   }, [username]);
+
+  useEffect(() => {
+    return () => {
+      dispatch({ type: LIST_RESET });
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (preloadedList.listTitle && profile.lists.length !== 0) {
+      console.log(preloadedList);
+      onSelectHandler(preloadedList.listTitle);
+    }
+  }, [preloadedList, onSelectHandler, profile]);
 
   const toggleEditProfileHandler = () => {
     setShowEditProfile(!showEditProfile);
@@ -109,8 +133,10 @@ const UserPage = (props) => {
             </Col>
           </Row>
           <Row className="user-list__row">
-            {!dropdownEnabled && <h1 id="list-title">{selectedList}</h1>}
-            {dropdownEnabled && (
+            {(!dropdownEnabled || preloadedList.listTitle) && (
+              <h1 id="list-title">{selectedList}</h1>
+            )}
+            {dropdownEnabled && !preloadedList.listTitle && (
               <Dropdown
                 className="list-dropdown"
                 onSelect={onSelectHandler}
@@ -136,7 +162,7 @@ const UserPage = (props) => {
               </Dropdown>
             )}
             <Row className="full-list__row">
-              {showFullList &&
+              {(showFullList || preloadedList.listTitle) &&
                 entries.map((entry, index) => (
                   <Row key={entry.rank} className="list-row">
                     <Button

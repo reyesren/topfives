@@ -4,6 +4,7 @@ import {
   LIST_SEARCH_REQUEST,
   LIST_SEARCH_SUCCESS,
   USER_SEARCH_RESET,
+  LIST_SHOW,
 } from "./actionTypes";
 
 export const getLists = (listTitle) => async (dispatch) => {
@@ -32,4 +33,12 @@ export const getLists = (listTitle) => async (dispatch) => {
           : err.message,
     });
   }
+};
+
+export const showList = (listTitle) => (dispatch) => {
+  console.log(listTitle);
+  dispatch({
+    type: LIST_SHOW,
+    payload: listTitle,
+  });
 };

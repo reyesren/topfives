@@ -7,7 +7,10 @@ import thunk from "redux-thunk";
 import "./styles/styles.scss";
 import authReducer from "./store/reducers/auth";
 import { listEntriesReducer } from "./store/reducers/listEntry";
-import { searchListsResultsReducer } from "./store/reducers/list";
+import {
+  searchListsResultsReducer,
+  showListReducer,
+} from "./store/reducers/list";
 import {
   profileReducer,
   searchUsersResultsReducer,
@@ -25,6 +28,7 @@ const rootReducer = combineReducers({
   listEntries: listEntriesReducer,
   searchUsersResults: searchUsersResultsReducer,
   searchListsResults: searchListsResultsReducer,
+  showList: showListReducer,
 });
 
 const store = createStore(

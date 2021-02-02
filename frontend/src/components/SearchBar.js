@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Row, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../store/actions/profile";
@@ -10,6 +11,7 @@ import {
 
 const SearchBar = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [searchOption, setSearchOption] = useState("User");
   const [searchText, setSearchText] = useState("");
 
@@ -17,15 +19,16 @@ const SearchBar = () => {
     setSearchOption(e.target.value);
   };
   const onChangeHandler = (e) => {
-    console.log(e.target.value);
     setSearchText(e.target.value);
   };
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if (searchOption === "User") {
       dispatch(getUsers(searchText));
+      history.push(`/search/user?name=${searchText}`);
     } else {
       dispatch(getLists(searchText));
+      history.push(`/search/list?name=${searchText}`);
     }
   };
   useEffect(() => {
@@ -33,7 +36,7 @@ const SearchBar = () => {
       dispatch({ type: USER_SEARCH_RESET });
       dispatch({ type: LIST_SEARCH_RESET });
     };
-  });
+  }, [dispatch]);
   return (
     <Row>
       <Form onSubmit={onSubmitHandler} className="user-search py-3">

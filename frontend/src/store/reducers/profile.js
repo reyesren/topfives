@@ -64,6 +64,7 @@ export const searchUsersResultsReducer = (state = { users: [] }, action) => {
       return {
         ...state,
         users: action.payload,
+        error: "",
         loading: false,
       };
     case USER_SEARCH_FAIL:

@@ -3,6 +3,8 @@ import {
   LIST_SEARCH_REQUEST,
   LIST_SEARCH_SUCCESS,
   LIST_SEARCH_RESET,
+  LIST_SHOW,
+  LIST_RESET,
 } from "../actions/actionTypes";
 
 export const searchListsResultsReducer = (state = { lists: [] }, action) => {
@@ -17,6 +19,7 @@ export const searchListsResultsReducer = (state = { lists: [] }, action) => {
         ...state,
         lists: action.payload,
         loading: false,
+        error: "",
       };
     case LIST_SEARCH_FAIL:
       return {
@@ -28,6 +31,23 @@ export const searchListsResultsReducer = (state = { lists: [] }, action) => {
       return {
         ...state,
         lists: [],
+      };
+    default:
+      return state;
+  }
+};
+
+export const showListReducer = (state = { list: {} }, action) => {
+  switch (action.type) {
+    case LIST_SHOW:
+      return {
+        ...state,
+        list: action.payload,
+      };
+    case LIST_RESET:
+      return {
+        ...state,
+        list: {},
       };
     default:
       return state;

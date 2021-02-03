@@ -89,8 +89,12 @@ const SearchResultsPage = (props) => {
           </Row>
         </Col>
         <Row id="search-page__paginate-row__small">
-          <Link to="/">Prev Page</Link>
-          <Link to="/">Next Page</Link>
+          <Paginate
+            pages={listspages}
+            page={listspage}
+            keyword={name ? name : ""}
+            type={type}
+          />
         </Row>
       </Container>
     </Container>

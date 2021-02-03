@@ -182,7 +182,7 @@ const UserPage = (props) => {
                 </Dropdown>
               )
             ) : (
-              <h2>When {username} adds a list, it will appear here</h2>
+              <h2>When {username} adds a list, it will appear here.</h2>
             )}
             <Row className="full-list__row">
               {(showFullList || preloadedList.listTitle) &&

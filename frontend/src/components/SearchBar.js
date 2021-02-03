@@ -25,17 +25,14 @@ const SearchBar = () => {
     e.preventDefault();
     if (searchOption === "User") {
       dispatch(getUsers(searchText));
-      history.push(`/search/user?name=${searchText}`);
+      history.push(`/search/user/${searchText}/page/1`);
     } else {
       dispatch(getLists(searchText));
-      history.push(`/search/list?name=${searchText}`);
+      history.push(`/search/list/${searchText}/page/1`);
     }
   };
   useEffect(() => {
-    return () => {
-      dispatch({ type: USER_SEARCH_RESET });
-      dispatch({ type: LIST_SEARCH_RESET });
-    };
+    return () => {};
   }, [dispatch]);
   return (
     <Row>

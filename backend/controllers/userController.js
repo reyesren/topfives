@@ -133,6 +133,8 @@ const getUser = async (req, res, next) => {
 };
 
 const getUsers = async (req, res, next) => {
+  const pageSize = 6;
+  const page = Number(req.query.pageNumber) || 1;
   const username = req.query.username
     ? {
         username: {
@@ -142,16 +144,18 @@ const getUsers = async (req, res, next) => {
       }
     : {};
   let users = [];
-
+  const count = await User.countDocuments({ ...username });
   try {
-    users = await User.find({ ...username }, "-password");
+    users = await User.find({ ...username }, "-password")
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
   } catch (err) {
     return next(new Error("Something unexpected happened. Try again later."));
   }
   if (users.length === 0) {
     return next(new Error("There are no users with that name"));
   }
-  res.json(users);
+  res.json({ users, page, pages: Math.ceil(count / pageSize) });
 };
 
 module.exports = {

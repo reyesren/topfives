@@ -63,7 +63,9 @@ export const searchUsersResultsReducer = (state = { users: [] }, action) => {
     case USER_SEARCH_SUCCESS:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.users,
+        pages: action.payload.pages,
+        page: action.payload.page,
         error: "",
         loading: false,
       };

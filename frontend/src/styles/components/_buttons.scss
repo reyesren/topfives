@@ -87,6 +87,16 @@ button.close:hover {
   background-color: #1f2933;
 }
 
+.page-link {
+  color: white;
+  background-color: #28292c;
+  border: 1px solid white;
+}
+
+.page-item.active .page-link {
+  background-color: #1f2933;
+}
+
 @media (min-width: 992px) {
   #profile-logout__btn {
     padding-right: 10px;

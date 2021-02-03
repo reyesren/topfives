@@ -25,7 +25,12 @@ const App = (props) => {
       <Header />
       <Route component={DashboardPage} path="/" exact />
       <Route component={UserPage} path="/user/:id" />
-      <Route component={SearchResultsPage} path="/search" />
+      <Route component={SearchResultsPage} path="/search" exact />
+      <Route
+        component={SearchResultsPage}
+        path="/search/:type/:name/page/:pageNumber"
+        exact
+      />
     </Router>
   );
 };

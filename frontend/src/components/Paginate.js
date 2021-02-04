@@ -33,7 +33,7 @@ const Paginate = ({ pages, page, type, keyword = "" }) => {
         )}
         {page <= pages - 2 && (
           <>
-            <span id="yo">{`...`}</span>
+            <span id="pagination-dots">{`...`}</span>
             <Pagination.Item href={`/search/${type}/${keyword}/page/${pages}`}>
               {pages}
             </Pagination.Item>

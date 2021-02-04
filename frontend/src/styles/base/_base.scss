@@ -8,8 +8,16 @@ body {
   font-size: 14px;
   overflow-x: hidden;
   position: relative;
+  color: white;
+}
+#root {
+  height: 100%;
 }
 
+#no-search__results {
+  margin-left: auto;
+  margin-right: auto;
+}
 @media (min-width: 992px) {
   body {
     height: 100vh;

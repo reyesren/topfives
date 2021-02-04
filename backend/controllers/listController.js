@@ -40,6 +40,8 @@ const getList = async (req, res, next) => {
 };
 
 const getLists = async (req, res, next) => {
+  const pageSize = 6;
+  const page = Number(req.query.pageNumber) || 1;
   const listTitle = req.query.listTitle
     ? {
         listTitle: {
@@ -49,16 +51,18 @@ const getLists = async (req, res, next) => {
       }
     : {};
   let users = [];
-
+  const count = await List.countDocuments({ ...listTitle });
   try {
-    lists = await List.find({ ...listTitle });
+    lists = await List.find({ ...listTitle })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
   } catch (err) {
     return next(new Error("Something unexpected happened. Try again later."));
   }
   if (lists.length === 0) {
     return next(new Error("There are no lists with that title"));
   }
-  res.json(lists);
+  res.json({ lists, page, pages: Math.ceil(count / pageSize) });
 };
 
 const createList = async (req, res, next) => {

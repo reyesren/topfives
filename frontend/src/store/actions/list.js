@@ -7,7 +7,7 @@ import {
   LIST_SHOW,
 } from "./actionTypes";
 
-export const getLists = (listTitle) => async (dispatch) => {
+export const getLists = (listTitle, pageNumber = "") => async (dispatch) => {
   try {
     dispatch({
       type: USER_SEARCH_RESET,
@@ -17,7 +17,7 @@ export const getLists = (listTitle) => async (dispatch) => {
     });
 
     const users = await axios.get(
-      `http://localhost:5000/api/lists?listTitle=${listTitle}`
+      `http://localhost:5000/api/lists?listTitle=${listTitle}&pageNumber=${pageNumber}`
     );
     dispatch({
       type: LIST_SEARCH_SUCCESS,

@@ -28,7 +28,7 @@ export const getProfile = (id) => async (dispatch) => {
   }
 };
 
-export const getUsers = (username) => async (dispatch) => {
+export const getUsers = (username, pageNumber = "") => async (dispatch) => {
   try {
     dispatch({
       type: LIST_SEARCH_RESET,
@@ -38,7 +38,7 @@ export const getUsers = (username) => async (dispatch) => {
     });
 
     const users = await axios.get(
-      `http://localhost:5000/api/users?username=${username}`
+      `http://localhost:5000/api/users?username=${username}&pageNumber=${pageNumber}`
     );
     dispatch({
       type: USER_SEARCH_SUCCESS,

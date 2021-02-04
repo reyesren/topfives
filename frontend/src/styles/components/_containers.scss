@@ -1,13 +1,14 @@
 .container {
   padding: 30px;
-  min-height: 80%;
+  min-height: 90%;
+  position: relative;
 }
 
 .search-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0;
+  position: static;
 }
 
 @media (min-width: 600px) {

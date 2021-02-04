@@ -49,13 +49,16 @@ const SearchResultsPage = (props) => {
   return (
     <Container className="container">
       <Row className="search-row">
-        <h3>Search Results: Books</h3>
+        <h3>Search Results: {name.substring(0, 10)}</h3>
         <span id="search-row__search">
           <SearchBar />
         </span>
       </Row>
       <Container className="container search-container">
-        <Col className="search-results__col" lg={7}>
+        <Col className="search-results__col" md={7} lg={7}>
+          {type === "list" && lists.length === 0 && (
+            <h2 id="no-search__results">No Results Found</h2>
+          )}
           {type === "list" &&
             lists.map((list, index) => (
               <ListCard
@@ -66,6 +69,9 @@ const SearchResultsPage = (props) => {
                 creator={list.creator}
               />
             ))}
+          {type === "user" && users.length === 0 && (
+            <h2 id="no-search__results">No Results Found</h2>
+          )}
           {type === "user" &&
             users.map((user) => (
               <UserCard
@@ -77,7 +83,7 @@ const SearchResultsPage = (props) => {
               />
             ))}
         </Col>
-        <Col className="search-pages__col-right" lg={5}>
+        <Col className="search-pages__col-right" md={5} lg={5}>
           <Image id="search-page__logo" src="/images/logo.png" />
           <Row id="search-page__paginate-row">
             <Paginate

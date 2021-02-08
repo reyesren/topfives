@@ -1,6 +1,19 @@
 #user-info__col-2 {
   text-align: center;
 }
+
+.search-results__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+}
+
+.search-pages__col-right {
+  display: none;
+}
 @media (min-width: 992px) {
   #user-info__col-1 {
     display: flex;
@@ -14,5 +27,21 @@
   }
   #user-info__col-2 p {
     text-align: right;
+  }
+}
+
+@media (min-width: 600px) {
+  .search-pages__col-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 30vh;
+    position: static;
+  }
+  .search-results__col {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 }

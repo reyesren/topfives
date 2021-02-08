@@ -1,19 +1,20 @@
 @import "./base/settings";
 @import "./base/base";
 
-@import "./pages/dashboardPage";
-@import "./pages/userPage";
-
+@import "./components/containers";
+@import "./components/dashboard";
 @import "./components/buttons";
 @import "./components/rows";
 @import "./components/list";
 @import "./components/dropdown";
 @import "./components/profile";
 @import "./components/columns";
-
+@import "./components/cards";
 @import "./components/displayModal";
 @import "./components/successModal";
 @import "./components/header";
 @import "./components/signupErrorModal";
 @import "./components/logoutModal";
 @import "./components/reusableForm";
+@import "./components/images";
+@import "./components/pagination";

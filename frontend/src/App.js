@@ -8,6 +8,7 @@ import DashboardPage from "./pages/DashboardPage";
 import { useDispatch } from "react-redux";
 import * as actions from "./store/actions/index";
 import UserPage from "./pages/UserPage";
+import SearchResultsPage from "./pages/SearchResultsPage";
 
 // adding this comment to be able to commit Develop branch
 const App = (props) => {
@@ -24,6 +25,12 @@ const App = (props) => {
       <Header />
       <Route component={DashboardPage} path="/" exact />
       <Route component={UserPage} path="/user/:id" />
+      <Route component={SearchResultsPage} path="/search" exact />
+      <Route
+        component={SearchResultsPage}
+        path="/search/:type/:name/page/:pageNumber"
+        exact
+      />
     </Router>
   );
 };

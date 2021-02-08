@@ -1,0 +1,19 @@
+.container {
+  padding: 30px;
+  min-height: 90%;
+  position: relative;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: static;
+}
+
+@media (min-width: 600px) {
+  .search-container {
+    display: flex;
+    flex-direction: row;
+  }
+}

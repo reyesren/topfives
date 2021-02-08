@@ -123,15 +123,44 @@ const getUser = async (req, res, next) => {
     user = await User.findById(
       req.params.id,
       "firstName lastName username email lists subscribers bio image"
-    ).populate("image");
+    )
+      .populate("image")
+      .populate("lists");
   } catch (err) {
     return next(new Error("Sorry, something went wrong!"));
   }
   res.json(user);
 };
 
+const getUsers = async (req, res, next) => {
+  const pageSize = 6;
+  const page = Number(req.query.pageNumber) || 1;
+  const username = req.query.username
+    ? {
+        username: {
+          $regex: req.query.username, // this allows us to search without being exactly correct .iph will give us iphone results
+          $options: "i", // case insensitive
+        },
+      }
+    : {};
+  let users = [];
+  const count = await User.countDocuments({ ...username });
+  try {
+    users = await User.find({ ...username }, "-password")
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+  } catch (err) {
+    return next(new Error("Something unexpected happened. Try again later."));
+  }
+  if (users.length === 0) {
+    return next(new Error("There are no users with that name"));
+  }
+  res.json({ users, page, pages: Math.ceil(count / pageSize) });
+};
+
 module.exports = {
   signup: signup,
   login: login,
   getUser: getUser,
+  getUsers,
 };

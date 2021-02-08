@@ -6,6 +6,8 @@ const upload = multer({ storage });
 
 const router = express.Router();
 
+router.get("/", usersController.getUsers);
+
 // get account details
 // use query params to retrieve certain fields
 router.get("/:id", usersController.getUser);

@@ -17,6 +17,14 @@
   width: 100%;
 }
 
+.empty-list__row {
+  background-color: #1f2933;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
+
 .list-item__row h1,
 .list-item__row h3 {
   text-align: right;
@@ -48,6 +56,83 @@
   padding: 10px;
 }
 
+#search-page__paginate-row {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-evenly;
+  position: absolute;
+  left: 75%; /* position the left edge of the element at the middle of the parent */
+
+  transform: translateX(-50%);
+  bottom: 0;
+}
+
+.search-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+.search-row h3 {
+  text-align: center;
+  margin: auto auto;
+}
+
+#search-row__search {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#search-row__search .row {
+  display: flex;
+  align-items: center;
+}
+#search-page__paginate-row__small {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-evenly;
+  position: absolute;
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+
+  transform: translateX(-50%);
+  bottom: 0%;
+}
+
+@media (min-width: 600px) {
+  #search-page__paginate-row__small {
+    display: none;
+  }
+  #search-page__paginate-row {
+    position: absolute;
+    left: calc(
+      100% - 33%
+    ); /* position the left edge of the element at the middle of the parent */
+    transform: translateX(-50%);
+    bottom: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  #search-row__search {
+    margin-left: auto;
+    margin-right: 70px;
+    margin-top: 0;
+  }
+  #search-page__paginate-row {
+    position: absolute;
+    left: calc(
+      100% - 28%
+    ); /* position the left edge of the element at the middle of the parent */
+    transform: translateX(-50%);
+    bottom: 0;
+  }
+}
+
 @media (min-width: 992px) {
   .user-list__row {
     width: 100%;
@@ -64,5 +149,13 @@
     width: 50%;
     justify-content: center;
     margin-bottom: 50px;
+  }
+  #search-page__paginate-row {
+    position: absolute;
+    left: calc(
+      100% - 24%
+    ); /* position the left edge of the element at the middle of the parent */
+    transform: translateX(-50%);
+    bottom: 0;
   }
 }

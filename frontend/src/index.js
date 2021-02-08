@@ -6,7 +6,15 @@ import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import "./styles/styles.scss";
 import authReducer from "./store/reducers/auth";
-import { profileReducer } from "./store/reducers/profile";
+import { listEntriesReducer } from "./store/reducers/listEntry";
+import {
+  searchListsResultsReducer,
+  showListReducer,
+} from "./store/reducers/list";
+import {
+  profileReducer,
+  searchUsersResultsReducer,
+} from "./store/reducers/profile";
 import reportWebVitals from "./reportWebVitals";
 
 const composeEnhancers =
@@ -17,6 +25,10 @@ const composeEnhancers =
 const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
+  listEntries: listEntriesReducer,
+  searchUsersResults: searchUsersResultsReducer,
+  searchListsResults: searchListsResultsReducer,
+  showList: showListReducer,
 });
 
 const store = createStore(

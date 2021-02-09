@@ -5,6 +5,9 @@ import {
   LIST_SEARCH_RESET,
   LIST_SHOW,
   LIST_RESET,
+  EDIT_LIST_REQUEST,
+  EDIT_LIST_SUCCESS,
+  EDIT_LIST_FAIL,
 } from "../actions/actionTypes";
 
 export const searchListsResultsReducer = (state = { lists: [] }, action) => {
@@ -50,6 +53,28 @@ export const showListReducer = (state = { list: {} }, action) => {
       return {
         ...state,
         list: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const editListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case EDIT_LIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case EDIT_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case EDIT_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
       };
     default:
       return state;

@@ -24,3 +24,7 @@ export const LIST_SEARCH_RESET = "LIST_SEARCH_RESET";
 
 export const LIST_SHOW = "LIST_SHOW";
 export const LIST_RESET = "LIST_RESET";
+
+export const EDIT_LIST_REQUEST = "EDIT_LIST_REQUEST";
+export const EDIT_LIST_SUCCESS = "EDIT_LIST_SUCCESS";
+export const EDIT_LIST_FAIL = "EDIT_LIST_FAIL";

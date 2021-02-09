@@ -10,6 +10,7 @@ import { listEntriesReducer } from "./store/reducers/listEntry";
 import {
   searchListsResultsReducer,
   showListReducer,
+  editListReducer,
 } from "./store/reducers/list";
 import {
   profileReducer,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   searchUsersResults: searchUsersResultsReducer,
   searchListsResults: searchListsResultsReducer,
   showList: showListReducer,
+  editList: editListReducer,
 });
 
 const store = createStore(

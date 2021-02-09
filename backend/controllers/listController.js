@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const List = require("../models/list");
 const User = require("../models/user");
 const ListEntry = require("../models/listEntry");
+const list = require("../models/list");
 
 /*
 // Inputs: listTItle, listType, entries, id
@@ -133,22 +134,36 @@ const createList = async (req, res, next) => {
 const editList = async (req, res, next) => {
   let listId = req.params.id;
   let existingList;
-  const { listTitle } = req.body;
+  const { listTitle, listType, listItems } = req.body;
 
   try {
-    existingList = await List.findById(listId).populate("entries");
+    existingList = await List.findById(listId);
   } catch (err) {
     console.log(err);
   }
   if (!existingList) {
     return next(new Error("This list doesn't exist"));
   }
-  existingList.listTitle = listTitle;
+  console.log(listItems);
   try {
-    await existingList.save();
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    for (let item of listItems) {
+      let entry = await ListEntry.findOne({ list: listId, name: item.label });
+      entry.name = item.label;
+      entry.rank = Number(item.value);
+      await entry.save({ session: sess });
+    }
+    existingList.listTitle = listTitle;
+    existingList.listType = listType;
+    await existingList.save({ session: sess });
+
+    await sess.commitTransaction(); // only @ this point are the changes actually saved. if one thing fails, all operations are rolled back
   } catch (err) {
-    return next(new Error("Something went wrong. Please try again"));
+    console.log(err);
+    return next(new Error("Something went wrong"));
   }
+
   res.json(existingList);
 };
 

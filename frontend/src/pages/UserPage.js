@@ -8,9 +8,11 @@ import EditProfile from "../components/EditProfile/EditProfile";
 import { getProfile } from "../store/actions/profile";
 import { getListEntries } from "../store/actions/listEntry";
 import { LIST_RESET } from "../store/actions/actionTypes";
+import EditList from "../components/EditList";
 
 const UserPage = (props) => {
   const [selectedList, setSelectedList] = useState("");
+  const [selectedListType, setSelectedListType] = useState("");
   const [showFullList, setShowFullList] = useState(false);
   const [itemDetails, setItemDetails] = useState(null);
   const [showItemDetails, setShowItemDetails] = useState(false);
@@ -18,6 +20,8 @@ const UserPage = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [isMyProfile, setIsMyProfile] = useState(false);
+  const [showEditListModal, setShowEditListModal] = useState(false);
+  const [listId, setListId] = useState("");
 
   const userId = props.match.params.id;
 
@@ -51,7 +55,10 @@ const UserPage = (props) => {
       setShowFullList(true);
       console.log(e);
       let details = profile.lists.find((list) => list.listTitle === e);
+      setSelectedListType(details.listType);
       console.log(details);
+      setListId(details._id);
+
       dispatch(getListEntries(details._id));
 
       //setListDetails(details.listItems);
@@ -83,6 +90,10 @@ const UserPage = (props) => {
     setShowEditProfile(!showEditProfile);
   };
 
+  const editListHandler = () => {
+    setShowEditListModal((prev) => !prev);
+  };
+
   // const closeEditProfileHandler = () => {
   //   setShowEditProfile(false);
   // };
@@ -91,6 +102,16 @@ const UserPage = (props) => {
       show={showEditProfile}
       closeHandler={toggleEditProfileHandler}
     ></EditProfile>
+  ) : null;
+  const editListModal = showEditListModal ? (
+    <EditList
+      show={showEditListModal}
+      closeHandler={editListHandler}
+      listTitle={selectedList}
+      listType={selectedListType}
+      entries={entries}
+      listId={listId}
+    ></EditList>
   ) : null;
 
   useEffect(() => {
@@ -151,7 +172,14 @@ const UserPage = (props) => {
           </Row>
           <Row className="user-list__row">
             {(!dropdownEnabled || preloadedList.listTitle) && (
-              <h1 id="list-title">{selectedList}</h1>
+              <h1 id="list-title">
+                {selectedList}{" "}
+                {userInfo._id === userId && (
+                  <Button onClick={editListHandler}>
+                    <h3>Edit</h3>
+                  </Button>
+                )}
+              </h1>
             )}
             {profile.lists.length > 0 ? (
               dropdownEnabled &&
@@ -245,6 +273,7 @@ const UserPage = (props) => {
           {editProfileModal}
         </>
       )}
+      {editListModal}
     </Container>
   );
 };

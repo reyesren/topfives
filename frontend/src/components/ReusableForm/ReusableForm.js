@@ -53,18 +53,37 @@ const ReusableForm = (props) => {
     } else {
       const id = formEl;
       const config = props.config[id];
+      // console.log(config);
       returnEl = (
         <Form.Group key={id}>
           {config.label ? <Form.Label>{config.label}</Form.Label> : null}
-          <Form.Control
-            type={config.type}
-            placeholder={config.placeholder}
-            required
-            value={config.value}
-            onChange={(event) => props.changed(event, id)}
-            as={config.as}
-            rows={5}
-          ></Form.Control>
+          {config.type === "rankswap" ? (
+            config.options.map((option) => (
+              <>
+                <p>{option.label}</p>
+                <Form.Control
+                  type={option.type}
+                  placeholder={option.placeholder}
+                  required
+                  value={option.value}
+                  onChange={(event) => props.changed(event, id, option.label)}
+                  as={config.as}
+                  rows={5}
+                ></Form.Control>
+              </>
+            ))
+          ) : (
+            <Form.Control
+              type={config.type}
+              placeholder={config.placeholder}
+              required
+              value={config.value}
+              onChange={(event) => props.changed(event, id)}
+              as={config.as}
+              rows={5}
+            ></Form.Control>
+          )}
+
           {!config.isValid ? (
             <div className="text-danger">{props.errors[id]}</div>
           ) : null}

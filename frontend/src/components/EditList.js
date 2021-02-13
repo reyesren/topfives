@@ -26,7 +26,7 @@ const EditList = (props) => {
       isValid: true,
     },
     rank: {
-      label: "Rank",
+      //label: "Rank",
       type: "rankswap",
       options: props.entries.map((entry) => {
         return {
@@ -36,7 +36,7 @@ const EditList = (props) => {
           placeholder: "Enter a rank from 1 to 5",
         };
       }),
-      errorMsg: "All entries must have a rank",
+      errorMsg: "All ranks must have a unique value between 1 and 5",
       isValid: true,
     },
   });
@@ -83,6 +83,7 @@ const EditList = (props) => {
   const validateInputs = () => {
     let inputErrors = {};
     let valid = true;
+    let rankCounts = {};
 
     let newConfig = {
       ...editListForm,
@@ -125,6 +126,7 @@ const EditList = (props) => {
       };
     }
     editListForm.rank.options.forEach((option) => {
+      console.log(option.value);
       if (!option.value) {
         valid = false;
         inputErrors = {
@@ -139,9 +141,30 @@ const EditList = (props) => {
           },
         };
         return;
+      } else {
+        rankCounts[option.value] = rankCounts[option.value]
+          ? rankCounts[option.value] + 1
+          : 1;
       }
     });
-    console.log(inputErrors);
+    for (let rank in rankCounts) {
+      if (rankCounts[rank] > 1) {
+        console.log("false");
+        valid = false;
+        inputErrors = {
+          ...inputErrors,
+          rank: editListForm.rank.errorMsg,
+        };
+        newConfig = {
+          ...newConfig,
+          rank: {
+            ...newConfig.rank,
+            isValid: false,
+          },
+        };
+        break;
+      }
+    }
     setErrors(inputErrors);
     setEditListForm(newConfig);
     return valid;
@@ -157,16 +180,16 @@ const EditList = (props) => {
         editListForm.rank
       );
       props.closeHandler();
+      dispatch(
+        editList(
+          editListForm.listTitle.value,
+          editListForm.listType.value,
+          editListForm.rank.options,
+          props.listId
+        )
+      );
+      window.parent.location = window.parent.location.href;
     }
-    dispatch(
-      editList(
-        editListForm.listTitle.value,
-        editListForm.listType.value,
-        editListForm.rank.options,
-        props.listId
-      )
-    );
-    window.parent.location = window.parent.location.href;
   };
 
   let modalBody = (

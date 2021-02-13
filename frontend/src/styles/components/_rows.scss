@@ -25,11 +25,16 @@
   height: 100px;
 }
 
+.listheader--row {
+  width: 100%;
+}
+
 .list-item__row h1,
 .list-item__row h3 {
   text-align: right;
   max-width: 100%;
   white-space: normal;
+  word-break: break-all;
 }
 
 .details-row {
@@ -131,6 +136,9 @@
     transform: translateX(-50%);
     bottom: 0;
   }
+  .listheader--row {
+    width: 100%;
+  }
 }
 
 @media (min-width: 992px) {
@@ -146,7 +154,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;
+    width: 60%;
     justify-content: center;
     margin-bottom: 50px;
   }
@@ -157,5 +165,8 @@
     ); /* position the left edge of the element at the middle of the parent */
     transform: translateX(-50%);
     bottom: 0;
+  }
+  .listheader--row {
+    width: 60%;
   }
 }

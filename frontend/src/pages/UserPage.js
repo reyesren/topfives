@@ -172,14 +172,9 @@ const UserPage = (props) => {
           </Row>
           <Row className="user-list__row">
             {(!dropdownEnabled || preloadedList.listTitle) && (
-              <h1 id="list-title">
-                {selectedList}{" "}
-                {userInfo._id === userId && (
-                  <Button onClick={editListHandler}>
-                    <h3>Edit</h3>
-                  </Button>
-                )}
-              </h1>
+              <Row className="listheader--row">
+                <h1 id="list-title">{selectedList} </h1>
+              </Row>
             )}
             {profile.lists.length > 0 ? (
               dropdownEnabled &&
@@ -233,15 +228,26 @@ const UserPage = (props) => {
                         />
                       </Button>
                       {index === entries.length - 1 && (
-                        <Button
-                          className="see-all-lists"
-                          onClick={enableDropdownHandler}
-                          id="go-back__btn"
-                        >
-                          <h3>
-                            <i className="fas fa-arrow-left"></i> See All Lists
-                          </h3>
-                        </Button>
+                        <React.Fragment>
+                          <Button
+                            className="see-all-lists"
+                            onClick={enableDropdownHandler}
+                            id="go-back__btn"
+                          >
+                            <h3>
+                              <i className="fas fa-arrow-left"></i> See All
+                              Lists
+                            </h3>
+                          </Button>
+                          {userInfo._id === userId && (
+                            <Button
+                              className="editlist--btn"
+                              onClick={editListHandler}
+                            >
+                              <h3>Edit</h3>
+                            </Button>
+                          )}
+                        </React.Fragment>
                       )}
                     </Row>
                   ))

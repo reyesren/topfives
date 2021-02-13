@@ -15,6 +15,9 @@ const getListEntries = async (req, res, next) => {
   if (!existingList) {
     return next(new Error("This list doesn't exist"));
   }
+  existingList.entries.sort(function (a, b) {
+    return a.rank - b.rank;
+  });
   let entries = [...existingList.entries];
   res.json(entries);
 };

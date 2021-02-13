@@ -53,14 +53,13 @@ const ReusableForm = (props) => {
     } else {
       const id = formEl;
       const config = props.config[id];
-      // console.log(config);
       returnEl = (
         <Form.Group key={id}>
           {config.label ? <Form.Label>{config.label}</Form.Label> : null}
           {config.type === "rankswap" ? (
-            config.options.map((option) => (
-              <>
-                <p>{option.label}</p>
+            config.options.map((option, index) => (
+              <React.Fragment key={index}>
+                <Form.Label>{`${option.label}'s rank`}</Form.Label>
                 <Form.Control
                   type={option.type}
                   placeholder={option.placeholder}
@@ -70,7 +69,7 @@ const ReusableForm = (props) => {
                   as={config.as}
                   rows={5}
                 ></Form.Control>
-              </>
+              </React.Fragment>
             ))
           ) : (
             <Form.Control

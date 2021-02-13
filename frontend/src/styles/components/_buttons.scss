@@ -56,6 +56,10 @@ button.close:hover {
 .edit-profile__btn:focus,
 .edit-profile__btn:hover,
 .edit-profile__btn.btn-primary:not(:disabled):not(.disabled):active,
+.editlist--btn,
+.editlist--btn:focus,
+.editlist--btn:hover,
+.editlist--btn.btn-primary:not(:disabled):not(.disabled):active,
 .see-all-lists,
 .see-all-lists:focus,
 .see-all-lists:hover,
@@ -105,6 +109,13 @@ button.close:hover {
   .edit-profile__btn {
     display: flex;
     align-self: flex-start;
+    padding-left: 0;
+  }
+  .editlist--btn {
+    // display: flex;
+    // align-self: flex-start;
+    margin: 0;
+    margin-left: auto;
     padding-left: 0;
   }
   .list-items__details-btn {

@@ -36,6 +36,8 @@ const Header = (props) => {
 
   const userId = useSelector((state) => {
     if (!loggedIn) return null;
+    console.log(state.auth.userInfo);
+    console.log(typeof state.auth.userInfo);
     return state.auth.userInfo._id;
   });
 

@@ -11,6 +11,7 @@ export const authStart = () => {
 export const authSuccess = (isSignup, userInfo, socket) => {
   //console.log(socket);
   socket.connect();
+  console.log(userInfo);
   return {
     type: actionTypes.AUTH_SUCCESS,
     isSignup: isSignup,
@@ -45,7 +46,8 @@ export const authCheckIfLoggedIn = (socket) => {
     if (!token) {
       dispatch(logout());
     } else {
-      const userInfo = localStorage.getItem("userInfo");
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      console.log(userInfo);
       dispatch(authSuccess(false, userInfo, socket));
     }
   };

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import "./styles/styles.scss";
+import SocketContext from "./context/socketContext";
 import authReducer from "./store/reducers/auth";
 import { listEntriesReducer } from "./store/reducers/listEntry";
 import {
@@ -17,11 +18,13 @@ import {
   searchUsersResultsReducer,
 } from "./store/reducers/profile";
 import reportWebVitals from "./reportWebVitals";
+import { io } from "socket.io-client";
 
+const socket = io("localhost:5000", { autoConnect: false });
 const composeEnhancers =
-  process.env.NODE_ENV === "development"
+  (process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    : null || compose;
+    : null) || compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -40,9 +43,11 @@ const store = createStore(
 
 const app = (
   <Provider store={store}>
-    <React.StrictMode>
-      <App></App>
-    </React.StrictMode>
+    <SocketContext.Provider value={socket}>
+      <React.StrictMode>
+        <App></App>
+      </React.StrictMode>
+    </SocketContext.Provider>
   </Provider>
 );
 

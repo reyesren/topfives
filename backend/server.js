@@ -3,7 +3,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const express = require("express");
-
+const http = require("http");
+const socketio = require("socket.io");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 const listRoutes = require("./routes/listRoutes");
@@ -15,6 +16,10 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 db();
 const app = express();
+const server = http.createServer(app);
+const io = socketio(server, {
+  cors: "*",
+});
 
 app.use(bodyParser.json());
 
@@ -32,6 +37,14 @@ app.use((req, res, next) => {
   next();
 });
 
+io.on("connection", (socket) => {
+  console.log("We made it");
+
+  socket.on("disconnect", () => {
+    console.log("disconnected");
+  });
+});
+
 app.use("/api/users", userRoutes);
 app.use("/api/lists", listRoutes);
 app.use("/api/listEntry", listEntryRoutes);
@@ -39,4 +52,4 @@ app.use("/api/listEntry", listEntryRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(5000, console.log("Listening on port 5000"));
+server.listen(5000, console.log("Listening on port 5000"));

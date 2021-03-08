@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+//import socket from "../../socket";
 
 export const authStart = () => {
   return {
@@ -7,7 +8,9 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (isSignup, userInfo) => {
+export const authSuccess = (isSignup, userInfo, socket) => {
+  //console.log(socket);
+  socket.connect();
   return {
     type: actionTypes.AUTH_SUCCESS,
     isSignup: isSignup,
@@ -36,13 +39,14 @@ export const logout = () => {
   };
 };
 
-export const authCheckIfLoggedIn = () => {
+export const authCheckIfLoggedIn = (socket) => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
     if (!token) {
       dispatch(logout());
     } else {
-      dispatch(authSuccess(false));
+      const userInfo = localStorage.getItem("userInfo");
+      dispatch(authSuccess(false, userInfo, socket));
     }
   };
 };
@@ -56,7 +60,8 @@ export const auth = (
   lastName = null,
   email = null,
   subscriptions = null,
-  lists = null
+  lists = null,
+  socket
 ) => {
   return (dispatch) => {
     let authData = {
@@ -84,7 +89,7 @@ export const auth = (
           name: response.data.name,
           _id: response.data._id,
         };
-        dispatch(authSuccess(isSignup, userInfo));
+        dispatch(authSuccess(isSignup, userInfo, socket));
         if (!isSignup && closeHandler) {
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -93,8 +98,11 @@ export const auth = (
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
         }
+        //socket.connect();
+        //console.log(socket);
       })
       .catch((err) => {
+        console.log(err);
         dispatch(authFail(err.response.data.message));
       });
   };

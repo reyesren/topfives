@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ReusableForm from "../../ReusableForm/ReusableForm";
 import Spinner from "react-bootstrap/Spinner";
 import SuccessAccCreated from "./SuccessAccCreated";
@@ -6,8 +6,10 @@ import DisplayModal from "../../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions/index";
+import SocketContext from "../../../context/socketContext";
 
 const Signup = (props) => {
+  const socket = useContext(SocketContext);
   const formTitle = "Create a New Account";
   const [openSuccess, setOpenSuccess] = useState(true);
   const [openError, setOpenError] = useState(true);
@@ -103,7 +105,8 @@ const Signup = (props) => {
         lastName,
         email,
         subscriptions,
-        lists
+        lists,
+        socket
       )
     );
   };

@@ -40,6 +40,11 @@ app.use((req, res, next) => {
 io.on("connection", (socket) => {
   console.log("We made it");
 
+  socket.on("follow", (follower, following) => {
+    console.log("following");
+    //console.log(`${follower} is not following ${following}`);
+  });
+
   socket.on("disconnect", () => {
     console.log("disconnected");
   });

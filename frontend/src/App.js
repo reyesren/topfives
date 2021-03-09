@@ -27,6 +27,25 @@ const App = (props) => {
   }, [checkIfLoggedIn]);
 
   useEffect(() => {
+    const sessionID = localStorage.getItem("sessionID");
+
+    if (sessionID) {
+      console.log("session detected");
+      socket.socket.auth = { sessionID };
+    } else {
+      console.log("session not detected");
+    }
+
+    socket.socket.on("session", ({ sessionID, userID }) => {
+      // attach the session ID to the next reconnection attempts
+      socket.socket.auth = { sessionID };
+      // store it in the localStorage
+      localStorage.setItem("sessionID", sessionID);
+      // save the ID of the user
+      socket.socket.userID = userID;
+      console.log(socket.socket);
+    });
+
     socket.socket.on("users", (usersList) => {
       console.log(usersList);
       socket.users = [...usersList];

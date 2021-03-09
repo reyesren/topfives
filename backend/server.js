@@ -11,7 +11,10 @@ const listRoutes = require("./routes/listRoutes");
 const listEntryRoutes = require("./routes/listEntryRoutes");
 const mongoose = require("mongoose");
 const db = require("./config/db");
-
+const crypto = require("crypto");
+const randomId = () => crypto.randomBytes(8).toString("hex");
+const { InMemorySessionStore } = require("./sessionStore");
+const sessionStore = new InMemorySessionStore();
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 db();
@@ -38,6 +41,28 @@ app.use((req, res, next) => {
 });
 
 io.use((socket, next) => {
+  const sessionID = socket.handshake.auth.sessionID;
+  if (sessionID) {
+    const session = sessionStore.findSession(sessionID);
+    if (session) {
+      socket.sessionID = sessionID;
+      socket.userID = session.userID;
+      socket.username = session.username;
+      return next();
+    }
+  }
+  const username = socket.handshake.auth.username;
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
+  socket.sessionID = randomId();
+  socket.userID = randomId();
+  socket.username = username;
+  console.log(socket);
+  next();
+});
+
+/* io.use((socket, next) => {
   const username = socket.handshake.auth.username;
   console.log(username);
   if (!username) {
@@ -45,9 +70,24 @@ io.use((socket, next) => {
   }
   socket.username = username;
   next();
-});
+}); */
 
 io.on("connection", (socket) => {
+  sessionStore.saveSession(socket.sessionID, {
+    userID: socket.userID,
+    username: socket.username,
+    connected: true,
+  });
+
+  // emit session details
+  socket.emit("session", {
+    sessionID: socket.sessionID,
+    userID: socket.userID,
+  });
+
+  // join the "userID" room
+  socket.join(socket.userID);
+
   const users = [];
   for (let [id, socket] of io.of("/").sockets) {
     users.push({
@@ -69,8 +109,21 @@ io.on("connection", (socket) => {
     //console.log(`${follower} is not following ${following}`);
   });
 
-  socket.on("disconnect", () => {
-    console.log("disconnected");
+  // notify users upon disconnection
+  socket.on("disconnect", async () => {
+    console.log("user disconnected");
+    const matchingSockets = await io.in(socket.userID).allSockets();
+    const isDisconnected = matchingSockets.size === 0;
+    if (isDisconnected) {
+      // notify other users
+      socket.broadcast.emit("user disconnected", socket.userID);
+      // update the connection status of the session
+      sessionStore.saveSession(socket.sessionID, {
+        userID: socket.userID,
+        username: socket.username,
+        connected: false,
+      });
+    }
   });
 });
 

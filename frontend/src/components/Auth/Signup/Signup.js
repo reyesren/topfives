@@ -9,7 +9,7 @@ import * as actions from "../../../store/actions/index";
 import SocketContext from "../../../context/socketContext";
 
 const Signup = (props) => {
-  const socket = useContext(SocketContext);
+  const socket = useContext(SocketContext).socket;
   const formTitle = "Create a New Account";
   const [openSuccess, setOpenSuccess] = useState(true);
   const [openError, setOpenError] = useState(true);

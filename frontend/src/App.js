@@ -19,12 +19,22 @@ const App = (props) => {
   console.log(socket);
   const dispatch = useDispatch();
   const checkIfLoggedIn = useCallback(() => {
-    dispatch(actions.authCheckIfLoggedIn(socket));
+    dispatch(actions.authCheckIfLoggedIn(socket.socket));
   }, [dispatch]);
 
   useEffect(() => {
     checkIfLoggedIn();
   }, [checkIfLoggedIn]);
+
+  useEffect(() => {
+    socket.socket.on("users", (usersList) => {
+      console.log(usersList);
+      socket.users = [...usersList];
+    });
+    socket.socket.on("new_follower", (message) => {
+      console.log(message);
+    });
+  }, []);
   return (
     <Router>
       <Header />

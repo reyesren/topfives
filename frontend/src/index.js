@@ -20,7 +20,11 @@ import {
 import reportWebVitals from "./reportWebVitals";
 import { io } from "socket.io-client";
 
-const socket = io("localhost:5000", { autoConnect: false });
+const socket = io("localhost:5000", {
+  autoConnect: false,
+});
+//  transports: ["websocket"],
+
 const composeEnhancers =
   (process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -43,7 +47,7 @@ const store = createStore(
 
 const app = (
   <Provider store={store}>
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={{ socket: socket, users: [] }}>
       <React.StrictMode>
         <App></App>
       </React.StrictMode>

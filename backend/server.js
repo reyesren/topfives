@@ -37,11 +37,35 @@ app.use((req, res, next) => {
   next();
 });
 
-io.on("connection", (socket) => {
-  console.log("We made it");
+io.use((socket, next) => {
+  const username = socket.handshake.auth.username;
+  console.log(username);
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
+  socket.username = username;
+  next();
+});
 
-  socket.on("follow", (follower, following) => {
+io.on("connection", (socket) => {
+  const users = [];
+  for (let [id, socket] of io.of("/").sockets) {
+    users.push({
+      userID: id,
+      username: socket.username,
+    });
+  }
+  io.emit("users", users);
+
+  socket.on("follow", (data) => {
+    console.log(data);
     console.log("following");
+    socket.broadcast
+      .to(data.to)
+      .emit(
+        "new_follower",
+        `You (${data.followed}) have received a new follower: ${data.follower}`
+      );
     //console.log(`${follower} is not following ${following}`);
   });
 

@@ -97,7 +97,13 @@ const UserPage = (props) => {
   };
 
   const onFollowHandler = () => {
-    socket.emit("follow", () => {});
+    const user = socket.users.find((user) => user.username === username);
+    console.log(user);
+    socket.socket.emit("follow", {
+      followed: username,
+      follower: userInfo.username,
+      to: user.userID,
+    });
   };
 
   // const closeEditProfileHandler = () => {
@@ -150,7 +156,7 @@ const UserPage = (props) => {
         setIsMyProfile(false);
       }
     }
-  }, [loggedIn, userId, userInfo._id]);
+  }, [loggedIn, userId]);
 
   return (
     <Container className="user-page__container">

@@ -8,7 +8,7 @@ import * as actions from "../../../store/actions/index";
 import SocketContext from "../../../context/socketContext";
 
 const Login = (props) => {
-  const socket = useContext(SocketContext);
+  const socket = useContext(SocketContext).socket;
   const [errors, setErrors] = useState({});
   const [openError, setOpenError] = useState(true);
   const [loginForm, setLoginForm] = useState({

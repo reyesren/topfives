@@ -103,6 +103,7 @@ const UserPage = (props) => {
       followed: username,
       follower: userInfo.username,
       to: user.userID,
+      from: socket.socket.userID,
     });
   };
 

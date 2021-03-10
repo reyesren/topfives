@@ -10,9 +10,10 @@ export const authStart = () => {
 
 export const authSuccess = (isSignup, userInfo, socket) => {
   //console.log(socket);
-  console.log(userInfo);
+  console.log(socket);
   socket.auth = { username: userInfo.username };
   socket.connect();
+  console.log(socket);
   return {
     type: actionTypes.AUTH_SUCCESS,
     isSignup: isSignup,

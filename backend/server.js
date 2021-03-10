@@ -15,6 +15,8 @@ const crypto = require("crypto");
 const randomId = () => crypto.randomBytes(8).toString("hex");
 const { InMemorySessionStore } = require("./sessionStore");
 const sessionStore = new InMemorySessionStore();
+const { InMemoryMessageStore } = require("./messageStore");
+const messageStore = new InMemoryMessageStore();
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 db();
@@ -58,7 +60,6 @@ io.use((socket, next) => {
   socket.sessionID = randomId();
   socket.userID = randomId();
   socket.username = username;
-  console.log(socket);
   next();
 });
 
@@ -87,31 +88,57 @@ io.on("connection", (socket) => {
 
   // join the "userID" room
   socket.join(socket.userID);
-
+  // fetch existing users
   const users = [];
+  const messagesPerUser = {};
+  messageStore.findMessagesForUser(socket.userID).forEach((message) => {
+    const { from, to } = message;
+    //const otherUser = socket.userID === from ? to : from;
+    if (messagesPerUser[socket.userID]) {
+      messagesPerUser[socket.userID].push(message);
+    } else {
+      messagesPerUser[socket.userID] = [message];
+    }
+  });
+  sessionStore.findAllSessions().forEach((session) => {
+    users.push({
+      userID: session.userID,
+      username: session.username,
+      connected: session.connected,
+      messages: messagesPerUser[session.userID] || [],
+    });
+  });
+  console.log("socket id is " + socket.userID);
+  console.log("messages for socket " + messagesPerUser[socket.userID]);
+  io.emit("users", users);
+  /*const users = [];
   for (let [id, socket] of io.of("/").sockets) {
     users.push({
       userID: id,
       username: socket.username,
     });
   }
-  io.emit("users", users);
+  io.emit("users", users); */
 
   socket.on("follow", (data) => {
     console.log(data);
     console.log("following");
-    socket.broadcast
-      .to(data.to)
-      .emit(
-        "new_follower",
-        `You (${data.followed}) have received a new follower: ${data.follower}`
-      );
+    let message = {
+      to: data.to,
+      from: data.from,
+      content: `You (${data.followed}) have received a new follower: ${data.follower}`,
+    };
+    socket.broadcast.to(data.to).emit("new_follower", message.content);
     //console.log(`${follower} is not following ${following}`);
+    messageStore.saveMessage(message);
+    //console.log(messageStore);
+    socket.emit("users", users);
   });
 
   // notify users upon disconnection
   socket.on("disconnect", async () => {
     console.log("user disconnected");
+
     const matchingSockets = await io.in(socket.userID).allSockets();
     const isDisconnected = matchingSockets.size === 0;
     if (isDisconnected) {

@@ -20,7 +20,13 @@ const NotificationsPage = () => {
       socket.socket.emit("seen_all_messages");
     }
   }, [newNotifications]);
-  return <div></div>;
+  return (
+    <div>
+      {messageData.messages.map((message, index) => (
+        <div key={index}>{message.content}</div>
+      ))}
+    </div>
+  );
 };
 
 export default NotificationsPage;

@@ -79,6 +79,11 @@ io.on("connection", (socket) => {
     username: socket.username,
     connected: true,
   });
+  console.log("before");
+  console.log(messageStore);
+  messageStore.allocateSpaceForUser(socket.userID);
+  console.log("after");
+  console.log(messageStore);
 
   // emit session details
   socket.emit("session", {
@@ -90,39 +95,22 @@ io.on("connection", (socket) => {
   socket.join(socket.userID);
   // fetch existing users
   let users = [];
-  const messagesPerUser = {};
-  messageStore.findMessagesForUser(socket.userID).forEach((message) => {
-    const { from, to } = message;
-    //const otherUser = socket.userID === from ? to : from;
-    if (messagesPerUser[socket.userID]) {
-      messagesPerUser[socket.userID].push(message);
-    } else {
-      messagesPerUser[socket.userID] = [message];
-    }
-  });
+  let messagesPerUser = messageStore.findMessagesForUser(socket.userID);
   sessionStore.findAllSessions().forEach((session) => {
     users.push({
       userID: session.userID,
       username: session.username,
       connected: session.connected,
-      messages: messagesPerUser[session.userID] || [],
+      messages: messagesPerUser || [],
     });
   });
 
-  socket.emit("all_messages", messagesPerUser[socket.userID]);
+  socket.emit("all_messages", messageStore.findMessagesForUser(socket.userID));
 
   users.push(messageStore);
   console.log("socket id is " + socket.userID);
   console.log("messages for socket " + messagesPerUser[socket.userID]);
   io.emit("users", users);
-  /*const users = [];
-  for (let [id, socket] of io.of("/").sockets) {
-    users.push({
-      userID: id,
-      username: socket.username,
-    });
-  }
-  io.emit("users", users); */
 
   socket.on("follow", (data) => {
     console.log(data);
@@ -136,26 +124,17 @@ io.on("connection", (socket) => {
     socket.broadcast.to(data.to).emit("new_follower", message.content);
     //console.log(`${follower} is not following ${following}`);
     messageStore.saveMessage(message);
+    console.log("message store after saving");
+    console.log(messageStore);
     //console.log(messageStore);
     users.push(messageStore);
     io.emit("users", users);
   });
 
   socket.on("seen_all_messages", () => {
-    let messagesPerUser = {};
+    let messagesPerUser = messageStore.findMessagesForUser(socket.userID);
     messageStore.seenAllMessages(socket.userID);
-    messageStore.findMessagesForUser(socket.userID).forEach((message) => {
-      console.log("reset message: ");
-      console.log(JSON.stringify(message));
-      const { from, to } = message;
-      //const otherUser = socket.userID === from ? to : from;
-      if (messagesPerUser[socket.userID]) {
-        messagesPerUser[socket.userID].push(message);
-      } else {
-        messagesPerUser[socket.userID] = [message];
-      }
-    });
-    socket.emit("all_messages", messagesPerUser[socket.userID]);
+    socket.emit("all_messages", messagesPerUser);
   });
 
   socket.on("updateUserList", (usersList) => {

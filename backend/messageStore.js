@@ -6,22 +6,25 @@
 class InMemoryMessageStore extends MessageStore {
   constructor() {
     super();
-    this.messages = [];
+    this.messages = {};
   }
 
   saveMessage(message) {
-    this.messages.push(message);
+    this.messages[message.to].push(message);
   }
 
   findMessagesForUser(userID) {
-    return this.messages.filter(({ from, to }) => to === userID);
+    return this.messages[userID];
   }
   seenAllMessages(userID) {
-    this.messages.forEach((message) => {
+    this.messages[userID].forEach((message) => {
       if (message.to === userID) {
         message.hasSeen = true;
       }
     });
+  }
+  allocateSpaceForUser(userID) {
+    if (!this.messages.hasOwnProperty(userID)) this.messages[userID] = [];
   }
 }
 

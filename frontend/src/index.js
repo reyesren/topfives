@@ -17,11 +17,16 @@ import {
   profileReducer,
   searchUsersResultsReducer,
 } from "./store/reducers/profile";
+import { messagesReducer } from "./store/reducers/messages";
 import reportWebVitals from "./reportWebVitals";
 import { io } from "socket.io-client";
 
 const socket = io("localhost:5000", {
   autoConnect: false,
+});
+
+socket.onAny((event, ...args) => {
+  console.log(event, args);
 });
 //  transports: ["websocket"],
 
@@ -38,6 +43,7 @@ const rootReducer = combineReducers({
   searchListsResults: searchListsResultsReducer,
   showList: showListReducer,
   editList: editListReducer,
+  messages: messagesReducer,
 });
 
 const store = createStore(

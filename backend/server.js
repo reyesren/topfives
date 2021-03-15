@@ -58,7 +58,7 @@ io.use((socket, next) => {
     return next(new Error("invalid username"));
   }
   socket.sessionID = randomId();
-  socket.userID = randomId();
+  socket.userID = username;
   socket.username = username;
   next();
 });
@@ -89,7 +89,7 @@ io.on("connection", (socket) => {
   // join the "userID" room
   socket.join(socket.userID);
   // fetch existing users
-  const users = [];
+  let users = [];
   const messagesPerUser = {};
   messageStore.findMessagesForUser(socket.userID).forEach((message) => {
     const { from, to } = message;
@@ -108,6 +108,10 @@ io.on("connection", (socket) => {
       messages: messagesPerUser[session.userID] || [],
     });
   });
+
+  socket.emit("all_messages", messagesPerUser[socket.userID]);
+
+  users.push(messageStore);
   console.log("socket id is " + socket.userID);
   console.log("messages for socket " + messagesPerUser[socket.userID]);
   io.emit("users", users);
@@ -127,12 +131,35 @@ io.on("connection", (socket) => {
       to: data.to,
       from: data.from,
       content: `You (${data.followed}) have received a new follower: ${data.follower}`,
+      hasSeen: false,
     };
     socket.broadcast.to(data.to).emit("new_follower", message.content);
     //console.log(`${follower} is not following ${following}`);
     messageStore.saveMessage(message);
     //console.log(messageStore);
-    socket.emit("users", users);
+    users.push(messageStore);
+    io.emit("users", users);
+  });
+
+  socket.on("seen_all_messages", () => {
+    let messagesPerUser = {};
+    messageStore.seenAllMessages(socket.userID);
+    messageStore.findMessagesForUser(socket.userID).forEach((message) => {
+      console.log("reset message: ");
+      console.log(JSON.stringify(message));
+      const { from, to } = message;
+      //const otherUser = socket.userID === from ? to : from;
+      if (messagesPerUser[socket.userID]) {
+        messagesPerUser[socket.userID].push(message);
+      } else {
+        messagesPerUser[socket.userID] = [message];
+      }
+    });
+    socket.emit("all_messages", messagesPerUser[socket.userID]);
+  });
+
+  socket.on("updateUserList", (usersList) => {
+    users = [...usersList];
   });
 
   // notify users upon disconnection

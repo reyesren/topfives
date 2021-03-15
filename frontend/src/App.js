@@ -10,6 +10,8 @@ import * as actions from "./store/actions/index";
 import UserPage from "./pages/UserPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import SocketContext from "./context/socketContext";
+import { storeMessages, addNewMessage } from "./store/actions/messages";
+import NotificationsPage from "./pages/NotificationsPage";
 
 // adding this comment to be able to commit Develop branch
 const App = (props) => {
@@ -46,14 +48,29 @@ const App = (props) => {
       console.log(socket.socket);
     });
 
+    socket.socket.on("all_messages", (messages) => {
+      console.log(messages);
+      let newNotificationFlag = false;
+      if (messages) {
+        for (let i = 0; i < messages.length; i++) {
+          if (messages[i].hasSeen === false) {
+            newNotificationFlag = true;
+          }
+        }
+        dispatch(storeMessages(messages, newNotificationFlag));
+      }
+    });
+
     socket.socket.on("users", (usersList) => {
       console.log(usersList);
+      socket.socket.emit("updateUserList", usersList);
       socket.users = [...usersList];
     });
     socket.socket.on("new_follower", (message) => {
-      console.log(message);
+      console.log("new follower..");
+      dispatch(addNewMessage(message));
     });
-  }, []);
+  }, [dispatch]);
   return (
     <Router>
       <Header />
@@ -65,6 +82,7 @@ const App = (props) => {
         path="/search/:type/:name/page/:pageNumber"
         exact
       />
+      <Route component={NotificationsPage} path="/notifications" />
     </Router>
   );
 };

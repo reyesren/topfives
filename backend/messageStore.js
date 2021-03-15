@@ -16,6 +16,13 @@ class InMemoryMessageStore extends MessageStore {
   findMessagesForUser(userID) {
     return this.messages.filter(({ from, to }) => to === userID);
   }
+  seenAllMessages(userID) {
+    this.messages.forEach((message) => {
+      if (message.to === userID) {
+        message.hasSeen = true;
+      }
+    });
+  }
 }
 
 module.exports = {

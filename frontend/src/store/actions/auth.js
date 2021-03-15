@@ -34,9 +34,11 @@ export const authGoBackToForm = () => {
   };
 };
 
-export const logout = () => {
+export const logout = (socket) => {
   localStorage.removeItem("token");
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("sessionID");
+  socket.disconnect();
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -46,7 +48,7 @@ export const authCheckIfLoggedIn = (socket) => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      dispatch(logout());
+      dispatch(logout(socket));
     } else {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       dispatch(authSuccess(false, userInfo, socket));

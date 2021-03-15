@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import { Nav, Image, Collapse, Navbar } from "react-bootstrap";
 
 import Login from "../Auth/Login/Login";
@@ -6,8 +6,11 @@ import Signup from "../Auth/Signup/Signup";
 import Logout from "../Auth/Logout/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/index";
+import SocketContext from "../../context/socketContext";
 
 const Header = (props) => {
+  const socket = useContext(SocketContext);
+
   const [openSignup, setOpenSignup] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
@@ -24,7 +27,7 @@ const Header = (props) => {
   const toggleLogoutHandler = (event, toLogout) => {
     setOpenLogout(!openLogout);
     if (toLogout) {
-      onAuthLogout();
+      onAuthLogout(socket.socket);
     }
   };
 
@@ -34,13 +37,19 @@ const Header = (props) => {
     return state.auth.loggedIn;
   });
 
+  const messageData = useSelector((state) => {
+    return state.messages;
+  });
+
+  const { newNotifications } = messageData;
+
   const userId = useSelector((state) => {
     if (!loggedIn) return null;
     return state.auth.userInfo._id;
   });
 
-  const onAuthLogout = () => {
-    dispatch(actions.logout());
+  const onAuthLogout = (socket) => {
+    dispatch(actions.logout(socket));
   };
   const expandHandler = () => {
     setExpand((prevState) => !prevState);
@@ -86,7 +95,9 @@ const Header = (props) => {
                   Home
                 </Nav.Link>
                 <Nav.Link eventKey="link-2">Subscribers</Nav.Link>
-                <Nav.Link eventKey="link-3">Notifications</Nav.Link>
+                <Nav.Link eventKey="link-3" href="/notifications">
+                  {newNotifications && `! `} Notifications
+                </Nav.Link>
                 <Nav.Link eventKey="link-4" href={`/user/${userId}`}>
                   Profile
                 </Nav.Link>

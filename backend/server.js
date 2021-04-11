@@ -17,7 +17,10 @@ const { InMemorySessionStore } = require("./sessionStore");
 const sessionStore = new InMemorySessionStore();
 const { InMemoryMessageStore } = require("./messageStore");
 const messageStore = new InMemoryMessageStore();
+const { InMemoryFollowersStore } = require("./followersStore");
+const followerStore = new InMemoryFollowersStore();
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+
 
 db();
 const app = express();
@@ -82,6 +85,7 @@ io.on("connection", (socket) => {
   console.log("before");
   console.log(messageStore);
   messageStore.allocateSpaceForUser(socket.userID);
+  followerStore.allocateSpaceForUser(socket.userID);
   console.log("after");
   console.log(messageStore);
 
@@ -124,8 +128,9 @@ io.on("connection", (socket) => {
     socket.broadcast.to(data.to).emit("new_follower", message.content);
     //console.log(`${follower} is not following ${following}`);
     messageStore.saveMessage(message);
-    console.log("message store after saving");
+    followerStore.follow(message);
     console.log(messageStore);
+    console.log(followerStore);
     //console.log(messageStore);
     users.push(messageStore);
     io.emit("users", users);

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ReusableForm from "../../ReusableForm/ReusableForm";
 import Spinner from "react-bootstrap/Spinner";
 import DisplayModal from "../../DisplayModal/DisplayModal";
 import Button from "react-bootstrap/Button";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions/index";
+import SocketContext from "../../../context/socketContext";
 
 const Login = (props) => {
+  const socket = useContext(SocketContext).socket;
   const [errors, setErrors] = useState({});
   const [openError, setOpenError] = useState(true);
   const [loginForm, setLoginForm] = useState({
@@ -40,7 +42,20 @@ const Login = (props) => {
   });
 
   const onLogin = (username, password, isSignup, closeHandler) => {
-    dispatch(actions.auth(username, password, isSignup, closeHandler));
+    dispatch(
+      actions.auth(
+        username,
+        password,
+        isSignup,
+        closeHandler,
+        null,
+        null,
+        null,
+        null,
+        null,
+        socket
+      )
+    );
   };
   const onLoginGoBackToForm = () => {
     dispatch(actions.authGoBackToForm());

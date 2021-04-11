@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Image, Dropdown, Button } from "react-bootstrap";
 import ListItems from "../components/ListItems";
@@ -9,8 +9,10 @@ import { getProfile } from "../store/actions/profile";
 import { getListEntries } from "../store/actions/listEntry";
 import { LIST_RESET } from "../store/actions/actionTypes";
 import EditList from "../components/EditList";
+import SocketContext from "../context/socketContext";
 
 const UserPage = (props) => {
+  const socket = useContext(SocketContext);
   const [selectedList, setSelectedList] = useState("");
   const [selectedListType, setSelectedListType] = useState("");
   const [showFullList, setShowFullList] = useState(false);
@@ -94,6 +96,17 @@ const UserPage = (props) => {
     setShowEditListModal((prev) => !prev);
   };
 
+  const onFollowHandler = () => {
+    const user = socket.users.find((user) => user.username === username);
+    console.log(user);
+    socket.socket.emit("follow", {
+      followed: username,
+      follower: userInfo.username,
+      to: user.userID,
+      from: socket.socket.userID,
+    });
+  };
+
   // const closeEditProfileHandler = () => {
   //   setShowEditProfile(false);
   // };
@@ -144,7 +157,7 @@ const UserPage = (props) => {
         setIsMyProfile(false);
       }
     }
-  }, [loggedIn, userId, userInfo._id]);
+  }, [loggedIn, userId]);
 
   return (
     <Container className="user-page__container">
@@ -163,6 +176,7 @@ const UserPage = (props) => {
               >
                 <h3>Edit Profile</h3>
               </Button>
+              <Button onClick={onFollowHandler}>Follow</Button>
             </Col>
             <Col id="user-info__col-2" lg={6} md={6} sm={6} xs={12}>
               <h1>{`${firstName} ${lastName}`}</h1>

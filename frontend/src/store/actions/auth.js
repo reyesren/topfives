@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+//import socket from "../../socket";
 
 export const authStart = () => {
   return {
@@ -7,7 +8,12 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (isSignup, userInfo) => {
+export const authSuccess = (isSignup, userInfo, socket) => {
+  //console.log(socket);
+  console.log(socket);
+  socket.auth = { username: userInfo.username };
+  socket.connect();
+  console.log(socket);
   return {
     type: actionTypes.AUTH_SUCCESS,
     isSignup: isSignup,
@@ -28,21 +34,24 @@ export const authGoBackToForm = () => {
   };
 };
 
-export const logout = () => {
+export const logout = (socket) => {
   localStorage.removeItem("token");
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("sessionID");
+  socket.disconnect();
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
 };
 
-export const authCheckIfLoggedIn = () => {
+export const authCheckIfLoggedIn = (socket) => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      dispatch(logout());
+      dispatch(logout(socket));
     } else {
-      dispatch(authSuccess(false));
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      dispatch(authSuccess(false, userInfo, socket));
     }
   };
 };
@@ -56,7 +65,8 @@ export const auth = (
   lastName = null,
   email = null,
   subscriptions = null,
-  lists = null
+  lists = null,
+  socket
 ) => {
   return (dispatch) => {
     let authData = {
@@ -84,7 +94,7 @@ export const auth = (
           name: response.data.name,
           _id: response.data._id,
         };
-        dispatch(authSuccess(isSignup, userInfo));
+        dispatch(authSuccess(isSignup, userInfo, socket));
         if (!isSignup && closeHandler) {
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -93,8 +103,11 @@ export const auth = (
           localStorage.setItem("token", response.data.accessToken);
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
         }
+        //socket.connect();
+        //console.log(socket);
       })
       .catch((err) => {
+        console.log(err);
         dispatch(authFail(err.response.data.message));
       });
   };

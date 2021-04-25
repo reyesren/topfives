@@ -88,6 +88,7 @@ io.on("connection", (socket) => {
   followerStore.allocateSpaceForUser(socket.userID);
   console.log("after");
   console.log(messageStore);
+  console.log('followers store: ', followerStore);
 
   // emit session details
   socket.emit("session", {
@@ -112,9 +113,11 @@ io.on("connection", (socket) => {
   socket.emit("all_messages", messageStore.findMessagesForUser(socket.userID));
 
   users.push(messageStore);
-  console.log("socket id is " + socket.userID);
-  console.log("messages for socket " + messagesPerUser[socket.userID]);
   io.emit("users", users);
+
+  let followerData = followerStore.findFollowDataForUser(socket.userID);
+
+  socket.emit("all_follow_data", followerData);
 
   socket.on("follow", (data) => {
     console.log(data);
@@ -122,19 +125,27 @@ io.on("connection", (socket) => {
     let message = {
       to: data.to,
       from: data.from,
-      content: `You (${data.followed}) have received a new follower: ${data.follower}`,
+      content: `${data.follower} is now following you.`, // **** if this message changes, change it in the "unfollow" event too *****
       hasSeen: false,
     };
-    socket.broadcast.to(data.to).emit("new_follower", message.content);
+    socket.broadcast.to(data.to).emit("new_follower", {content: message.content, follower: message.from});
     //console.log(`${follower} is not following ${following}`);
     messageStore.saveMessage(message);
     followerStore.follow(message);
-    console.log(messageStore);
-    console.log(followerStore);
-    //console.log(messageStore);
     users.push(messageStore);
     io.emit("users", users);
   });
+
+  socket.on("unfollow", (user) => {
+    followerStore.unfollow(socket.userID, user);
+    let newFollowerData = followerStore.findFollowDataForUser(socket.userID);
+    // Remove message/notification that you've been followed if the person unfollows you.
+    messageStore.removeMessageForUser(user, `${socket.userID} is now following you.`) // **** if you change it here, change it in the "follow" event too ****
+    let messagesForUnfollowedUser = messageStore.findMessagesForUser(user);
+    console.log(messagesForUnfollowedUser);
+    socket.broadcast.to(user).emit("all_messages", messagesForUnfollowedUser);
+    socket.emit("all_follow_data", newFollowerData);
+  })
 
   socket.on("seen_all_messages", () => {
     let messagesPerUser = messageStore.findMessagesForUser(socket.userID);

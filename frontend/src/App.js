@@ -11,6 +11,7 @@ import UserPage from "./pages/UserPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import SocketContext from "./context/socketContext";
 import { storeMessages, addNewMessage } from "./store/actions/messages";
+import { storeFollowData, addNewFollower, addNewFollowing } from "./store/actions/follow";
 import NotificationsPage from "./pages/NotificationsPage";
 
 // adding this comment to be able to commit Develop branch
@@ -61,6 +62,11 @@ const App = (props) => {
       }
     });
 
+    socket.socket.on("all_follow_data", (data) => {
+      console.log(data);
+      dispatch(storeFollowData(data));
+    })
+
     socket.socket.on("users", (usersList) => {
       console.log(usersList);
       socket.socket.emit("updateUserList", usersList);
@@ -68,7 +74,8 @@ const App = (props) => {
     });
     socket.socket.on("new_follower", (message) => {
       console.log("new follower..");
-      dispatch(addNewMessage(message));
+      dispatch(addNewMessage(message.content));
+      dispatch(addNewFollower(message.follower));
     });
   }, [dispatch]);
   return (

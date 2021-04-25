@@ -16,6 +16,12 @@ class InMemoryMessageStore extends MessageStore {
   findMessagesForUser(userID) {
     return this.messages[userID];
   }
+  removeMessageForUser(userID, message) {
+    let index = this.messages[userID].findIndex((msg) => msg.content === message);
+    if (index > -1) {
+      this.messages[userID].splice(index, 1);
+    }
+  }
   seenAllMessages(userID) {
     this.messages[userID].forEach((message) => {
       if (message.to === userID) {

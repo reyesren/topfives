@@ -10,6 +10,7 @@ import { getListEntries } from "../store/actions/listEntry";
 import { LIST_RESET } from "../store/actions/actionTypes";
 import EditList from "../components/EditList";
 import SocketContext from "../context/socketContext";
+import { addNewFollowing } from "../store/actions/follow";
 
 const UserPage = (props) => {
   const socket = useContext(SocketContext);
@@ -24,6 +25,7 @@ const UserPage = (props) => {
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [showEditListModal, setShowEditListModal] = useState(false);
   const [listId, setListId] = useState("");
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const userId = props.match.params.id;
 
@@ -49,6 +51,10 @@ const UserPage = (props) => {
   const preloadedList = useSelector((state) => {
     return state.showList.list;
   });
+
+  const following = useSelector((state) => {
+    return state.follow.following;
+  })
 
   const onSelectHandler = useCallback(
     (e) => {
@@ -98,14 +104,20 @@ const UserPage = (props) => {
 
   const onFollowHandler = () => {
     const user = socket.users.find((user) => user.username === username);
-    console.log(user);
-    socket.socket.emit("follow", {
-      followed: username,
-      follower: userInfo.username,
-      to: user.userID,
-      from: socket.socket.userID,
-    });
+    if(user) {
+      socket.socket.emit("follow", {
+        followed: username,
+        follower: userInfo.username,
+        to: user.userID,
+        from: socket.socket.userID,
+      });
+      dispatch(addNewFollowing(username));
+    }
   };
+
+  const onUnfollowHandler = () => {
+    socket.socket.emit("unfollow", username);
+  }
 
   // const closeEditProfileHandler = () => {
   //   setShowEditProfile(false);
@@ -159,6 +171,10 @@ const UserPage = (props) => {
     }
   }, [loggedIn, userId]);
 
+  useEffect(() => {
+    setIsFollowing(following.includes(username));
+  }, [following, username])
+
   return (
     <Container className="user-page__container">
       {loading && <DisplaySpinner />}
@@ -176,7 +192,10 @@ const UserPage = (props) => {
               >
                 <h3>Edit Profile</h3>
               </Button>
-              <Button onClick={onFollowHandler}>Follow</Button>
+              { isFollowing ? loggedIn && <Button onClick={onUnfollowHandler}>Unfollow</Button>
+                :
+                loggedIn && <Button onClick = {onFollowHandler}>Follow</Button>
+              }
             </Col>
             <Col id="user-info__col-2" lg={6} md={6} sm={6} xs={12}>
               <h1>{`${firstName} ${lastName}`}</h1>

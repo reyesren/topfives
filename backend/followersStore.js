@@ -14,6 +14,16 @@
       this.usersFollowData[data.to]["followers"].push(data.from);
       this.usersFollowData[data.from]["following"].push(data.to);
     }
+    unfollow(self, usernameToUnfollow) {
+      let index1 = this.usersFollowData[self]["following"].indexOf(usernameToUnfollow);
+      let index2 = this.usersFollowData[usernameToUnfollow]["followers"].indexOf(self);
+      if (index1 > -1) {
+        this.usersFollowData[self]["following"].splice(index1, 1);
+      }
+      if(index2 > - 1) {
+        this.usersFollowData[usernameToUnfollow]["followers"].splice(index2, 1);
+      }
+    }
   
     findFollowDataForUser(userID) {
       return this.usersFollowData[userID];

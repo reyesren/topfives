@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { Provider } from "react-redux";
@@ -18,6 +18,7 @@ import {
   searchUsersResultsReducer,
 } from "./store/reducers/profile";
 import { messagesReducer } from "./store/reducers/messages";
+import { followersReducer } from "./store/reducers/follow";
 import reportWebVitals from "./reportWebVitals";
 import { io } from "socket.io-client";
 
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   showList: showListReducer,
   editList: editListReducer,
   messages: messagesReducer,
+  follow: followersReducer,
 });
 
 const store = createStore(

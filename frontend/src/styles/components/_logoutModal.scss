@@ -18,3 +18,9 @@
   border: none;
   padding-top: 0;
 }
+
+.logout-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 25px 25px;
+}

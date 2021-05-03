@@ -96,22 +96,16 @@ const ReusableForm = (props) => {
     <Form noValidate onSubmit={props.submit}>
       <Container>
         {formFields}
-        <Button
-          variant="danger"
-          onClick={props.closeHandler}
-          className={"buttonRow"}
-        >
-          Cancel
-        </Button>
-        <Button
-          className="float-right buttonRow"
-          variant="success"
-          type="submit"
-        >
-          {props.type === "login" && "Log In"}
-          {props.type === "signup" && "Sign Up"}
-          {props.type === "edit" && "Submit Changes"}
-        </Button>
+        <div className="reusable-form-btn-container">
+          <Button variant="danger" onClick={props.closeHandler}>
+            Cancel
+          </Button>
+          <Button className="float-right" variant="success" type="submit">
+            {props.type === "login" && "Log In"}
+            {props.type === "signup" && "Sign Up"}
+            {props.type === "edit" && "Submit Changes"}
+          </Button>
+        </div>
       </Container>
     </Form>
   );

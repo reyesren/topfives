@@ -3,6 +3,7 @@ import { Nav, Image, Collapse, Navbar } from "react-bootstrap";
 
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
+import SignupContainer from "../Auth/Signup/SignupContainer";
 import Logout from "../Auth/Logout/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/index";
@@ -56,7 +57,11 @@ const Header = (props) => {
   };
 
   const signupModal = openSignup ? (
-    <Signup show={openSignup} closeHandler={toggleSignupHandler}></Signup>
+    // <Signup show={openSignup} closeHandler={toggleSignupHandler}></Signup>
+    <SignupContainer
+      show={openSignup}
+      closeHandler={toggleSignupHandler}
+    ></SignupContainer>
   ) : null;
   const loginModal = openLogin ? (
     <Login show={openLogin} closeHandler={toggleLoginHandler}></Login>

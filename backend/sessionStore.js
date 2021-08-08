@@ -39,8 +39,8 @@ class RedisSessionStore extends SessionStore {
       .then(mapSession);
   }
 
-  saveSession(id, { userID, username, connected }) {
-    this.redisClient
+  async saveSession(id, { userID, username, connected }) {
+    await this.redisClient
       .multi()
       .hset(
         `session:${id}`,

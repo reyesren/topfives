@@ -61,10 +61,10 @@ app.use((req, res, next) => {
   next();
 });
 
-io.use((socket, next) => {
+io.use(async (socket, next) => {
   const sessionID = socket.handshake.auth.sessionID;
   if (sessionID) {
-    const session = sessionStore.findSession(sessionID);
+    const session = await sessionStore.findSession(sessionID);
     if (session) {
       socket.sessionID = sessionID;
       socket.userID = session.userID;

@@ -116,9 +116,11 @@ io.on("connection", async (socket) => {
   socket.join(socket.userID);
   // fetch existing users
   let users = [];
-  let messagesPerUser = await messageStore.findMessagesForUser(socket.userID); // returns a promise
-  try {
-    const sessions = await sessionStore.findAllSessions();
+  let [messagesPerUser, followerData, sessions] = await Promise.all([
+    messageStore.findMessagesForUser(socket.userID),
+    followerStore.findFollowDataForUser(socket.userID),
+    sessionStore.findAllSessions()
+  ]); // returns a promise
     sessions.forEach((session) => {
       users.push({
         userID: session.userID,
@@ -127,17 +129,10 @@ io.on("connection", async (socket) => {
         messages: messagesPerUser || [],
       });
     });
-  } catch(err) {
-    console.error(err);
-  }
   socket.emit("all_messages", messagesPerUser);
 
   // users.push(messageStore); // was causing an exception
-  let followerData = {following: [], followers: []}
   io.emit("users", users);
-  if(socket.userID) {
-   followerData = await followerStore.findFollowDataForUser(socket.userID);
-  }
   console.log(followerData);
   socket.emit("all_follow_data", followerData);
 

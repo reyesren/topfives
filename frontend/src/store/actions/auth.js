@@ -108,7 +108,7 @@ export const auth = (
       })
       .catch((err) => {
         console.log(err);
-        dispatch(authFail(err.response.data.message));
+        dispatch(authFail(err));
       });
   };
 };

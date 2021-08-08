@@ -33,8 +33,8 @@ class RedisSessionStore extends SessionStore {
     this.redisClient = redisClient;
   }
 
-  findSession(id) {
-    return this.redisClient
+  async findSession(id) {
+    return await this.redisClient
       .hmget(`session:${id}`, "userID", "username", "connected")
       .then(mapSession);
   }

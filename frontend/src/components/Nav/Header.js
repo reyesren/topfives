@@ -7,6 +7,7 @@ import Logout from "../Auth/Logout/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/index";
 import SocketContext from "../../context/socketContext";
+import { useHistory } from "react-router-dom";
 
 const Header = (props) => {
   const socket = useContext(SocketContext);
@@ -15,6 +16,8 @@ const Header = (props) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
   const [expand, setExpand] = useState(false);
+
+  const history = useHistory();
 
   const toggleSignupHandler = () => {
     setOpenSignup(!openSignup);
@@ -28,6 +31,7 @@ const Header = (props) => {
     setOpenLogout(!openLogout);
     if (toLogout) {
       onAuthLogout(socket.socket);
+      history.push("/");
     }
   };
 

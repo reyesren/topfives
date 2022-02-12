@@ -91,7 +91,7 @@ const login = async (req, res, next) => {
   }
 
   if (!existingUser) {
-    return next(new Error("There is no account with that username."));
+    return next(new Error("AUTH_ERR_NO_FOUND_USER"));
   } else {
     bcrypt.compare(inputPassword, existingUser.password, (err, result) => {
       if (result) {
@@ -110,7 +110,7 @@ const login = async (req, res, next) => {
           accessToken: accessToken,
         });
       } else {
-        return next(new Error("Your password is incorrect. Please try again."));
+        return next(new Error("AUTH_ERR_INCORRECT_PASS"));
       }
     });
   }

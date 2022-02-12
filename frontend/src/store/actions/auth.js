@@ -2,6 +2,15 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 //import socket from "../../socket";
 
+// enum for auth username/password validation fails
+const ErrorStatuses = {
+  AUTH_ERR_NO_FOUND_USER:
+    "There is no account with that username. Please try again.",
+  AUTH_ERR_INCORRECT_PASS:
+    "The password you entered is incorrect. Please try again.",
+  DEFAULT: "This is the default error message.",
+};
+
 export const authStart = () => {
   return {
     type: actionTypes.AUTH_START,
@@ -108,7 +117,15 @@ export const auth = (
       })
       .catch((err) => {
         console.log(err);
-        dispatch(authFail(err));
+        const errStatus = err.response.data.message;
+        const errorStatusEnum = Object.keys(ErrorStatuses);
+        let errMsg;
+        if (errorStatusEnum.find((status) => status === errStatus)) {
+          errMsg = ErrorStatuses[errStatus];
+        } else {
+          errMsg = ErrorStatuses["DEFAULT"];
+        }
+        dispatch(authFail(errMsg));
       });
   };
 };

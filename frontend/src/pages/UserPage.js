@@ -5,6 +5,7 @@ import ListItems from "../components/ListItems";
 import ListItemDetails from "../components/ListItemDetails";
 import DisplaySpinner from "../components/DisplaySpinner/DisplaySpinner";
 import EditProfile from "../components/EditProfile/EditProfile";
+import ListCreator from "../components/ListCreator/ListCreator";
 import { getProfile } from "../store/actions/profile";
 import { getListEntries } from "../store/actions/listEntry";
 import { LIST_RESET } from "../store/actions/actionTypes";
@@ -24,8 +25,10 @@ const UserPage = (props) => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [showEditListModal, setShowEditListModal] = useState(false);
+  const [showListCreator, setShowListCreator] = useState(false);
   const [listId, setListId] = useState("");
   const [isFollowing, setIsFollowing] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const userId = props.match.params.id;
 
@@ -54,7 +57,7 @@ const UserPage = (props) => {
 
   const following = useSelector((state) => {
     return state.follow.following;
-  })
+  });
 
   const onSelectHandler = useCallback(
     (e) => {
@@ -102,9 +105,20 @@ const UserPage = (props) => {
     setShowEditListModal((prev) => !prev);
   };
 
+  const toggleListCreatorHandler = () => {
+    setShowListCreator((prev) => !prev);
+  };
+
+  const listCreator = showListCreator ? (
+    <ListCreator
+      show={showListCreator}
+      toggle={toggleListCreatorHandler}
+    ></ListCreator>
+  ) : null;
+
   const onFollowHandler = () => {
     const user = socket.users.find((user) => user.username === username);
-    if(user) {
+    if (user) {
       socket.socket.emit("follow", {
         followed: username,
         follower: userInfo.username,
@@ -117,7 +131,7 @@ const UserPage = (props) => {
 
   const onUnfollowHandler = () => {
     socket.socket.emit("unfollow", username);
-  }
+  };
 
   // const closeEditProfileHandler = () => {
   //   setShowEditProfile(false);
@@ -173,7 +187,7 @@ const UserPage = (props) => {
 
   useEffect(() => {
     setIsFollowing(following.includes(username));
-  }, [following, username])
+  }, [following, username]);
 
   return (
     <Container className="user-page__container">
@@ -192,15 +206,23 @@ const UserPage = (props) => {
               >
                 <h3>Edit Profile</h3>
               </Button>
-              { isFollowing ? loggedIn && <Button onClick={onUnfollowHandler}>Unfollow</Button>
-                :
-                loggedIn && <Button onClick = {onFollowHandler}>Follow</Button>
-              }
+              {isFollowing
+                ? loggedIn && (
+                    <Button onClick={onUnfollowHandler}>Unfollow</Button>
+                  )
+                : loggedIn && <Button onClick={onFollowHandler}>Follow</Button>}
             </Col>
             <Col id="user-info__col-2" lg={6} md={6} sm={6} xs={12}>
               <h1>{`${firstName} ${lastName}`}</h1>
               <h2>aka {username}</h2>
               <p>{bio}</p>
+              <Button
+                onClick={toggleListCreatorHandler}
+                className="create-list-btn"
+                variant="dark"
+              >
+                <h3>Create List</h3>
+              </Button>
             </Col>
           </Row>
           <Row className="user-list__row">
@@ -313,6 +335,7 @@ const UserPage = (props) => {
         </>
       )}
       {editListModal}
+      {listCreator}
     </Container>
   );
 };

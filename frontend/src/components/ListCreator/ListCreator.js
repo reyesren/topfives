@@ -5,7 +5,6 @@ import Modal from "react-bootstrap/Modal";
 import Image from "react-bootstrap/Image";
 
 const ListCreator = (props) => {
-  // [show, setShow] = useState(false);
   const [currentView, setCurrentView] = useState(0);
 
   const modalViewsMapping = {
@@ -14,9 +13,6 @@ const ListCreator = (props) => {
     LIST_ITEM_DETAILS: 2,
   };
 
-  const clearListProgress = () => {
-    console.log("clearing!");
-    props.toggle();
   };
 
   const moveToNextModalViewHandler = (currentViewVal) => {

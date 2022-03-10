@@ -13,8 +13,6 @@ const ListCreator = (props) => {
     LIST_ITEM_DETAILS: 2,
   };
 
-  };
-
   const moveToNextModalViewHandler = (currentViewVal) => {
     setCurrentView((currView) => (currView < 2 ? currView + 1 : -1));
   };
@@ -131,7 +129,7 @@ const ListCreator = (props) => {
         size="med"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        onHide={clearListProgress}
+        onHide={props.toggle}
       >
         <Modal.Header closeButton className="modal-rmv-border">
           <Image

@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Image from "react-bootstrap/Image";
 
 const ListCreator = (props) => {
-  [show] = useState(false);
+  // [show] = useState(false);
 
   const clearListProgress = () => {
     console.log("clearing!");

@@ -19,7 +19,20 @@
   margin-left: -15px;
 }
 
+.modal-rmv-padding-top {
+  padding-top: 0;
+}
+
+.modal-rmv-padding-btm {
+  padding-bottom: 0;
+}
+
 .contents-header {
   font-size: 20px;
   margin-bottom: 25px;
+
+  .contents-header-caption {
+    font-size: 15px;
+    font-style: italic;
+  }
 }

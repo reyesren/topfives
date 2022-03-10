@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useSelector } from "react-redux";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import { Button, Form, Col, Row, Container } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import Image from "react-bootstrap/Image";
 
@@ -21,13 +21,13 @@ const ListCreator = (props) => {
     let btnHandler;
     switch (currentView) {
       case modalViewsMapping.INTRO:
-        btnHandler = moveToNextModalViewHandler(currentView);
+        btnHandler = moveToNextModalViewHandler();
         break;
       case modalViewsMapping.LIST_DETAILS:
-        btnHandler = moveToNextModalViewHandler(currentView);
+        btnHandler = moveToNextModalViewHandler();
         break;
       case modalViewsMapping.LIST_ITEM_DETAILS:
-        btnHandler = moveToNextModalViewHandler(currentView);
+        btnHandler = moveToNextModalViewHandler();
         break;
       default:
         btnHandler = null;
@@ -46,7 +46,11 @@ const ListCreator = (props) => {
         );
         break;
       case modalViewsMapping.LIST_ITEM_DETAILS:
-        headerContents = "listItemDetails";
+        headerContents = (
+          <div className="list-details-header-container">
+            TopFives' List Configurator
+          </div>
+        );
         break;
       default:
         headerContents = null;
@@ -67,19 +71,15 @@ const ListCreator = (props) => {
         break;
       case modalViewsMapping.LIST_DETAILS:
         bodyContents = (
-          <React.Fragment>
+          <Fragment>
             <div className="contents-header">Step 1: List Details</div>
             <div>
-              <Form.Group
-                as={Row}
-                className="mb-3"
-                controlId="formHorizontalEmail"
-              >
+              <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={3}>
                   New List Title
                 </Form.Label>
                 <Col sm={9}>
-                  <Form.Control type="email" placeholder="List Title" />
+                  <Form.Control type="text" placeholder="List Title" />
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3">
@@ -87,15 +87,52 @@ const ListCreator = (props) => {
                   New List Type
                 </Form.Label>
                 <Col sm={9}>
-                  <Form.Control type="email" placeholder="List Type" />
+                  <Form.Control type="text" placeholder="List Type" />
                 </Col>
               </Form.Group>
             </div>
-          </React.Fragment>
+          </Fragment>
         );
         break;
       case modalViewsMapping.LIST_ITEM_DETAILS:
-        bodyContents = "listItemDetails";
+        bodyContents = (
+          <Container className="modal-rmv-padding-top modal-rmv-padding-btm">
+            <div className="contents-header">
+              Step 2: List Entry Details
+              <br />
+              <div className="contents-header-caption">
+                You can always go back to your list add more later.
+              </div>
+            </div>
+
+            <div>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+                controlId="formHorizontalEmail"
+              >
+                <Form.Label column sm={3}>
+                  Entry Name
+                </Form.Label>
+                <Col sm={7}>
+                  <Form.Control type="email" placeholder="Entry Name" />
+                </Col>
+              </Form.Group>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+                controlId="formHorizontalEmail"
+              >
+                <Form.Label column sm={3}>
+                  Entry Name
+                </Form.Label>
+                <Col sm={7}>
+                  <Form.Control type="email" placeholder="Entry Name" />
+                </Col>
+              </Form.Group>
+            </div>
+          </Container>
+        );
         break;
       default:
         bodyContents = null;
@@ -121,12 +158,20 @@ const ListCreator = (props) => {
     return btnText;
   };
 
+  const getModalSize = () => {
+    if (currentView < 2) {
+      return "med";
+    } else {
+      return "lg";
+    }
+  };
+
   return (
     <React.Fragment>
       <Modal
         className="my-modal"
         show={props.show}
-        size="med"
+        size={getModalSize()}
         aria-labelledby="contained-modal-title-vcenter"
         centered
         onHide={props.toggle}
@@ -138,7 +183,9 @@ const ListCreator = (props) => {
           ></Image>
           {getModalHeaderContents()}
         </Modal.Header>
-        <Modal.Body>{getModalBodyContents()}</Modal.Body>
+        <Modal.Body style={{ paddingTop: 0 }}>
+          {getModalBodyContents()}
+        </Modal.Body>
         <Modal.Footer className="modal-rmv-border">
           <Button onClick={useModalButtonHandler} variant="dark">
             {getModalBtnText()}

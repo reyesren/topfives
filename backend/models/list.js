@@ -4,11 +4,10 @@ const uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 
 const listSchema = new Schema({
-  listTitle: { type: String, required: true },
+  listTitle: { type: String, required: true, maxlength: 100 },
   listType: { type: String, required: true },
-  entries: [
-    { type: mongoose.Schema.Types.ObjectId, required: true, ref: "ListEntry" },
-  ],
+  description: { type: String, required: true },
+  entries: [{ type: mongoose.Schema.Types.ObjectId, ref: "ListEntry" }],
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

@@ -11,6 +11,7 @@ import { LIST_RESET } from "../store/actions/actionTypes";
 import EditList from "../components/EditList";
 import SocketContext from "../context/socketContext";
 import { addNewFollowing } from "../store/actions/follow";
+import ListEditMode from "../components/List/ListEditMode/ListEditMode";
 
 const UserPage = (props) => {
   const socket = useContext(SocketContext);
@@ -22,6 +23,7 @@ const UserPage = (props) => {
   const [dropdownEnabled, setDropdownEnabled] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [showEditListModal, setShowEditListModal] = useState(false);
   const [listId, setListId] = useState("");
@@ -48,13 +50,13 @@ const UserPage = (props) => {
 
   const { entries } = listEntries;
 
-  const preloadedList = useSelector((state) => {
-    return state.showList.list;
+  const showList = useSelector((state) => {
+    return state.showList;
   });
 
   const following = useSelector((state) => {
     return state.follow.following;
-  })
+  });
 
   const onSelectHandler = useCallback(
     (e) => {
@@ -104,7 +106,7 @@ const UserPage = (props) => {
 
   const onFollowHandler = () => {
     const user = socket.users.find((user) => user.username === username);
-    if(user) {
+    if (user) {
       socket.socket.emit("follow", {
         followed: username,
         follower: userInfo.username,
@@ -117,11 +119,8 @@ const UserPage = (props) => {
 
   const onUnfollowHandler = () => {
     socket.socket.emit("unfollow", username);
-  }
+  };
 
-  // const closeEditProfileHandler = () => {
-  //   setShowEditProfile(false);
-  // };
   const editProfileModal = showEditProfile ? (
     <EditProfile
       show={showEditProfile}
@@ -154,11 +153,12 @@ const UserPage = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (preloadedList.listTitle && profile.lists.length !== 0) {
-      console.log(preloadedList);
-      onSelectHandler(preloadedList.listTitle);
+    if (showList && showList.isEdit) {
+      setIsEditMode(true);
+    } else if (showList.listTitle && profile.lists.length !== 0) {
+      onSelectHandler(showList.listTitle);
     }
-  }, [preloadedList, onSelectHandler, profile]);
+  }, [showList, onSelectHandler, profile]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -169,11 +169,11 @@ const UserPage = (props) => {
         setIsMyProfile(false);
       }
     }
-  }, [loggedIn, userId]);
+  }, [loggedIn, userInfo._id, userId]);
 
   useEffect(() => {
     setIsFollowing(following.includes(username));
-  }, [following, username])
+  }, [following, username]);
 
   return (
     <Container className="user-page__container">
@@ -192,10 +192,11 @@ const UserPage = (props) => {
               >
                 <h3>Edit Profile</h3>
               </Button>
-              { isFollowing ? loggedIn && <Button onClick={onUnfollowHandler}>Unfollow</Button>
-                :
-                loggedIn && <Button onClick = {onFollowHandler}>Follow</Button>
-              }
+              {isFollowing
+                ? loggedIn && (
+                    <Button onClick={onUnfollowHandler}>Unfollow</Button>
+                  )
+                : loggedIn && <Button onClick={onFollowHandler}>Follow</Button>}
             </Col>
             <Col id="user-info__col-2" lg={6} md={6} sm={6} xs={12}>
               <h1>{`${firstName} ${lastName}`}</h1>
@@ -204,9 +205,15 @@ const UserPage = (props) => {
             </Col>
           </Row>
           <Row className="user-list__row">
-            {(!dropdownEnabled || preloadedList.listTitle) && (
+            {showList.isEdit && <ListEditMode></ListEditMode>}
+            {/* {(!dropdownEnabled || preloadedList.listTitle) && (
               <Row className="listheader--row">
                 <h1 id="list-title">{selectedList} </h1>
+              </Row>
+            )}
+            {preloadedList.isEdit && (
+              <Row>
+                <h1>HELLO WORLD</h1>
               </Row>
             )}
             {profile.lists.length > 0 ? (
@@ -307,7 +314,7 @@ const UserPage = (props) => {
                   goBackHandler={goBackHandler}
                 />
               )}
-            </Row>
+            </Row> */}
           </Row>
           {editProfileModal}
         </>

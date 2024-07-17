@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 const DisplayModal = (props) => {
   return (
     <Modal
-      className="my-modal"
+      className="topfives-modal"
       show={props.show}
       onHide={props.closeHandler}
       centered

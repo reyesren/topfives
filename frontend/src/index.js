@@ -12,6 +12,7 @@ import {
   searchListsResultsReducer,
   showListReducer,
   editListReducer,
+  userListReducer,
 } from "./store/reducers/list";
 import {
   profileReducer,
@@ -19,7 +20,6 @@ import {
 } from "./store/reducers/profile";
 import { messagesReducer } from "./store/reducers/messages";
 import { followersReducer } from "./store/reducers/follow";
-import reportWebVitals from "./reportWebVitals";
 import { io } from "socket.io-client";
 
 const socket = io("localhost:5000", {
@@ -42,6 +42,7 @@ const rootReducer = combineReducers({
   listEntries: listEntriesReducer,
   searchUsersResults: searchUsersResultsReducer,
   searchListsResults: searchListsResultsReducer,
+  userLists: userListReducer,
   showList: showListReducer,
   editList: editListReducer,
   messages: messagesReducer,
@@ -68,4 +69,3 @@ ReactDOM.render(app, document.getElementById("root"));
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

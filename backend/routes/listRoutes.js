@@ -1,5 +1,6 @@
 const express = require("express");
 const listController = require("../controllers/listController");
+const authorize = require("../middleware/isAuth");
 
 const router = express.Router();
 
@@ -8,7 +9,8 @@ const router = express.Router();
 router.get("/", listController.getLists);
 
 // create a new list
-router.post("/", listController.createList);
+router.post("/", authorize, listController.createList);
+// router.post("/", listController.createList);
 
 // get the entires of a list
 router.get("/:id", listController.getList);

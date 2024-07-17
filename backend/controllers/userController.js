@@ -100,7 +100,7 @@ const login = async (req, res, next) => {
           process.env.TOKEN_SECRET,
           {
             algorithm: "HS256",
-            expiresIn: 3600,
+            expiresIn: 6000,
           }
         );
         res.json({
@@ -126,10 +126,10 @@ const getUser = async (req, res, next) => {
     )
       .populate("image")
       .populate("lists");
+    res.json(user);
   } catch (err) {
     return next(new Error("Sorry, something went wrong!"));
   }
-  res.json(user);
 };
 
 const getUsers = async (req, res, next) => {

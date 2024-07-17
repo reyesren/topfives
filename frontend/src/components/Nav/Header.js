@@ -4,6 +4,7 @@ import { Nav, Image, Collapse, Navbar } from "react-bootstrap";
 import Login from "../Auth/Login/Login";
 import Signup from "../Auth/Signup/Signup";
 import Logout from "../Auth/Logout/Logout";
+import ListCreationModal from "../List/ListCreationModal/ListCreationModal";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/index";
 import SocketContext from "../../context/socketContext";
@@ -15,6 +16,7 @@ const Header = (props) => {
   const [openSignup, setOpenSignup] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
+  const [openListCreation, setOpenListCreation] = useState(false);
   const [expand, setExpand] = useState(false);
 
   const history = useHistory();
@@ -25,6 +27,10 @@ const Header = (props) => {
 
   const toggleLoginHandler = () => {
     setOpenLogin(!openLogin);
+  };
+
+  const toggleListCreationHandler = () => {
+    setOpenListCreation(!openListCreation);
   };
 
   const toggleLogoutHandler = (event, toLogout) => {
@@ -68,6 +74,12 @@ const Header = (props) => {
   const logoutModal = openLogout ? (
     <Logout show={openLogout} closeHandler={toggleLogoutHandler}></Logout>
   ) : null;
+  const listCreationModal = openListCreation ? (
+    <ListCreationModal
+      show={openListCreation}
+      closeHandler={toggleListCreationHandler}
+    ></ListCreationModal>
+  ) : null;
 
   return (
     <Fragment>
@@ -105,7 +117,11 @@ const Header = (props) => {
                 <Nav.Link eventKey="link-4" href={`/user/${userId}`}>
                   Profile
                 </Nav.Link>
-                <Nav.Link id="nav-link__create-lg" eventKey="link-5">
+                <Nav.Link
+                  id="nav-link__create-lg"
+                  eventKey="link-5"
+                  onClick={toggleListCreationHandler}
+                >
                   <i className="fas fa-plus"></i> Create List
                 </Nav.Link>
                 <Nav.Item id="nav-profile__settings-sm">
@@ -169,6 +185,7 @@ const Header = (props) => {
       {signupModal}
       {loginModal}
       {logoutModal}
+      {listCreationModal}
     </Fragment>
   );
 };

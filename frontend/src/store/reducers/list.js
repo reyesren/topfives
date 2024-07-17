@@ -4,6 +4,8 @@ import {
   LIST_SEARCH_SUCCESS,
   LIST_SEARCH_RESET,
   LIST_SHOW,
+  LIST_SHOW_EDIT,
+  LIST_CREATE_SUCCESS,
   LIST_RESET,
   EDIT_LIST_REQUEST,
   EDIT_LIST_SUCCESS,
@@ -49,6 +51,12 @@ export const showListReducer = (state = { list: {} }, action) => {
         ...state,
         list: action.payload,
       };
+    case LIST_SHOW_EDIT:
+      return {
+        ...state,
+        ...action.payload,
+        isEdit: true,
+      };
     case LIST_RESET:
       return {
         ...state,
@@ -75,6 +83,18 @@ export const editListReducer = (state = {}, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userListReducer = (state = { list: {} }, action) => {
+  switch (action.type) {
+    case LIST_CREATE_SUCCESS:
+      return {
+        ...state,
+        list: action.payload,
       };
     default:
       return state;

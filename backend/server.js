@@ -28,7 +28,6 @@ const followerStore = new RedisFollowerStore(redisClient);
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
-
 db();
 const app = express();
 const httpServer = http.createServer(app);
@@ -37,7 +36,7 @@ const httpServer = http.createServer(app);
 });*/
 const io = socketio(httpServer, {
   cors: {
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
   },
   adapter: require("socket.io-redis")({
     pubClient: redisClient,
@@ -119,16 +118,16 @@ io.on("connection", async (socket) => {
   let [messagesPerUser, followerData, sessions] = await Promise.all([
     messageStore.findMessagesForUser(socket.userID),
     followerStore.findFollowDataForUser(socket.userID),
-    sessionStore.findAllSessions()
+    sessionStore.findAllSessions(),
   ]); // returns a promise
-    sessions.forEach((session) => {
-      users.push({
-        userID: session.userID,
-        username: session.username,
-        connected: session.connected,
-        messages: messagesPerUser || [],
-      });
+  sessions.forEach((session) => {
+    users.push({
+      userID: session.userID,
+      username: session.username,
+      connected: session.connected,
+      messages: messagesPerUser || [],
     });
+  });
   socket.emit("all_messages", messagesPerUser);
 
   // users.push(messageStore); // was causing an exception
@@ -145,7 +144,12 @@ io.on("connection", async (socket) => {
       content: `${data.follower} is now following you.`, // **** if this message changes, change it in the "unfollow" event too *****
       hasSeen: false,
     };
-    socket.broadcast.to(data.to).emit("new_follower", {content: message.content, follower: message.from});
+    socket.broadcast
+      .to(data.to)
+      .emit("new_follower", {
+        content: message.content,
+        follower: message.from,
+      });
     //console.log(`${follower} is not following ${following}`);
     messageStore.saveMessage(message);
     followerStore.follow(message);
@@ -155,14 +159,21 @@ io.on("connection", async (socket) => {
 
   socket.on("unfollow", async (user) => {
     followerStore.unfollow(socket.userID, user);
-    let newFollowerData = await followerStore.findFollowDataForUser(socket.userID);
+    let newFollowerData = await followerStore.findFollowDataForUser(
+      socket.userID
+    );
     // Remove message/notification that you've been followed if the person unfollows you.
-    await messageStore.removeMessageForUser(user, `${socket.userID} is now following you.`) // **** if you change it here, change it in the "follow" event too ****
-    let messagesForUnfollowedUser = await messageStore.findMessagesForUser(user);
+    await messageStore.removeMessageForUser(
+      user,
+      `${socket.userID} is now following you.`
+    ); // **** if you change it here, change it in the "follow" event too ****
+    let messagesForUnfollowedUser = await messageStore.findMessagesForUser(
+      user
+    );
     console.log(messagesForUnfollowedUser);
     socket.broadcast.to(user).emit("all_messages", messagesForUnfollowedUser);
     socket.emit("all_follow_data", newFollowerData);
-  })
+  });
 
   socket.on("seen_all_messages", async () => {
     const messagesPerUser = await messageStore.seenAllMessages(socket.userID);

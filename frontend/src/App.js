@@ -8,10 +8,15 @@ import DashboardPage from "./pages/DashboardPage";
 import { useDispatch } from "react-redux";
 import * as actions from "./store/actions/index";
 import UserPage from "./pages/UserPage";
+import ListPage from "./pages/ListPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import SocketContext from "./context/socketContext";
 import { storeMessages, addNewMessage } from "./store/actions/messages";
-import { storeFollowData, addNewFollower, addNewFollowing } from "./store/actions/follow";
+import {
+  storeFollowData,
+  addNewFollower,
+  addNewFollowing,
+} from "./store/actions/follow";
 import NotificationsPage from "./pages/NotificationsPage";
 
 // adding this comment to be able to commit Develop branch
@@ -65,7 +70,7 @@ const App = (props) => {
     socket.socket.on("all_follow_data", (data) => {
       console.log(data);
       dispatch(storeFollowData(data));
-    })
+    });
 
     socket.socket.on("users", (usersList) => {
       console.log(usersList);
@@ -83,6 +88,7 @@ const App = (props) => {
       <Header />
       <Route component={DashboardPage} path="/" exact />
       <Route component={UserPage} path="/user/:id" />
+      <Route component={ListPage} path="/list" />
       <Route component={SearchResultsPage} path="/search" exact />
       <Route
         component={SearchResultsPage}

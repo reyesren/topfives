@@ -1,11 +1,19 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form, Row, Col, Alert } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { editList } from "../../../store/actions/list";
 
 const ListEditMode = (props) => {
-  const [saveFormDebounce, setSaveFormDebounce] = useState(false);
+  const saveFormDebounceRef = useRef(null);
+  const dispatch = useDispatch();
 
   const showList = useSelector((state) => {
     return state.showList;
@@ -13,9 +21,9 @@ const ListEditMode = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      title: showList?.listTitle || "",
-      description: showList?.description || "",
-      category: showList?.category || "",
+      title: showList?.list.listTitle || "",
+      description: showList?.list.description || "",
+      category: showList?.list.category || "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("This field is required"),
@@ -24,25 +32,36 @@ const ListEditMode = (props) => {
     }),
   });
 
-  const blurHandler = (event, fieldName) => {
-    formik.handleBlur(event);
-  };
-
-  useEffect(() => {
+  const changeHandler = (event, fieldName) => {
+    formik.handleChange(event);
     if (Object.keys(formik.errors).length < 1) {
-      if (saveFormDebounce) {
-        setSaveFormDebounce(null);
+      if (saveFormDebounceRef.current) {
+        clearTimeout(saveFormDebounceRef.current);
+        saveFormDebounceRef.current = null;
       }
-      const formDebounce = setTimeout(() => {
-        console.log("hello world");
+      saveFormDebounceRef.current = setTimeout(() => {
+        const listValues = {
+          title:
+            fieldName === "title" ? event.target.value : formik.values.title,
+          description:
+            fieldName === "description"
+              ? event.target.value
+              : formik.values.description,
+          category:
+            fieldName === "category"
+              ? event.target.value
+              : formik.values.category,
+        };
+        dispatch(
+          editList(listValues.title, listValues.category, [], showList.list._id)
+        );
       }, 3000);
-      setSaveFormDebounce(formDebounce);
     }
-  }, [formik.errors]);
+  };
 
   return (
     <>
-      <h1>{showList.listTitle}</h1>
+      <h1>{showList.list.listTitle}</h1>
       <Container>
         <Form noValidate onSubmit={formik.handleSubmit}>
           <Row>
@@ -68,12 +87,12 @@ const ListEditMode = (props) => {
                   placeholder="Enter category"
                   id="category"
                   name="category"
-                  onChange={formik.handleChange}
-                  onBlur={(e) => blurHandler(e, "category")}
+                  onChange={(e) => changeHandler(e, "category")}
+                  onBlur={formik.handleBlur}
                   value={formik.values.category}
                 />
                 {formik.touched.category && formik.errors.category ? (
-                  <Alert variant="danger">{formik.errors.category} </Alert>
+                  <div className="error-mssg">{formik.errors.category}</div>
                 ) : null}{" "}
               </Form.Group>
             </Col>
@@ -98,7 +117,7 @@ const ListEditMode = (props) => {
           <Row className="edit-row-section">
             <Col>
               <h2>List Entries</h2>
-              {showList && showList.entries.length < 1 && (
+              {showList.list && showList.list.entries.length < 1 && (
                 <div className="list-entries-section">
                   <div>Your entries will be displayed here.</div>
                   <div>
@@ -114,6 +133,7 @@ const ListEditMode = (props) => {
               )}
             </Col>
           </Row>
+          {/* {listEntryCreationModal} */}
           {/* <div className="modal-group modal-button-group">
             <Button variant="secondary" onClick={props.closeHandler}>
               Cancel

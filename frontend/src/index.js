@@ -11,7 +11,6 @@ import { listEntriesReducer } from "./store/reducers/listEntry";
 import {
   searchListsResultsReducer,
   showListReducer,
-  editListReducer,
   userListReducer,
 } from "./store/reducers/list";
 import {
@@ -44,7 +43,6 @@ const rootReducer = combineReducers({
   searchListsResults: searchListsResultsReducer,
   userLists: userListReducer,
   showList: showListReducer,
-  editList: editListReducer,
   messages: messagesReducer,
   follow: followersReducer,
 });

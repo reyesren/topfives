@@ -5,11 +5,12 @@ import {
   LIST_SEARCH_SUCCESS,
   USER_SEARCH_RESET,
   LIST_SHOW,
-  LIST_SHOW_EDIT,
+  LIST_CREATE_REQUEST,
   LIST_CREATE_SUCCESS,
-  EDIT_LIST_REQUEST,
-  EDIT_LIST_SUCCESS,
-  EDIT_LIST_FAIL,
+  LIST_CREATE_FAIL,
+  LIST_SHOW_EDIT_REQUEST,
+  LIST_SHOW_EDIT_SUCCESS,
+  LIST_SHOW_EDIT_FAIL,
 } from "./actionTypes";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
@@ -49,15 +50,13 @@ export const getLists =
 export const createList = (listTitle, description) => async (dispatch) => {
   try {
     const data = { listTitle, description };
-    // TODO: dispatch LIST CREATION REQUEST dispatch({})
-    const res = await axios.post(`http://localhost:5000/api/lists`, data);
     dispatch({
-      type: LIST_SHOW_EDIT,
-      payload: res.data,
+      type: LIST_CREATE_REQUEST,
     });
+    const res = await axios.post(`http://localhost:5000/api/lists`, data);
     return dispatch({
       type: LIST_CREATE_SUCCESS,
-      payload: { listTitle, description },
+      payload: res.data,
     });
   } catch (err) {
     console.log(err);
@@ -65,7 +64,6 @@ export const createList = (listTitle, description) => async (dispatch) => {
 };
 
 export const showList = (listTitle) => (dispatch) => {
-  console.log(listTitle);
   dispatch({
     type: LIST_SHOW,
     payload: listTitle,
@@ -75,18 +73,18 @@ export const showList = (listTitle) => (dispatch) => {
 export const editList =
   (listTitle, listType, listItems, id) => async (dispatch) => {
     try {
-      //console.log(listTitle, listType, listItems, id);
       let body = { listTitle, listType, listItems, id };
       dispatch({
-        type: EDIT_LIST_REQUEST,
+        type: LIST_SHOW_EDIT_REQUEST,
       });
       await axios.put(`http://localhost:5000/api/lists/${id}`, body);
       dispatch({
-        type: EDIT_LIST_SUCCESS,
+        type: LIST_SHOW_EDIT_SUCCESS,
+        payload: { ...body },
       });
     } catch (err) {
       dispatch({
-        type: EDIT_LIST_FAIL,
+        type: LIST_SHOW_EDIT_FAIL,
         payload:
           err.response && err.response.data.message
             ? err.response.data.message

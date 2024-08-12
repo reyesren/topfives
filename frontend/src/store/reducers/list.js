@@ -4,12 +4,13 @@ import {
   LIST_SEARCH_SUCCESS,
   LIST_SEARCH_RESET,
   LIST_SHOW,
-  LIST_SHOW_EDIT,
+  LIST_SHOW_EDIT_REQUEST,
+  LIST_SHOW_EDIT_SUCCESS,
+  LIST_SHOW_EDIT_FAIL,
+  LIST_CREATE_REQUEST,
   LIST_CREATE_SUCCESS,
+  LIST_CREATE_FAIL,
   LIST_RESET,
-  EDIT_LIST_REQUEST,
-  EDIT_LIST_SUCCESS,
-  EDIT_LIST_FAIL,
 } from "../actions/actionTypes";
 
 export const searchListsResultsReducer = (state = { lists: [] }, action) => {
@@ -46,43 +47,47 @@ export const searchListsResultsReducer = (state = { lists: [] }, action) => {
 
 export const showListReducer = (state = { list: {} }, action) => {
   switch (action.type) {
+    case LIST_CREATE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case LIST_CREATE_SUCCESS:
+      return {
+        ...state,
+        list: action.payload,
+        isLoading: false,
+        isEdit: true,
+      };
     case LIST_SHOW:
       return {
         ...state,
         list: action.payload,
       };
-    case LIST_SHOW_EDIT:
+    case LIST_SHOW_EDIT_REQUEST:
       return {
         ...state,
         ...action.payload,
         isEdit: true,
       };
+    case LIST_SHOW_EDIT_SUCCESS:
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          ...action.payload,
+        },
+        loading: false,
+      };
+    case LIST_SHOW_EDIT_FAIL:
+      return {
+        ...state,
+        ...action.payload,
+      };
     case LIST_RESET:
       return {
         ...state,
         list: {},
-      };
-    default:
-      return state;
-  }
-};
-
-export const editListReducer = (state = {}, action) => {
-  switch (action.type) {
-    case EDIT_LIST_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case EDIT_LIST_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-      };
-    case EDIT_LIST_FAIL:
-      return {
-        ...state,
-        error: action.payload,
       };
     default:
       return state;

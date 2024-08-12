@@ -130,6 +130,9 @@ const createList = async (req, res, next) => {
 };
 
 const editList = async (req, res, next) => {
+  ListEntry.deleteMany({});
+  res.json(null);
+  return;
   let listId = req.params.id;
   let existingList;
   const { listTitle, listType, listItems } = req.body;
